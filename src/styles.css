@@ -1,1 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss';
+
+.main-container {
+  @apply px-4 mx-auto max-w-7xl w-full;
+}
