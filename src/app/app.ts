@@ -4,12 +4,9 @@ import { MainLayout } from './layout/main-layout/main-layout';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    RouterLink,
-    MainLayout
-  ],
+  imports: [MainLayout],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('attendify-frontend');

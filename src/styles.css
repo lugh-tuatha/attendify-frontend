@@ -1,5 +1,17 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-monochromatic-base: #90d5ff;
+  --color-monochromatic-dark: #40b7ff;
+  --color-monochromatic-light: #e0f3ff;
+  --color-success-900: rgba(61 190 129 100%);
+  --color-success-300: rgba(61 190 129 25%);
+  --color-success-100: rgb(209 237 224);
+  --color-danger-900: rgba(255 75 75, 100%);
+  --color-danger-300: rgba(255 75 75, 25%);
+  --color-danger-100: rgb(255 225 222);
+}
+
 .main-container {
   @apply px-4 mx-auto max-w-7xl w-full;
 }
