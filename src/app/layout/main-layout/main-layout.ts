@@ -9,8 +9,6 @@ import { Footer } from '../footer/footer';
   selector: 'app-main-layout',
   imports: [RouterOutlet, Header, Footer],
   templateUrl: './main-layout.html',
-  styleUrl: './main-layout.css'
+  styleUrl: './main-layout.css',
 })
-export class MainLayout {
-
-}
+export class MainLayout {}
