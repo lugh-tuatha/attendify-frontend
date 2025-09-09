@@ -1,45 +1,10 @@
 <main class="main-container">
-    <section class=" flex items-center justify-between mt-4 mb-3">
-      <h1 class="font-bold text-2xl">LTHMI Recto Manila Upcoming Events</h1>
-      <button class="inline-flex items-center gap-2 px-4 py-2 bg-accent
-       text-white rounded-lg shadow-sm hover:brightness-95 bg-blue-400">Add Event</button> 
-    </section>
+  <div class="flex items-center justify-between mt-4">
+    <h1 class="font-bold text-2xl">LTHMI Recto Manila Upcoming Events</h1>
+    <app-button (click)="openAddEventDialog()">Add Event</app-button>
+  </div>
 
-    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-      <section class="bg-white border border-slate-400 rounded-lg shadow-sm overflow-hidden flex flex-col">
-        <div class="h-40 bg-cover bg-center" style="background-image:url('https://picsum.photos/seed/for/800/400')"></div>
-          <div class="p-4 flex flex-col flex-1" >
-            <h3>Saving Family, Transforming Cities</h3>
-            <p class="text-xs font-semibold text-accent mt-1">Each One, Bring One</p>
-            <p class="text-sm text-slate-500 mt-2 flex-1">deserunt consequatur veniam magni molestiae itaque voluptatem ipsum voluptate, neque sed ratione aliquid?s</p>
-            <div class="mt-4 flex items-center justify-between">
-              <button class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-lg shadow-sm hover:brightness-95 bg-blue-400"> Enable Attendance </button>
-            </div>
-          </div>
-      </section>
-
-      <section class="bg-white border border-slate-400 rounded-lg shadow-sm overflow-hidden flex flex-col">
-        <div class="h-40 bg-cover bg-center" style="background-image:url('https://picsum.photos/seed/for/800/400')"></div>
-          <div class="p-4 flex flex-col flex-1" >
-            <h3>Saving Family, Transforming Cities</h3>
-            <p class="text-xs font-semibold text-accent mt-1">Each One, Bring One</p>
-            <p class="text-sm text-slate-500 mt-2 flex-1">deserunt consequatur veniam magni molestiae itaque voluptatem ipsum voluptate, neque sed ratione aliquid?s</p>
-            <div class="mt-4 flex items-center justify-between">
-              <button class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-lg shadow-sm hover:brightness-95 bg-blue-400"> Enable Attendance </button>
-            </div>
-          </div>
-      </section>
-      
-      <section class="bg-white border border-slate-400 rounded-lg shadow-sm overflow-hidden flex flex-col">
-        <div class="h-40 bg-cover bg-center" style="background-image:url('https://picsum.photos/seed/for/800/400')"></div>
-          <div class="p-4 flex flex-col flex-1" >
-            <h3>Saving Family, Transforming Cities</h3>
-            <p class="text-xs font-semibold text-accent mt-1">Each One, Bring One</p>
-            <p class="text-sm text-slate-500 mt-2 flex-1">deserunt consequatur veniam magni molestiae itaque voluptatem ipsum voluptate, neque sed ratione aliquid?s</p>
-            <div class="mt-4 flex items-center justify-between">
-              <button class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-lg shadow-sm hover:brightness-95 bg-blue-400"> Enable Attendance </button>
-            </div>
-          </div>
-      </section>
-    </section>
+  <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+    <app-event-card></app-event-card>
+  </section>
 </main>

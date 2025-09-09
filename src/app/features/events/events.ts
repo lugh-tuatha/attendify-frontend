@@ -1,12 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { Dialog } from '@angular/cdk/dialog';
 
-import { AddEventDialog } from './components/add-event-dialog/add-event-dialog';
 import { Button } from '../../shared/ui/button/button';
+
+import { AddEventDialog } from './components/add-event-dialog/add-event-dialog';
+import { EventCard } from './components/event-card/event-card';
 
 @Component({
   selector: 'app-events',
-  imports: [Button],
+  imports: [Button, EventCard],
   templateUrl: './events.html',
   styleUrl: './events.css',
 })

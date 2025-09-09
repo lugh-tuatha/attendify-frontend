@@ -1,9 +1,13 @@
 @import 'tailwindcss';
 
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 @theme {
   --color-monochromatic-base: #90d5ff;
   --color-monochromatic-dark: #40b7ff;
   --color-monochromatic-light: #e0f3ff;
+  --color-text-900: #0B161E;
+  --color-text-300: #365261;
   --color-success-900: rgba(61 190 129 100%);
   --color-success-300: rgba(61 190 129 25%);
   --color-success-100: rgb(209 237 224);
@@ -12,6 +16,15 @@
   --color-danger-100: rgb(255 225 222);
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Poppins", sans-serif;
+}
+
+p {
+  font-family: "Hind", sans-serif;
+}
+
 .main-container {
   @apply px-4 mx-auto max-w-7xl w-full;
 }
+
