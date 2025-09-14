@@ -1,4 +1,55 @@
 <main class="bg-white p-8 rounded-md">
-  <p>AYOP START HERE</p>
-  <h1 class="font-bold">Add Event</h1>
+  <div class="bg-white shadow-lg rounded-lg w-full max-w-3xl p-6">
+    <h2 class="text-2xl font-bold mb-4">Add Event</h2>
+
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Event Title</label>
+          <input type="text" placeholder="Enter event name"
+            class="w-full border rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Tagline</label>
+          <input type="text" placeholder="Brief catchy phrase or motto (optional)"
+            class="w-full border rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Date</label>
+          <input type="date"
+            class="w-full border rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Start Time</label>
+          <input type="time"
+            class="w-full border rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Location</label>
+        <input type="text" placeholder="e.g., Virtual (Zoom link will be shared)"
+          class="w-full border rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Description / Details</label>
+        <textarea rows="3" placeholder="Brief description of the event purpose and agenda"
+          class="w-full border rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-400 outline-none"></textarea>
+      </div>
+
+      <div class="flex justify-end gap-3">
+        <button type="button"
+          class="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800">
+          Cancel
+        </button>
+        <button type="submit"
+          class="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white">
+          Add Event
+        </button>
+      </div>
+  </div>
 </main>
