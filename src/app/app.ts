@@ -1,5 +1,4 @@
 import { Component, signal } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
 import { MainLayout } from './layout/main-layout/main-layout';
 
 @Component({

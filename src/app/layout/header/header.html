@@ -1,11 +1,15 @@
-<nav class="main-container py-4 flex items-center justify-between">
-  <h1 class="cursor-pointer text-3xl font-bold" routerLink="/">Brand Logo</h1>
+<header class="border-b border-monochromatic-dark">
+  <nav class="main-container py-4 flex items-center justify-between botder">
+    <h1 class="cursor-pointer text-3xl font-bold" routerLink="/">Brand Logo</h1>
 
-  <ul class="flex gap-4">
-    <li class="cursor-pointer" routerLink="#">Dashboard</li>
-    <li class="cursor-pointer" routerLink="calendar">Calendar</li>
-    <li class="cursor-pointer" routerLink="events">Events</li>
-  </ul>
-
-  <!-- <img src="" alt=""> -->
-</nav>
+    <div class="flex items-center gap-4">
+      <ul class="flex gap-4">
+        <li class="cursor-pointer" routerLink="dashboard">Dashboard</li>
+        <li class="cursor-pointer" routerLink="calendar">Calendar</li>
+        <li class="cursor-pointer" routerLink="events">Events</li>
+      </ul>
+      <app-button routerLink="login">Login</app-button>
+    </div>
+    <!-- <img src="" alt=""> -->
+  </nav>
+</header>
