@@ -78,6 +78,7 @@ export class EventRegistration {
       "firstName": this.form.value.firstName!,
       "lastName": this.form.value.lastName!,
       "primaryLeader": this.form.value.primaryLeader!,
+      "churchHierarchy": this.form.value.churchHierarchy!,
       "memberStatus": this.form.value.memberStatus!,
     };
 

@@ -4,5 +4,6 @@ export interface RegisterAttendeeDto {
   firstName?: string;
   lastName?: string;
   primaryLeader?: string;
+  churchHierarchy?: string;
   memberStatus?: string;
 }

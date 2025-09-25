@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://your-prod-base-url.com/api/v2'
+  apiBaseUrl: 'https://attendify-backend-production.up.railway.app/api/v2'
 };
