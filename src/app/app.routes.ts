@@ -3,7 +3,7 @@ import { Events } from './features/events/events';
 import { Dashboard } from './features/dashboard/dashboard';
 import { Login } from './features/auth/login/login';
 import { EventRegistration } from './features/events/pages/event-registration/event-registration';
-import { EventsName } from './features/events/pages/events-name/events-name';
+import { EventDetail } from './features/events/pages/event-detail/event-detail';
 
 export const routes: Routes = [
     {
@@ -11,11 +11,11 @@ export const routes: Routes = [
         component: Events
     },
     {
-        path: 'events/event-name',
-        component: EventsName
+        path: 'events/:id',
+        component: EventDetail
     },
     {
-        path: 'events/event-name/event-registration',
+        path: 'events/:id/registration',    
         component: EventRegistration
     },
 

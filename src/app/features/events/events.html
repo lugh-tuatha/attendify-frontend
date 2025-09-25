@@ -6,6 +6,19 @@
   </div>
 
   <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-    <app-event-card></app-event-card>
+    @for (event of events; track $index) {
+      <app-event-card 
+        id="{{event.id}}"
+        name="{{event.name}}" 
+        description="{{event.description}}" 
+        organization="{{event.organization.name}}"
+        tagline="{{event.tagline}}" 
+        location="{{event.location}}" 
+        startDate="{{event.startDate}}" 
+        endDate="{{event.endDate}}" 
+        startTime="{{event.startTime}}" 
+        endTime="{{event.endTime}}"
+      ></app-event-card>
+    }
   </section>
 </main>
