@@ -1,79 +1,81 @@
 <main class="main-container p-6">
-  <a href="/events" class="flex items-center text-blue-600 hover:underline">
-    <span class="text-lg">↩</span>
-    <span class="ml-1">Back</span>
-  </a>
+  <div class="flex mb-2 items-center gap-2">
+    <lucide-angular routerLink="/events" [img]="CornerDownLeft" [size]="36" class="cursor-pointer border border-text-300 rounded-md shadow-2xs shadow-text-300"></lucide-angular>
+    <h1 class="text-3xl font-bold">{{event?.name}}</h1>
+  </div>
+  <p routerLink="/events/{{event?.id}}/registration" class="text-lg underline cursor-pointer">http://localhost:4200/events/{{event?.id}}/registration</p>
+  <p class="text-lg text-gray-500 mt-1">{{event?.startDate}}</p>
 
-  @if (event) {
-    <h1 class="mt-4 text-xl font-semibold">{{event.name}}</h1>
-    <a routerLink="/events/{{event.id}}/registration"
-      class="underline">
-      http://localhost:4200/events/{{event.id}}/registration
-    </a>
-    <p class="text-sm text-gray-500 mt-1">{{event.startDate}}</p>
+  <section class="mt-4">
+    <h1 class="font-bold text-xl">Attendance Overview</h1>
+    <div class="grid grid-cols-4 gap-4 mt-1">
+      <app-stat-card
+        title="Attendees (Overall)"
+        icon="person"
+        [value]="0"
+        description="Overall Attendee Count"
+      ></app-stat-card>
 
-    <section class="grid grid-cols-2 gap-4 mt-4">
-      <div class="border rounded p-4 flex items-center gap-2">
-        <span class="text-gray-600">👤</span>
-        <div>
-          <p class="font-medium">Attendees (Overall)</p>
-          <p class="text-sm text-gray-500">Attendee Count</p>
-        </div>
-      </div>
-      <div class="border rounded p-4 flex items-center gap-2">
-        <span class="text-gray-600">👤</span>
-        <div>
-          <p class="font-medium">Registered Attendees</p>
-          <p class="text-sm text-gray-500">Total Registered Attendees</p>
-        </div>
-      </div>
-    </section>
+      <app-stat-card
+        title="Registered Attendees"
+        icon="person"
+        [value]="dataSource.data.length || 0"
+        description="Total Registered Attendees"
+      ></app-stat-card>
+    </div>
+  </section>
 
-    <section class="mt-4">
-      <h1 class="font-bold mb-1">Registered Attendees</h1>
-      <table cdk-table [dataSource]="dataSource" class="w-full border border-text-300 rounded-md  ">
-        <ng-container cdkColumnDef="fullName">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-3 text-white">Full Name</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.firstName}} {{element.lastName}} </td>
-        </ng-container>
+  <section class="mt-4">
+    <h1 class="font-bold text-xl">Registered Attendees</h1>
+    <div class="relative w-full my-2">
+      <lucide-angular class="absolute left-2 top-1/2 -translate-y-1/2 text-text-300" [img]="Search"></lucide-angular>
+      <input class="w-full pl-12 px-4 py-2 border rounded-lg text-lg leading-normal" type="text" (keyup)="applyFilter($event)" placeholder="Type a name to search...">
+    </div>
+    
+    <table cdk-table [dataSource]="dataSource" class="w-full border border-text-300 rounded-md mt-1">
+      <ng-container cdkColumnDef="fullName">
+        <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-3 text-white">Full Name</th>
+        <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.firstName}} {{element.lastName}} </td>
+      </ng-container>
 
-        <ng-container cdkColumnDef="primaryLeader">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Primary Leader</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.primaryLeader}} </td>
-        </ng-container>
+      <ng-container cdkColumnDef="primaryLeader">
+        <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Primary Leader</th>
+        <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.primaryLeader}} </td>
+      </ng-container>
 
-        <ng-container cdkColumnDef="churchHierarchy">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Hierarchy</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.churchHierarchy}} </td>
-        </ng-container>
+      <ng-container cdkColumnDef="churchHierarchy">
+        <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Hierarchy</th>
+        <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.churchHierarchy}} </td>
+      </ng-container>
 
-        <ng-container cdkColumnDef="memberStatus">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.memberStatus}} </td>
-        </ng-container>
+      <ng-container cdkColumnDef="memberStatus">
+        <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
+        <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.memberStatus}} </td>
+      </ng-container>
 
-        <ng-container cdkColumnDef="actions">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pr-6 py-3 text-white">Actions</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light pr-6 text-left py-2 text-text-900 border-t border-text-300"> 
-            <app-button>Check In</app-button>
-          </td>
-        </ng-container>
+      <ng-container cdkColumnDef="actions">
+        <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pr-6 py-3 text-white">Actions</th>
+        <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light pr-6 text-left py-2 text-text-900 border-t border-text-300"> 
+          <app-button>Check In</app-button>
+        </td>
+      </ng-container>
 
-        <tr cdk-header-row *cdkHeaderRowDef="registeredAttendeesColumns"></tr>
-        <tr cdk-row *cdkRowDef="let row; columns: registeredAttendeesColumns;"></tr>
-      </table>
-    </section>
+      <tr cdk-header-row *cdkHeaderRowDef="registeredAttendeesColumns"></tr>
+      <tr cdk-row *cdkRowDef="let row; columns: registeredAttendeesColumns;"></tr>
+    </table>
 
-    <section class="mt-4">
-      <h1 class="font-bold mb-1">Overall Attendees</h1>
-      <div class="border rounded px-3 py-2 text-sm text-text-300">Event hasn't started yet.</div>
-    </section>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" aria-label="Select page of users"></mat-paginator>
+  </section>
 
-    <section class="mt-4">
-      <h1 class="font-bold mb-1">Reports</h1>
-      <img src="https://imgs.search.brave.com/N2byvN9JkSILUVdzarsAc3CmTS09ObrJviNWvlQItTY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvOTYw/MjY4NTQyL3ZlY3Rv/ci91bmRlci1jb25z/dHJ1Y3Rpb24uanBn/P3M9NjEyeDYxMiZ3/PTAmaz0yMCZjPUp0/TEZheHBnc0hHTl9W/RXpPdllaZmt6Wlgy/cjZiNDN3Z2JFcFRm/d1ZrcW89" alt="website-under-construction">
-    </section>
-  }
+  <section class="mt-2">
+    <h1 class="font-bold text-xl">Overall Attendees</h1>
+    <div class="mt-1 border rounded px-3 py-2 text-sm text-text-300">Event hasn't started yet.</div>
+  </section>
+
+  <section class="mt-4">
+    <h1 class="font-bold text-xl">Reports</h1>
+    <img src="https://imgs.search.brave.com/N2byvN9JkSILUVdzarsAc3CmTS09ObrJviNWvlQItTY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvOTYw/MjY4NTQyL3ZlY3Rv/ci91bmRlci1jb25z/dHJ1Y3Rpb24uanBn/P3M9NjEyeDYxMiZ3/PTAmaz0yMCZjPUp0/TEZheHBnc0hHTl9W/RXpPdllaZmt6Wlgy/cjZiNDN3Z2JFcFRm/d1ZrcW89" alt="website-under-construction">
+  </section>
 
 <!-- 
   <section class="mt-6 max-w-xl space-y-4">
