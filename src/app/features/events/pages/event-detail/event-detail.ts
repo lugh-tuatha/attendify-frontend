@@ -7,13 +7,13 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
-import { LucideAngularModule, CornerDownLeft, Search } from 'lucide-angular';
+import { LucideAngularModule, CornerDownLeft } from 'lucide-angular';
 
 import { LTHMIProfile } from '../../models/registered-attendee.model';
 import { EventModel } from '../../models/event.model';
 import { EventsService } from '../../services/events';
 
-import { Button } from "../../../../shared/ui/button/button";
+import { Search } from "../../../../shared/components/search/search";
 import { StatCard } from '../../../../shared/ui/stat-card/stat-card';
 import { CheckInAttendeeDto } from '../../models/check-in-attendee.dto';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -30,7 +30,8 @@ import { DatePipe } from '@angular/common';
     MatFormFieldModule, 
     MatInputModule, 
     LucideAngularModule,
-    DatePipe
+    DatePipe,
+    Search
   ],
   templateUrl: './event-detail.html',
   styleUrl: './event-detail.css'
@@ -41,7 +42,6 @@ export class EventDetail {
   private eventsService = inject(EventsService);
 
   readonly CornerDownLeft = CornerDownLeft;
-  readonly Search = Search;
 
   event: EventModel | null = null;
   isEventLoading = false;
@@ -57,6 +57,8 @@ export class EventDetail {
   isCheckedInAttendeesLoading = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('registeredPaginator') registeredPaginator!: MatPaginator;
+  @ViewChild('checkedInPaginator') checkedInPaginator!: MatPaginator;
 
   ngOnInit(): void {
     const eventId = this.route.snapshot.paramMap.get('id');
@@ -70,6 +72,7 @@ export class EventDetail {
 
   ngAfterViewInit(): void {
     this.registeredAttendees.paginator = this.paginator;
+    this.checkedInAttendees.paginator = this.checkedInPaginator;
   }
 
   private loadEvent(id: string): void {
@@ -109,8 +112,8 @@ export class EventDetail {
       "eventRegistrationId": id,
       "timeIn": new Date(),
       "weekNumber": 39,
-      "attendanceTypeId": "8c6eb750-2267-4bb3-8956-2854abe0f1bd",
-      "organizationId": "ff5b99df-656a-4cdd-babb-a0083cfc028f",
+      "attendanceTypeId": "8c5931b3-bd00-48a3-a434-cccc23075bbd",
+      "organizationId": "0d240a79-16e2-40f3-939b-eccba5324f80",
     };
 
     this.eventsService.checkInAttendee(dto).subscribe({
@@ -139,10 +142,8 @@ export class EventDetail {
     })
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.registeredAttendees.filter = filterValue.trim().toLowerCase();
-
+  applyFilterRegistered(value: string) {
+    this.registeredAttendees.filter = value;
     if (this.registeredAttendees.paginator) {
       this.registeredAttendees.paginator.firstPage();
     }

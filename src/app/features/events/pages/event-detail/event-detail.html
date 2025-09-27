@@ -27,10 +27,7 @@
 
   <section class="mt-4">
     <h1 class="font-bold text-xl">Registered Attendees</h1>
-    <div class="relative w-full my-2">
-      <lucide-angular class="absolute left-2 top-1/2 -translate-y-1/2 text-text-300" [img]="Search"></lucide-angular>
-      <input class="w-full pl-12 px-4 py-2 border rounded-lg text-lg leading-normal" type="text" (keyup)="applyFilter($event)" placeholder="Type a name to search...">
-    </div>
+    <app-search (search)="applyFilterRegistered($event)"></app-search>
     
     <div class="overflow-x-auto">
       <table cdk-table [dataSource]="registeredAttendees" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
@@ -75,6 +72,7 @@
 
   <section class="mt-2">
     <h1 class="font-bold text-xl">Overall Checked In Attendees (Actual)</h1>
+
     <div class="overflow-x-auto">
       <table cdk-table [dataSource]="checkedInAttendees" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
         <ng-container cdkColumnDef="fullName">
@@ -109,6 +107,7 @@
       </table>
     </div>
 
+    <mat-paginator #checkedInPaginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons></mat-paginator>
   </section>
 
   <section class="mt-4">
