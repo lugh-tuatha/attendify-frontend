@@ -6,6 +6,7 @@ import { EventModel } from '../models/event.model';
 import { LTHMIProfile } from '../models/registered-attendee.model';
 import { RegisterAttendeeDto } from '../models/register-attendee.dto';
 import { environment } from '../../../../environments/environment';
+import { CheckInAttendeeDto } from '../models/check-in-attendee.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -32,8 +33,8 @@ export class EventsService {
     )
   }
 
-  getAllRegisteredAttendees(id: string): Observable<ApiResponse<LTHMIProfile[]>> {
-    return this.http.get<ApiResponse<LTHMIProfile[]>>(`${this.baseUrl}/event-registrations/?event-id=${id}`).pipe(
+  getAllRegisteredAttendees(eventId: string): Observable<ApiResponse<LTHMIProfile[]>> {
+    return this.http.get<ApiResponse<LTHMIProfile[]>>(`${this.baseUrl}/event-registrations/?event-id=${eventId}`).pipe(
       catchError((error) => {
         console.error('Error fetching registered attendees:', error);
         return throwError(() => error);
@@ -41,7 +42,20 @@ export class EventsService {
     )
   }
 
+  getAllCheckedInAttendees(): Observable<ApiResponse<any[]>> {
+    return this.http.get<ApiResponse<any[]>>(`${this.baseUrl}/attendance/organization/ff5b99df-656a-4cdd-babb-a0083cfc028f/attendance-type/8c6eb750-2267-4bb3-8956-2854abe0f1bd?week=39`).pipe(
+      catchError((error) => {
+        console.error('Error fetching checked in attendees:', error);
+        return throwError(() => error);
+      })
+    )
+  }
+
   registerAttendee(dto: RegisterAttendeeDto): Observable<ApiResponse<EventModel>> {
     return this.http.post<ApiResponse<EventModel>>(`${this.baseUrl}/event-registrations`, dto);
+  }
+
+  checkInAttendee(dto: CheckInAttendeeDto): Observable<ApiResponse<EventModel>> {
+    return this.http.post<ApiResponse<EventModel>>(`${this.baseUrl}/attendance`, dto);
   }
 }

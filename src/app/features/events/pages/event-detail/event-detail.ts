@@ -15,6 +15,9 @@ import { EventsService } from '../../services/events';
 
 import { Button } from "../../../../shared/ui/button/button";
 import { StatCard } from '../../../../shared/ui/stat-card/stat-card';
+import { CheckInAttendeeDto } from '../../models/check-in-attendee.dto';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-event-detail',
@@ -22,12 +25,12 @@ import { StatCard } from '../../../../shared/ui/stat-card/stat-card';
     RouterLink, 
     MatTableModule, 
     MatPaginatorModule, 
-    Button, 
     StatCard, 
     CdkTableModule, 
     MatFormFieldModule, 
     MatInputModule, 
-    LucideAngularModule
+    LucideAngularModule,
+    DatePipe
   ],
   templateUrl: './event-detail.html',
   styleUrl: './event-detail.css'
@@ -43,9 +46,15 @@ export class EventDetail {
   event: EventModel | null = null;
   isEventLoading = false;
 
+  private _snackBar = inject(MatSnackBar);
+
   registeredAttendeesColumns: string[] = ['fullName', 'primaryLeader', 'churchHierarchy','memberStatus', 'actions'];
-  dataSource = new MatTableDataSource<LTHMIProfile>([]);
+  registeredAttendees = new MatTableDataSource<LTHMIProfile>([]);
   isRegisteredAttendeesLoading = false;
+
+  checkedInAttendeesColumns: string[] = ['fullName', 'primaryLeader', 'churchHierarchy', 'memberStatus', 'timeArrival'];
+  checkedInAttendees = new MatTableDataSource<LTHMIProfile>([]);
+  isCheckedInAttendeesLoading = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -55,11 +64,12 @@ export class EventDetail {
     if (eventId != null) {
       this.loadEvent(eventId);
       this.loadRegisteredAttendees(eventId);
+      this.loadCheckedInAttendees();
     };
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+    this.registeredAttendees.paginator = this.paginator;
   }
 
   private loadEvent(id: string): void {
@@ -83,8 +93,9 @@ export class EventDetail {
 
     this.eventsService.getAllRegisteredAttendees(id).subscribe({
       next: (response) => {
-        this.dataSource.data = response.data;
+        this.registeredAttendees.data = response.data;
         this.isRegisteredAttendeesLoading = false;
+        console.log(response.data)
       },
       error: (error) => {
         console.error('Error loading registered attendees:', error);
@@ -93,12 +104,59 @@ export class EventDetail {
     })
   }
 
+  checkInAttendee(id: string) {
+    const dto: CheckInAttendeeDto = {
+      "eventRegistrationId": id,
+      "timeIn": new Date(),
+      "weekNumber": 39,
+      "attendanceTypeId": "8c6eb750-2267-4bb3-8956-2854abe0f1bd",
+      "organizationId": "ff5b99df-656a-4cdd-babb-a0083cfc028f",
+    };
+
+    this.eventsService.checkInAttendee(dto).subscribe({
+      next: (response) => {
+        console.log('Checked In', response);
+        this.loadCheckedInAttendees();
+        this.openSnackBar();
+      },
+      error: (err) => console.error('Checked In failed', err)
+    });
+  }
+
+  private loadCheckedInAttendees(): void {
+    this.isCheckedInAttendeesLoading = true;
+
+    this.eventsService.getAllCheckedInAttendees().subscribe({
+      next: (response) => {
+        this.checkedInAttendees.data = response.data;
+        this.isCheckedInAttendeesLoading = false;
+        console.log(response.data)
+      },
+      error: (error) => {
+        console.error('Error loading registered attendees:', error);
+        this.isCheckedInAttendeesLoading = false;
+      }
+    })
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.registeredAttendees.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    if (this.registeredAttendees.paginator) {
+      this.registeredAttendees.paginator.firstPage();
     }
+  }
+
+  openSnackBar() {
+    this._snackBar.open('Checked In Successfully', 'Splash', {
+      duration: 5 * 1000,
+    });
+  }
+
+  isCheckedIn(attendeeId: string): boolean {
+    console.log(this.checkedInAttendees.data.some(a => a.eventRegistration.id))
+    console.log(attendeeId)
+    return this.checkedInAttendees.data.some(a => a.eventRegistration.id === attendeeId);
   }
 }
