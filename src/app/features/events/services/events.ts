@@ -43,7 +43,7 @@ export class EventsService {
   }
 
   getAllCheckedInAttendees(): Observable<ApiResponse<any[]>> {
-    return this.http.get<ApiResponse<any[]>>(`${this.baseUrl}/attendance/organization/ff5b99df-656a-4cdd-babb-a0083cfc028f/attendance-type/8c6eb750-2267-4bb3-8956-2854abe0f1bd?week=39`).pipe(
+    return this.http.get<ApiResponse<any[]>>(`${this.baseUrl}/attendance/organization/0d240a79-16e2-40f3-939b-eccba5324f80/attendance-type/8c5931b3-bd00-48a3-a434-cccc23075bbd?week=39`).pipe(
       catchError((error) => {
         console.error('Error fetching checked in attendees:', error);
         return throwError(() => error);

@@ -85,14 +85,17 @@ export class EventRegistration {
     this.eventsService.registerAttendee(dto).subscribe({
       next: (response) => {
         console.log('Registered', response);
-        this.openSnackBar();
+        this.openSnackBar('Registered Successfully');
       },
-      error: (err) => console.error('Registration failed', err)
+      error: (err) => {
+        console.error('Registration failed', err)
+        this.openSnackBar('Failed! Duplicate or Internal Server Error');
+      }
     });
   }
 
-  openSnackBar() {
-    this._snackBar.open('Registered Successfully', 'Splash', {
+  openSnackBar(message: string) {
+    this._snackBar.open(message, 'Splash', {
       duration: 5 * 1000,
     });
   }
