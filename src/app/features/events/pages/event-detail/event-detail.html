@@ -12,7 +12,7 @@
       <app-stat-card
         title="Attendees (Overall)"
         icon="person"
-        [value]="0"
+        [value]="checkedInAttendees.data.length || 0"
         description="Overall Attendee Count"
       ></app-stat-card>
 
@@ -67,32 +67,33 @@
       </table>
     </div>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" aria-label="Select page of users"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" aria-label="Select page of users" showFirstLastButtons></mat-paginator>
   </section>
 
   <section class="mt-2">
     <h1 class="font-bold text-xl">Overall Checked In Attendees (Actual)</h1>
+    <app-search (search)="applyFilterCheckedIn($event)"></app-search>
 
     <div class="overflow-x-auto">
       <table cdk-table [dataSource]="checkedInAttendees" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
         <ng-container cdkColumnDef="fullName">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-3 text-white">Full Name</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.eventRegistration.firstName}} {{element.eventRegistration.lastName}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.firstName}} {{element.lastName}} </td>
         </ng-container>
 
         <ng-container cdkColumnDef="primaryLeader">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Primary Leader</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.eventRegistration.primaryLeader}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.primaryLeader}} </td>
         </ng-container>
 
         <ng-container cdkColumnDef="churchHierarchy">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Hierarchy</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.eventRegistration.churchHierarchy}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.churchHierarchy}} </td>
         </ng-container>
 
         <ng-container cdkColumnDef="memberStatus">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.eventRegistration.memberStatus}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.memberStatus}} </td>
         </ng-container>
 
         <ng-container cdkColumnDef="timeArrival">

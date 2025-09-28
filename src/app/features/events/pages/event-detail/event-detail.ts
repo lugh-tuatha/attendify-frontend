@@ -149,6 +149,13 @@ export class EventDetail {
     }
   }
 
+  applyFilterCheckedIn(value: string) {
+    this.checkedInAttendees.filter = value;
+    if (this.checkedInAttendees.paginator) {
+      this.checkedInAttendees.paginator.firstPage();
+    }
+  }
+
   openSnackBar() {
     this._snackBar.open('Checked In Successfully', 'Splash', {
       duration: 5 * 1000,
@@ -156,8 +163,8 @@ export class EventDetail {
   }
 
   isCheckedIn(attendeeId: string): boolean {
-    console.log(this.checkedInAttendees.data.some(a => a.eventRegistration.id))
+    console.log(this.checkedInAttendees.data.some(a => a.id))
     console.log(attendeeId)
-    return this.checkedInAttendees.data.some(a => a.eventRegistration.id === attendeeId);
+    return this.checkedInAttendees.data.some(a => a.id === attendeeId);
   }
 }
