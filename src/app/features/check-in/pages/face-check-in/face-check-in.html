@@ -1,0 +1,16 @@
+<main class="main-container">
+  <app-button (click)="checkPermissions()">Check Permissions</app-button>
+  @if (status) {
+    <p>Status: {{status}}</p>
+  }
+  <webcam [trigger]="triggerObservable" (imageCapture)="snapshot($event)" class="transform scale-x-[-1] "></webcam>
+
+  <app-button (click)="captureImage()">Capture</app-button>
+
+  <div>
+    @if (previewImage) {
+      <img [src]="previewImage" alt="Preview" height="250" width="250">
+    }
+    <p>{{  tempJsonRes }}</p>
+  </div>
+</main>

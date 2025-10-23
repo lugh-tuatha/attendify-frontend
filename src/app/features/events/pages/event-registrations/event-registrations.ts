@@ -14,12 +14,13 @@ import { EventModel } from '../../models/event.model';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-event-registration',
+  selector: 'app-event-registrations',
   imports: [Button, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatIconModule],
-  templateUrl: './event-registration.html',
-  styleUrl: './event-registration.css'
+  templateUrl: './event-registrations.html',
+  styleUrl: './event-registrations.css'
 })
-export class EventRegistration {
+
+export class EventRegistrations {
   private route = inject(ActivatedRoute);
   private eventsService = inject(EventsService);
   private fb = inject(FormBuilder);

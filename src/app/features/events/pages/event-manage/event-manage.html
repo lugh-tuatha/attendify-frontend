@@ -3,23 +3,23 @@
     <lucide-angular routerLink="/events" [img]="CornerDownLeft" [size]="36" class="cursor-pointer border border-text-300 rounded-md shadow-2xs shadow-text-300"></lucide-angular>
     <h1 class="text-3xl font-bold">{{event?.name}}</h1>
   </div>
-  <p routerLink="/events/{{event?.id}}/registration" class="text-lg underline cursor-pointer">http://localhost:4200/events/{{event?.id}}/registration</p>
+  <p routerLink="/events/{{event?.id}}/register" class="text-lg underline cursor-pointer">http://localhost:4200/events/{{event?.id}}/register</p>
   <p class="text-lg text-gray-500 mt-1">{{event?.startDate}}</p>
 
   <section class="mt-4">
     <h1 class="font-bold text-xl">Attendance Overview</h1>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-1">
       <app-stat-card
-        title="Attendees (Overall)"
+        title="Attendees (Overall)" 
         icon="person"
-        [value]="checkedInAttendees.data.length || 0"
+        [value]="totalCheckedInCount || 0"
         description="Overall Attendee Count"
       ></app-stat-card>
 
       <app-stat-card
         title="Registered Attendees"
         icon="person"
-        [value]="registeredAttendees.data.length || 0"
+        [value]="totalRegisteredCount || 0"
         description="Total Registered Attendees"
       ></app-stat-card>
     </div>
@@ -27,37 +27,44 @@
 
   <section class="mt-4">
     <h1 class="font-bold text-xl">Registered Attendees</h1>
-    <app-search (search)="applyFilterRegistered($event)"></app-search>
-    
+    <div class="relative w-full my-2">
+      <lucide-angular class="absolute left-2 top-1/2 -translate-y-1/2 text-text-300" [img]="SearchCheck"></lucide-angular>
+      <input 
+        type="text"
+        placeholder="Type a name to search..."
+        class="w-full pl-12 px-4 py-2 border rounded-lg text-lg leading-normal" 
+        (keydown.enter)="onSearchRegisteredAttendees($event)"
+      >
+    </div>
     <div class="overflow-x-auto">
       <table cdk-table [dataSource]="registeredAttendees" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
         <ng-container cdkColumnDef="fullName">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-3 text-white">Full Name</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.firstName}} {{element.lastName}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.attendee.firstName}} {{element.attendee.lastName}} </td>
         </ng-container>
   
         <ng-container cdkColumnDef="primaryLeader">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Primary Leader</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.primaryLeader}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.attendee.primaryLeader}} </td>
         </ng-container>
   
         <ng-container cdkColumnDef="churchHierarchy">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Hierarchy</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.churchHierarchy}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.attendee.churchHierarchy}} </td>
         </ng-container>
   
         <ng-container cdkColumnDef="memberStatus">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.memberStatus}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.attendee.memberStatus}} </td>
         </ng-container>
   
         <ng-container cdkColumnDef="actions">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pr-6 py-3 text-white">Actions</th>
           <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light pr-6 text-left py-2 text-text-900 border-t border-text-300"> 
             <button
-              (click)="checkInAttendee(element.id)"
+              (click)="checkInAttendee(element)"
               class="px-4 py-2 font-bold rounded-md bg-monochromatic-dark hover:brightness-95 text-white cursor-pointer disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed"
-              [disabled]="isCheckedIn(element.id)"
+              [disabled]="isCheckedIn(element.attendee.id)"
             >Check In</button>
           </td>
         </ng-container>
@@ -72,33 +79,41 @@
 
   <section class="mt-2">
     <h1 class="font-bold text-xl">Overall Checked In Attendees (Actual)</h1>
-    <app-search (search)="applyFilterCheckedIn($event)"></app-search>
+    <div class="relative w-full my-2">
+      <lucide-angular class="absolute left-2 top-1/2 -translate-y-1/2 text-text-300" [img]="SearchCheck"></lucide-angular>
+      <input 
+        type="text"
+        placeholder="Type a name to search..."
+        class="w-full pl-12 px-4 py-2 border rounded-lg text-lg leading-normal" 
+        (keydown.enter)="onSearchCheckedIn($event)"
+      >
+    </div>
 
     <div class="overflow-x-auto">
       <table cdk-table [dataSource]="checkedInAttendees" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
         <ng-container cdkColumnDef="fullName">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-3 text-white">Full Name</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.firstName}} {{element.lastName}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.attendee.firstName}} {{element.attendee.lastName}} </td>
         </ng-container>
 
         <ng-container cdkColumnDef="primaryLeader">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Primary Leader</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.primaryLeader}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.attendee.primaryLeader}} </td>
         </ng-container>
 
         <ng-container cdkColumnDef="churchHierarchy">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Hierarchy</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.churchHierarchy}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.attendee.churchHierarchy}} </td>
         </ng-container>
 
         <ng-container cdkColumnDef="memberStatus">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.memberStatus}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.attendee.memberStatus}} </td>
         </ng-container>
 
         <ng-container cdkColumnDef="timeArrival">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pr-6 py-3 text-white">Time Arrival</th>
-          <td cdk-cell *cdkCellDef="let element" (click)="checkInAttendee(element.id)" class="bg-monochromatic-light pr-6 text-left py-2 text-text-900 border-t border-text-300"> 
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light pr-6 text-left py-2 text-text-900 border-t border-text-300"> 
             {{element.timeIn | date: 'shortTime'}}
           </td>
         </ng-container>
