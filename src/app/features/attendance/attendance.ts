@@ -1,22 +1,16 @@
+import { EventCard } from '@/app/shared/components/event-card/event-card';
+import { Button } from '@/app/shared/ui/button/button';
 import { Component, inject } from '@angular/core';
-
-import { Dialog } from '@angular/cdk/dialog';
-
-import { Button } from '@/app/shared/ui/button/button'; 
-import { EventCard } from '@/app/shared/components/event-card/event-card'; 
-import { AddEventDialog } from './components/add-event-dialog/add-event-dialog';
 import { EventsService } from '@/app/core/events/services/events';
 import { EventModel } from '@/app/core/events/models/event.model';
 
 @Component({
-  selector: 'app-events',
+  selector: 'app-attendance',
   imports: [Button, EventCard],
-  templateUrl: './events.html',
-  styleUrl: './events.css',
+  templateUrl: './attendance.html',
+  styleUrl: './attendance.css'
 })
-
-export class Events {
-  private dialog = inject(Dialog);
+export class Attendance {
   private eventsService = inject(EventsService);
 
   events: EventModel[] = [];
@@ -40,9 +34,5 @@ export class Events {
         this.isLoading = false;
       }
     })
-  }
-
-  openAddEventDialog(): void {  
-    const dialogRef = this.dialog.open(AddEventDialog);
   }
 }

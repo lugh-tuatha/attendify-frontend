@@ -1,19 +1,15 @@
 <main class="main-container">
-  <h1 class="font-bold text-2xl mt-4">LTHMI Recto Manila - <span class="text-monochromatic-dark">Special Events</span></h1>
-  <div class="mt-4 flex items-center justify-between">
-    <h1>Ace</h1>
-    <app-button (click)="openAddEventDialog()">Add Event</app-button>
-  </div>
+  <h1 class="font-bold text-2xl mt-4">LTHMI Recto Manila - <span class="text-monochromatic-dark">Reccuring Events</span></h1>
 
   <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
     @for (event of events; track $index) {
       <app-event-card 
         id="{{event.id}}"
         name="{{event.name}}" 
-        description="{{event.description}}" 
+        description="{{event.description}}"   
         organization="{{event.organization.name}}"
+        href="/attendance/{{event.slug}}"
         tagline="{{event.tagline}}" 
-        href="/events/{{event.id}}/manage"
         location="{{event.location}}" 
         startDate="{{event.startDate}}" 
         endDate="{{event.endDate}}" 

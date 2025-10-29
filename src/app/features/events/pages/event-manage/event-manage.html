@@ -1,10 +1,10 @@
 <main class="main-container p-6">
   <div class="flex mb-2 items-center gap-2">
-    <lucide-angular routerLink="/events" [img]="CornerDownLeft" [size]="36" class="cursor-pointer border border-text-300 rounded-md shadow-2xs shadow-text-300"></lucide-angular>
+    <lucide-angular routerLink="/events" [img]="CornerDownLeft" [size]="32" class="cursor-pointer border border-text-300 rounded-md shadow-2xs shadow-text-300"></lucide-angular>
     <h1 class="text-3xl font-bold">{{event?.name}}</h1>
   </div>
   <p routerLink="/events/{{event?.id}}/register" class="text-lg underline cursor-pointer">http://localhost:4200/events/{{event?.id}}/register</p>
-  <p class="text-lg text-gray-500 mt-1">{{event?.startDate}}</p>
+  <p class="text-lg text-gray-500 mt-1">{{event?.startTime | date:'medium'}}</p>
 
   <section class="mt-4">
     <h1 class="font-bold text-xl">Attendance Overview</h1>
@@ -74,7 +74,14 @@
       </table>
     </div>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" aria-label="Select page of users" showFirstLastButtons></mat-paginator>
+    <mat-paginator 
+      #registeredPaginator
+      showFirstLastButtons
+      [length]="totalRegisteredCount" 
+      [pageSize]="registeredPageSize" 
+      [pageSizeOptions]="[5, 10, 25, 50]" 
+      aria-label="Select page of users"
+    ></mat-paginator>
   </section>
 
   <section class="mt-2">
@@ -122,8 +129,15 @@
         <tr cdk-row *cdkRowDef="let row; columns: checkedInAttendeesColumns;"></tr>
       </table>
     </div>
-
-    <mat-paginator #checkedInPaginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons></mat-paginator>
+    
+    <mat-paginator 
+      #checkedInPaginator
+      showFirstLastButtons
+      [length]="totalCheckedInCount" 
+      [pageSize]="checkedInPageSize" 
+      [pageSizeOptions]="[5, 10, 25, 50]" 
+      aria-label="Select checked-in attendees page"
+    ></mat-paginator>
   </section>
 
   <section class="mt-4">

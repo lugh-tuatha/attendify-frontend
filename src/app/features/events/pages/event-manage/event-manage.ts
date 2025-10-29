@@ -5,18 +5,20 @@ import { forkJoin, Subscription } from 'rxjs';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CdkTableModule } from '@angular/cdk/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { LucideAngularModule, CornerDownLeft, SearchCheck } from 'lucide-angular';
 
-import { AttendanceRecord, EventModel, EventRegistration } from '../../models/event.model';
-import { EventsService } from '../../services/events';
-
-import { StatCard } from '../../../../shared/ui/stat-card/stat-card';
-import { CheckInAttendeeDto } from '../../models/check-in-attendee.dto';
+import { EventModel } from '@/app/core/events/models/event.model';
+import { AttendanceModel } from '@/app/core/attendance/models/attendance.model';
+import { EventRegistrationModel } from '@/app/core/events/models/event-registration.model';
+import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.dto';
+import { EventsService } from '@/app/core/events/services/events';
+import { AttendanceService } from '@/app/core/attendance/services/attendance';
+import { StatCard } from '@/app/shared/components/stat-card/stat-card';
 
 @Component({
   selector: 'app-event-manage',
@@ -35,27 +37,32 @@ import { CheckInAttendeeDto } from '../../models/check-in-attendee.dto';
   templateUrl: './event-manage.html',
   styleUrl: './event-manage.css'
 })
+
 export class EventManage {
   readonly SearchCheck = SearchCheck;
   readonly CornerDownLeft = CornerDownLeft;
 
   private route = inject(ActivatedRoute);
   private eventsService = inject(EventsService);
+  private attendanceService = inject(AttendanceService);
   private snackBar = inject(MatSnackBar);
 
   event: EventModel | null = null;
   private eventId: string | null = null
 
   registeredAttendeesColumns: string[] = ['fullName', 'primaryLeader', 'churchHierarchy','memberStatus', 'actions'];
-  registeredAttendees = new MatTableDataSource<EventRegistration>([]);
+  registeredAttendees = new MatTableDataSource<EventRegistrationModel>([]);
   @ViewChild('registeredPaginator') registeredPaginator!: MatPaginator;
+  totalRegisteredCount = 0;
+  registeredPageSize = 10;
+  registeredCurrentPage = 1;
 
   checkedInAttendeesColumns: string[] = ['fullName', 'primaryLeader', 'churchHierarchy', 'memberStatus', 'timeArrival'];
-  checkedInAttendees = new MatTableDataSource<AttendanceRecord>([]);
+  checkedInAttendees = new MatTableDataSource<AttendanceModel>([]);
   @ViewChild('checkedInPaginator') checkedInPaginator!: MatPaginator;
-
-  totalRegisteredCount = 0;
   totalCheckedInCount = 0;
+  checkedInPageSize = 10;
+  checkedInCurrentPage = 1;
 
   isLoading = {
     event: false,
@@ -71,22 +78,12 @@ export class EventManage {
   ngOnInit(): void {
     this.eventId = this.route.snapshot.paramMap.get('id');
 
-    if (!this.eventId) {
-      console.error('No Event ID found in URL');
-
-      return;
-    };
-
+    if (!this.eventId) return;
     this.loadInitialData(this.eventId);
   }
 
   ngOnDestroy(): void {
     this.eventDataSub?.unsubscribe();
-  }
-
-  ngAfterViewInit(): void {
-    this.registeredAttendees.paginator = this.registeredPaginator;
-    this.checkedInAttendees.paginator = this.checkedInPaginator;
   }
   
   private loadInitialData(eventId: string): void {
@@ -94,7 +91,7 @@ export class EventManage {
 
     const event$ = this.eventsService.getEventById(eventId);
     const registered$ = this.eventsService.getRegisteredAttendees(eventId);
-    const checkedIn$ = this.eventsService.getCheckedInAttendees(eventId);
+    const checkedIn$ = this.attendanceService.getCheckedInAttendees(eventId);
 
     this.eventDataSub = forkJoin({
       eventResponse: event$,
@@ -108,6 +105,7 @@ export class EventManage {
         this.totalCheckedInCount = checkedInResponse.data.length;
 
         this.checkedInAttendeeIds.clear();
+        console.log(checkedInResponse)
         checkedInResponse.data.forEach(registration => {
           this.checkedInAttendeeIds.add(registration.attendee.id);
         });
@@ -145,7 +143,7 @@ export class EventManage {
     if (!this.eventId) return;
     this.isLoading.checkedInAttendees = true;
 
-    this.eventsService.getCheckedInAttendees(this.eventId, searchTerm).subscribe({
+    this.attendanceService.getCheckedInAttendees(this.eventId, searchTerm).subscribe({
       next: (response) => {
         this.checkedInAttendees.data = response.data;
 
@@ -171,17 +169,29 @@ export class EventManage {
     this.isLoading.checkedInAttendees = loading;
   }
 
-  onSearchRegisteredAttendees(event: Event) {
+  onSearchRegisteredAttendees(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.loadRegisteredAttendees(searchTerm ? searchTerm : undefined);
   }
 
-  onSearchCheckedIn(event: Event) {
+  onSearchCheckedIn(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.loadCheckedInAttendees(searchTerm ? searchTerm : undefined);
   }
 
-  checkInAttendee(registration: EventRegistration) {
+  onRegisteredPageChange(event: PageEvent): void {
+    this.registeredCurrentPage = event.pageIndex + 1;
+    this.registeredPageSize = event.pageSize;
+    this.loadRegisteredAttendees();
+  }
+
+  onCheckedInPageChange(event: PageEvent): void {
+    this.checkedInCurrentPage = event.pageIndex + 1;
+    this.checkedInPageSize = event.pageSize;
+    this.loadCheckedInAttendees();
+  }
+
+  checkInAttendee(registration: EventRegistrationModel) {
     if (!this.event) {
       console.log('Event data not loaded');
       return;
@@ -201,7 +211,7 @@ export class EventManage {
       "organizationId": this.event.organizationId,
     };
 
-    this.eventsService.checkInAttendee(dto).subscribe({
+    this.attendanceService.checkInAttendee(dto).subscribe({
       next: (response) => {
         console.log('Checked In', response);
         this.openSnackBar();

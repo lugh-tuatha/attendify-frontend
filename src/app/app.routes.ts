@@ -1,10 +1,17 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
+
 import { Events } from './features/events/events';
 import { Dashboard } from './features/dashboard/dashboard';
 import { Login } from './features/auth/login/login';
-import { FaceCheckIn } from './features/check-in/pages/face-check-in/face-check-in';
 import { EventManage } from './features/events/pages/event-manage/event-manage';
 import { EventRegistrations } from './features/events/pages/event-registrations/event-registrations';
+import { Attendance } from './features/attendance/attendance';
+import { AttendanceDetail } from './features/attendance/pages/attendance-detail/attendance-detail';
+import { CheckIn } from './features/attendance/pages/check-in/check-in';
+import { Vip } from './features/attendance/pages/vip/vip';
+import { Attendees } from './features/attendees/attendees';
+import { Reports } from './features/reports/reports';
 
 export const routes: Routes = [
     {
@@ -13,22 +20,52 @@ export const routes: Routes = [
     },
     {
         path: 'dashboard',
-        component: Dashboard
+        component: Dashboard,
+        canActivate: [authGuard],
     },
     {
-        path: 'check-in/face',
-        component: FaceCheckIn
+        path: 'attendees',
+        component: Attendees,
+        canActivate: [authGuard],
+    },
+    {
+        path: 'attendance',
+        component: Attendance,
+        canActivate: [authGuard],
+    },
+    {
+        path: 'attendance/:slug',
+        component: AttendanceDetail,
+        canActivate: [authGuard],
+    },
+    {
+        path: 'attendance/:slug/check-in',
+        component: CheckIn,
+        canActivate: [authGuard],
+    },
+    {
+        path: 'attendance/:slug/vip',
+        component: Vip,
+        canActivate: [authGuard],
     },
     {
         path: 'events',
-        component: Events
+        component: Events,
+        canActivate: [authGuard],
     },
     {
         path: 'events/:id/manage',    
-        component: EventManage
+        component: EventManage,
+        canActivate: [authGuard],
     },
     {
         path: 'events/:id/register',    
-        component: EventRegistrations
+        component: EventRegistrations,
+        canActivate: [authGuard],
+    },
+    {
+        path: 'reports',    
+        component: Reports,
+        canActivate: [authGuard],
     },
 ];

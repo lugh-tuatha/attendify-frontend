@@ -1,3 +1,27 @@
 <main class="main-container">
-  <p class="font-bold">LTHMI</p>
+  <h1 class="font-bold text-2xl mt-4">LTHMI Recto Manila - <span class="text-monochromatic-dark">Dashboard</span></h1>
+
+  <mat-form-field class="mt-4 w-72">
+    <mat-label>Select</mat-label>
+    <mat-select [(ngModel)]="value">
+      <mat-option value="First Half of 2025 (Jan - Jun)">First Half of 2025 (Jan - Jun)</mat-option>
+      <mat-option value="January">January</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <p class="text-xl font-bold text-text-300">Overview</p>
+  <div class="grid grid-cols-4 gap-8 mt-2">
+    <app-stat-card
+      title="Overall Attendance" 
+      icon="person"
+      [value]="0"
+      description="Attendee Count (January - June)"
+    ></app-stat-card>
+    <app-stat-card
+      title="Regular Disciple" 
+      icon="person"
+      [value]="214"
+      description="Overall Attendee Count"
+    ></app-stat-card>
+  </div>
 </main>

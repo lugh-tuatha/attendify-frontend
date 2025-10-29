@@ -1,0 +1,19 @@
+<main class="main-container">
+  <h1 class="font-bold text-2xl mt-4">LTHMI Recto Manila - <span class="text-monochromatic-dark">Unique Attendees</span></h1>
+
+  <mat-form-field class="mt-4 w-72">
+    <mat-label>Select</mat-label>
+    <mat-select [(ngModel)]="selectedValue">
+      <mat-option value="All">All</mat-option>
+      <mat-option value="Regular Attendees">Regular Attendees</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="flex items-center justify-between">
+    <p class="text-xl font-bold text-text-300">{{selectedValue}} (212)</p>
+    <app-button>Enroll Attendee</app-button>
+  </div>
+  <section class="mt-2">
+    table here
+  </section>
+</main>

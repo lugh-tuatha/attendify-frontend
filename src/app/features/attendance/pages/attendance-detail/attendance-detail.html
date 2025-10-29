@@ -1,0 +1,68 @@
+<main class="main-container">
+  <div class="flex mb-2 items-center gap-2 mt-4">
+    <lucide-angular routerLink="/attendance" [img]="CornerDownLeft" [size]="32" class="cursor-pointer border border-text-300 rounded-md shadow-2xs shadow-text-300"></lucide-angular>
+    <h1 class="text-2xl font-bold">Event Title</h1>
+  </div>
+  <p routerLink="/attendance/lthmi-recto-sunday-service/check-in" class="text-lg underline cursor-pointer">http://localhost:4200/attendance/lthmi-recto-sunday-service/check-in</p>
+
+  <section class="mt-4">
+    <h1 class="font-bold text-xl">Attendance Overview</h1>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-1">
+      <app-stat-card
+        title="Attendees (Overall)" 
+        icon="person"
+        [value]="0"
+        description="Overall Attendee Count"
+      ></app-stat-card>
+
+      <app-stat-card
+        title="Total VIP" 
+        icon="person"
+        [value]="0"
+        description="Total VIP Count"
+        href="/attendance/lthmi-recto-sunday-service/vip"
+      ></app-stat-card>
+    </div>
+  </section>  
+  <section class="mt-2">
+    <h1 class="font-bold text-xl">Overall Checked In Attendees (Actual)</h1>
+    <mat-form-field class="my-2">
+      <mat-label>Verbose datepicker</mat-label>
+      <input matInput [matDatepicker]="dp" [formControl]="date">
+      <mat-hint>MMMM DD, YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker #dp></mat-datepicker>
+    </mat-form-field>
+    <div class="overflow-x-auto">
+      <table cdk-table [dataSource]="attendanceDataSource" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
+        <ng-container cdkColumnDef="fullName">
+          <th cdk-header-cell *cdkHeaderCellDef>Full Name</th>
+          <td cdk-cell *cdkCellDef="let element"> {{element.attendee.firstName}} {{element.attendee.lastName}} </td>
+        </ng-container>
+
+        <ng-container cdkColumnDef="primaryLeader">
+          <th cdk-header-cell *cdkHeaderCellDef>  Primary Leader</th>
+          <td cdk-cell *cdkCellDef="let element"> {{element.attendee.primaryLeader}} </td>
+        </ng-container>
+
+        <ng-container cdkColumnDef="churchProcess">
+          <th cdk-header-cell *cdkHeaderCellDef>Church Process</th>
+          <td cdk-cell *cdkCellDef="let element"> {{element.churchProcess}} </td>
+        </ng-container>
+
+        <ng-container cdkColumnDef="memberStatus">
+          <th cdk-header-cell *cdkHeaderCellDef>Member Status</th>
+          <td cdk-cell *cdkCellDef="let element"> {{element.memberStatus}} </td>
+        </ng-container>
+
+        <ng-container cdkColumnDef="arival">
+          <th cdk-header-cell *cdkHeaderCellDef>Arrival</th>
+          <td cdk-cell *cdkCellDef="let element"> edit | del </td>
+        </ng-container>
+
+        <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+        <tr cdk-row *cdkRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </section>
+</main>

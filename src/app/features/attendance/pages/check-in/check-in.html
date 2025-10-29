@@ -1,0 +1,46 @@
+<main class="main-container">
+  <div class="flex mb-2 items-center gap-2 mt-4">
+    <lucide-angular routerLink="/attendance/lthmi-recto-sunday-service" [img]="CornerDownLeft" [size]="32" class="cursor-pointer border border-text-300 rounded-md shadow-2xs shadow-text-300"></lucide-angular>
+    <h1 class="font-bold text-2xl">LTHMI Recto - Sunday Service</h1>
+  </div>
+  <h2 class="text-xl mt-2">Welcome back 👋🏻</h2>
+  <p>Are you a regular attendee, part of Back to Life, or a VIP? Find your name here and click 'Present' to mark yourself as present.</p>
+  
+  <section class="mt-2">
+    <div class="flex gap-4 items-start">
+      <webcam [trigger]="triggerObservable" (imageCapture)="snapshot($event)" class="transform scale-x-[-1] "></webcam>
+  
+      @if (previewImage) {
+        <img [src]="previewImage" alt="Preview" height="250" width="250">
+      }
+    </div>
+    
+    <div class="flex gap-2">
+      <app-button (click)="captureImage()">Capture</app-button>
+      <app-button (click)="checkPermissions()">Check Permissions</app-button>
+    </div>
+  
+    @if (status) {
+      <p>Status: {{status}}</p>
+    }
+  
+    <p>{{ tempJsonRes }}</p>
+  </section>
+
+  <section class="mt-4"> 
+    <h1 class="font-bold text-xl">Manual Check-In</h1>
+    <div class="relative w-full my-2">
+      <lucide-angular class="absolute left-2 top-1/2 -translate-y-1/2 text-text-300" [img]="SearchCheck"></lucide-angular>
+      <input 
+        type="text"
+        placeholder="Type a name to search..."
+        class="w-full pl-12 px-4 py-2 border rounded-lg text-lg leading-normal" 
+        (keydown.enter)="onSearchManualCheckIn($event)"
+      >
+    </div>
+
+    <div class="overflow-x-auto">
+      table here
+    </div>
+  </section>
+</main>

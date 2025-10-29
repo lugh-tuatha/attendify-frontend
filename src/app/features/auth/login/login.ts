@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { ClerkSignInComponent } from "@jsrob/ngx-clerk";
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [ClerkSignInComponent],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })

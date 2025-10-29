@@ -7,10 +7,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { RegisterAttendeeDto } from '../../models/register-attendee.dto';
-import { Button } from '../../../../shared/ui/button/button';
-import { EventsService } from '../../services/events';
-import { EventModel } from '../../models/event.model';
+import { RegisterAttendeeDto } from '../../../../core/events/dto/register-attendee.dto';
+import { Button } from '@/app/shared/ui/button/button'; 
+import { EventsService } from '@/app/core/events/services/events';
+import { EventModel } from '../../../../core/events/models/event.model';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -42,7 +42,7 @@ export class EventRegistrations {
   });
 
   ngOnInit(): void {
-      const eventId = this.route.snapshot.paramMap.get('id');
+    const eventId = this.route.snapshot.paramMap.get('id');
 
     if (eventId != null) {
       this.loadEvent(eventId);

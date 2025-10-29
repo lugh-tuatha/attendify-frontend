@@ -1,0 +1,18 @@
+<div class="p-4 bg-white border border-slate-400 rounded-lg shadow-sm overflow-hidden flex flex-col">
+  <img src="https://picsum.photos/seed/for/800/400" alt="card image" class="h-52 w-full" />
+  <div class="mt-2">
+    <h1 class="text-text-900 font-bold text-xl">{{ name }}</h1>
+    <p class="text-lg font-bold text-text-300">{{ tagline }}</p>
+    <h2 class="text-lg font-bold text-monochromatic-dark">{{ organization }}</h2>
+    <p class="text-text-300 mb-2 text-justify">{{ description }}</p>
+      <p class="text-text-300 mb-2 flex items-center gap-2">
+        <mat-icon class="icon-sm">event</mat-icon> 
+        {{ startDate | date:'medium' }} 
+      </p>
+    <p class="text-text-300 mb-2 flex items-center gap-2">
+      <mat-icon class="icon-sm">timer</mat-icon> 
+      {{ startTime | date:'mediumTime' }} - {{ endTime | date:'mediumTime' }} 
+    </p>
+    <app-button [routerLink]="href">Manage Attendance</app-button>
+  </div>
+</div>

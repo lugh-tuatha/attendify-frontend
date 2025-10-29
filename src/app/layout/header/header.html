@@ -3,12 +3,20 @@
     <h1 class="cursor-pointer text-3xl font-bold" routerLink="/">Brand Logo</h1>
 
     <div class="flex items-center gap-4">
-      <ul class="hidden md:flex gap-4">
+      <ul class="hidden md:flex gap-4 font-semibold">
         <li class="cursor-pointer" routerLink="dashboard">Dashboard</li>
+        <li class="cursor-pointer" routerLink="attendees">Attendees</li>
         <li class="cursor-pointer" routerLink="calendar">Calendar</li>
+        <li class="cursor-pointer" routerLink="attendance">Attendance</li>
         <li class="cursor-pointer" routerLink="events">Events</li>
+        <li class="cursor-pointer" routerLink="reports">Reports</li>
       </ul>
-      <app-button routerLink="login">Login</app-button>
+
+      @if (isSignedIn()) {
+        <clerk-user-button class="flex"></clerk-user-button>
+      } @else {
+        <app-button routerLink="login">Login</app-button>
+      }
     </div>
     <!-- <img src="" alt=""> -->
   </nav>
