@@ -1,13 +1,11 @@
 export interface PaginatedResponse<T> {
   statusCode: number;
   message: string;
-  data: {
-    data: T[];
-    meta: {
-      total: number;
-      page: number;
-      limit: number;
-      lastPage: number;
-    };
+  data: T[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    lastPage: number;
   };
 }

@@ -19,21 +19,24 @@ import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.
 import { EventsService } from '@/app/core/events/services/events';
 import { AttendanceService } from '@/app/core/attendance/services/attendance';
 import { StatCard } from '@/app/shared/components/stat-card/stat-card';
+import { Button } from "@/app/shared/ui/button/button";
+import { getWeekNumber } from '@/app/core/utils/date.utils';
 
 @Component({
   selector: 'app-event-manage',
   imports: [
     LucideAngularModule,
     RouterLink,
-    MatTableModule, 
-    MatPaginatorModule, 
-    StatCard, 
-    CdkTableModule, 
-    MatFormFieldModule, 
-    MatInputModule, 
+    MatTableModule,
+    MatPaginatorModule,
+    StatCard,
+    CdkTableModule,
+    MatFormFieldModule,
+    MatInputModule,
     LucideAngularModule,
     DatePipe,
-  ],
+    Button
+],
   templateUrl: './event-manage.html',
   styleUrl: './event-manage.css'
 })
@@ -202,13 +205,14 @@ export class EventManage {
       return;
     }
 
+    const isLate = new Date().getTime() > new Date(this.event.startTime).getTime();
+
     const dto: CheckInAttendeeDto = {
-      "eventRegistrationId": registration.id,
-      "attendeeId": registration.attendeeId,
-      "eventId": registration.eventId,
-      "timeIn": new Date(),
-      "weekNumber": 39,
-      "organizationId": this.event.organizationId,
+      eventRegistrationId: registration.id,
+      isLate: isLate,
+      attendeeId: registration.attendeeId,
+      eventId: registration.eventId,
+      organizationId: this.event.organizationId,
     };
 
     this.attendanceService.checkInAttendee(dto).subscribe({

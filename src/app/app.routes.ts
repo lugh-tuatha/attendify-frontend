@@ -1,17 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 
-import { Events } from './features/events/events';
-import { Dashboard } from './features/dashboard/dashboard';
 import { Login } from './features/auth/login/login';
-import { EventManage } from './features/events/pages/event-manage/event-manage';
-import { EventRegistrations } from './features/events/pages/event-registrations/event-registrations';
-import { Attendance } from './features/attendance/attendance';
-import { AttendanceDetail } from './features/attendance/pages/attendance-detail/attendance-detail';
-import { CheckIn } from './features/attendance/pages/check-in/check-in';
-import { Vip } from './features/attendance/pages/vip/vip';
-import { Attendees } from './features/attendees/attendees';
-import { Reports } from './features/reports/reports';
 
 export const routes: Routes = [
     {
@@ -20,52 +10,30 @@ export const routes: Routes = [
     },
     {
         path: 'dashboard',
-        component: Dashboard,
         canActivate: [authGuard],
+        loadComponent: () => import('@/app/features/dashboard/dashboard').then(m => m.Dashboard)
     },
     {
         path: 'attendees',
-        component: Attendees,
         canActivate: [authGuard],
+        loadComponent: () => import('@/app/features/attendees/attendees').then(m => m.Attendees)
     },
     {
         path: 'attendance',
-        component: Attendance,
         canActivate: [authGuard],
-    },
-    {
-        path: 'attendance/:slug',
-        component: AttendanceDetail,
-        canActivate: [authGuard],
-    },
-    {
-        path: 'attendance/:slug/check-in',
-        component: CheckIn,
-        canActivate: [authGuard],
-    },
-    {
-        path: 'attendance/:slug/vip',
-        component: Vip,
-        canActivate: [authGuard],
+        loadChildren: () =>
+            import('@/app/features/attendance/attendance.routes').then(m => m.attendanceRoutes)
     },
     {
         path: 'events',
-        component: Events,
         canActivate: [authGuard],
-    },
-    {
-        path: 'events/:id/manage',    
-        component: EventManage,
-        canActivate: [authGuard],
-    },
-    {
-        path: 'events/:id/register',    
-        component: EventRegistrations,
-        canActivate: [authGuard],
+        loadChildren: () =>
+            import('@/app/features/events/events.routes').then(m => m.eventsRoutes)
     },
     {
         path: 'reports',    
-        component: Reports,
         canActivate: [authGuard],
-    },
+        loadChildren: () =>
+            import('@/app/features/reports/reports.routes').then(m => m.reportsRoutes)
+    }
 ];

@@ -29,7 +29,7 @@ export class Events {
   private loadEvents(): void {
     this.isLoading = true;
     
-    this.eventsService.getEvents().subscribe({
+    this.eventsService.getEventsByCategory('SPECIAL').subscribe({
       next: (response) => {
         this.events = response.data;
         this.isLoading = false;

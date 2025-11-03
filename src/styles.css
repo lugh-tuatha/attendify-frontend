@@ -6,11 +6,11 @@
   --color-monochromatic-light: #e0f3ff;
   --color-text-900: #0B161E;
   --color-text-300: #365261;
-  --color-success-900: rgba(61 190 129 100%);
-  --color-success-300: rgba(61 190 129 25%);
+  --color-success-900: rgba(61 190 129 / 100%);
+  --color-success-300: rgba(61 190 129 / 25%);
   --color-success-100: rgb(209 237 224);
-  --color-danger-900: rgba(255 75 75, 100%);
-  --color-danger-300: rgba(255 75 75, 25%);
+  --color-danger-900: rgba(255 75 75 / 100%);
+  --color-danger-300: rgba(255 75 75 / 25%);
   --color-danger-100: rgb(255 225 222);
 }
 
@@ -28,7 +28,6 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Hind", sans-serif;
 }
 
-
 .main-container {
   @apply px-4 mx-auto max-w-7xl w-full;
 }
@@ -36,4 +35,8 @@ h1, h2, h3, h4, h5, h6 {
 .icon-sm {
   text-align: center;
   line-height: 1.5rem;
+}
+
+.shadow-default {
+  @apply shadow-[0_0_12px_4px_rgba(59,130,246,0.15)]
 }

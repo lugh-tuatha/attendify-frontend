@@ -45,27 +45,28 @@
   
         <ng-container cdkColumnDef="primaryLeader">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Primary Leader</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.attendee.primaryLeader}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.attendee.primaryLeader}} </td>
         </ng-container>
   
         <ng-container cdkColumnDef="churchHierarchy">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Hierarchy</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.attendee.churchHierarchy}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.attendee.churchHierarchy}} </td>
         </ng-container>
   
         <ng-container cdkColumnDef="memberStatus">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.attendee.memberStatus}} </td>
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.attendee.memberStatus}} </td>
         </ng-container>
   
         <ng-container cdkColumnDef="actions">
           <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pr-6 py-3 text-white">Actions</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light pr-6 text-left py-2 text-text-900 border-t border-text-300"> 
-            <button
+          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light pr-6 text-left py-3 text-text-900 border-t border-text-300"> 
+            <app-button
               (click)="checkInAttendee(element)"
-              class="px-4 py-2 font-bold rounded-md bg-monochromatic-dark hover:brightness-95 text-white cursor-pointer disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed"
               [disabled]="isCheckedIn(element.attendee.id)"
-            >Check In</button>
+            >
+              Check In
+            </app-button>
           </td>
         </ng-container>
   

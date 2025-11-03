@@ -1,0 +1,22 @@
+export interface AttendeeModel {
+  id: string;  
+  firstName: string,
+  lastName: string,
+  age: number,
+  email: string,
+  address: string,
+  birthday: string,
+  facebookName: string,
+  facebookLink: string,
+  cellLeader: string,
+  primaryLeader: string,
+  network: string,
+  churchHierarchy: string,
+  memberStatus: string,
+  churchProcess: string,
+  gradeLevel: string,
+  section: string,
+  organizationId: string,
+  createdAt: string,
+  updatedAt: string,
+}

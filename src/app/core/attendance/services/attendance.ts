@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 
 import { environment } from '@/environments/environment';
 import { AttendanceModel } from '@/app/core/attendance/models/attendance.model';
@@ -16,14 +16,21 @@ export class AttendanceService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiBaseUrl;
 
+  private cache = new Map<string, PaginatedResponse<AttendanceModel>>();
+
+  clearCache(): void {
+    this.cache.clear();
+    console.log('Attendance cache cleared.');
+  }
+
   getAttendanceRecord(
     organizationId: string,
     slug: string, 
     date: string, 
+    page: number = 1, 
+    limit: number = 10, 
     searchTerm?: string,
-    page: number = 4, 
-    limit: number = 50, 
-  ): Observable<PaginatedResponse<AttendanceModel[]>> {
+  ): Observable<PaginatedResponse<AttendanceModel>> {
     const url = `${this.baseUrl}/attendance`;
 
     const paramsConfig: { [param: string]: string | number } = {
@@ -40,10 +47,43 @@ export class AttendanceService {
 
     const params = new HttpParams({ fromObject: paramsConfig });
 
-    return this.http.get<PaginatedResponse<AttendanceModel[]>>(url, { params })
+    const cacheKey = `${url}?${params.toString()}`;
+    const cachedResponse = this.cache.get(cacheKey);
+    if (cachedResponse) {
+      return of(cachedResponse);
+    }
+
+    return this.http.get<PaginatedResponse<AttendanceModel>>(url, { params }).pipe(
+      tap((response) => {
+        this.cache.set(cacheKey, response);
+      })
+    )
+  }
+
+  prefetchNextPage(
+    organizationId: string,
+    slug: string, 
+    date: string, 
+    currentPage: number = 1, 
+    limit: number = 10, 
+    totalItems: number,
+    searchTerm?: string,
+  ): void {
+    const nextPage = currentPage + 1;
+    const totalPages = Math.ceil(totalItems / limit);
+
+    if (nextPage <= totalPages) {
+      this.getAttendanceRecord(
+        organizationId,
+        slug,
+        date,
+        nextPage,
+        limit,
+        searchTerm
+      ).subscribe();
+    }
   }
   
-
   getCheckedInAttendees(eventId: string, searchTerm?: string): Observable<ApiResponse<AttendanceModel[]>> {
     const url = `${this.baseUrl}/attendance`
 

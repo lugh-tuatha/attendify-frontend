@@ -14,6 +14,7 @@ export interface EventModel {
   updatedAt: string;
   organizationId: string;
   organization: {
+    id: string;
     name: string;
   };
 }

@@ -2,12 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 
-import { AttendanceModel } from '@/app/core/attendance/models/attendance.model';
 import { EventRegistrationModel } from '@/app/core/events/models/event-registration.model';
 import { EventModel } from '@/app/core/events/models/event.model';
 import { RegisterAttendeeDto } from '@/app/core/events/dto/register-attendee.dto';
-import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.dto';
-import { CheckInByFaceDto } from '@/app/core/attendance/dto/check-in-by-face.dto';
 import { ApiResponse } from '@/app/core/models/api-response.interface';
 import { environment } from '@/environments/environment';
 
@@ -19,12 +16,16 @@ export class EventsService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiBaseUrl;
 
-  getEvents(): Observable<ApiResponse<EventModel[]>> {  
-    return this.http.get<ApiResponse<EventModel[]>>(`${this.baseUrl}/events`);
+  getEventsByCategory(category: string): Observable<ApiResponse<EventModel[]>> {  
+    return this.http.get<ApiResponse<EventModel[]>>(`${this.baseUrl}/events/category/${category}`);
   }
 
   getEventById(id: string): Observable<ApiResponse<EventModel>> {
     return this.http.get<ApiResponse<EventModel>>(`${this.baseUrl}/events/${id}`)
+  }
+
+  getEventBySlug(slug: string): Observable<ApiResponse<EventModel>> {
+    return this.http.get<ApiResponse<EventModel>>(`${this.baseUrl}/events/slug/${slug}`)
   }
 
   getRegisteredAttendees(eventId: string, searchTerm?: string): Observable<ApiResponse<EventRegistrationModel[]>> {

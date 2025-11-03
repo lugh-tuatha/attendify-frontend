@@ -1,8 +1,7 @@
 export interface CheckInAttendeeDto {
-  eventRegistrationId: string;
+  eventRegistrationId?: string;
+  isLate: boolean;
   attendeeId: string;
   eventId: string;
-  timeIn: Date;
-  weekNumber: number;
   organizationId: string;
 }

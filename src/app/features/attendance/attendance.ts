@@ -1,12 +1,11 @@
 import { EventCard } from '@/app/shared/components/event-card/event-card';
-import { Button } from '@/app/shared/ui/button/button';
 import { Component, inject } from '@angular/core';
 import { EventsService } from '@/app/core/events/services/events';
 import { EventModel } from '@/app/core/events/models/event.model';
 
 @Component({
   selector: 'app-attendance',
-  imports: [Button, EventCard],
+  imports: [EventCard],
   templateUrl: './attendance.html',
   styleUrl: './attendance.css'
 })
@@ -23,7 +22,7 @@ export class Attendance {
   private loadEvents(): void {
     this.isLoading = true;
     
-    this.eventsService.getEvents().subscribe({
+    this.eventsService.getEventsByCategory('RECURRING').subscribe({
       next: (response) => {
         this.events = response.data;
         this.isLoading = false;

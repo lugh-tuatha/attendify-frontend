@@ -10,10 +10,98 @@
   </mat-form-field>
 
   <div class="flex items-center justify-between">
-    <p class="text-xl font-bold text-text-300">{{selectedValue}} (212)</p>
+    <p class="text-xl font-bold text-text-300">{{selectedValue}} ({{attendees.totalCount}})</p>
     <app-button>Enroll Attendee</app-button>
   </div>
   <section class="mt-2">
-    table here
+    <div class="relative w-full my-2">
+      <lucide-angular class="absolute left-2 top-1/2 -translate-y-1/2 text-text-300" [img]="SearchCheck"></lucide-angular>
+      <input 
+        type="text"
+        placeholder="Type a name to search..."
+        class="w-full pl-12 px-4 py-2 border rounded-lg text-lg leading-normal" 
+        (keydown.enter)="onSearchAttendanceRecord($event)"
+      >
+    </div>
+
+    @if (attendees.loading) {
+      <div class="text-center text-text-300 p-4">
+        Loading attendees records...
+      </div>
+    }
+
+    @if (attendees.errorMessage && !attendees.loading) {
+      <div class="text-center text-text-300 p-4">
+        {{ attendees.errorMessage }}
+      </div>
+    }
+
+    @if (!attendees.loading && !attendees.errorMessage)  {
+      <div class="overflow-x-auto">
+        <table cdk-table [dataSource]="attendeesDataSource" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
+          <ng-container cdkColumnDef="fullName">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-3 text-white">Full Name</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.firstName}} {{element.lastName}} </td>
+          </ng-container>
+  
+          <ng-container cdkColumnDef="age">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Age</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.age}} </td>
+          </ng-container>
+  
+          <ng-container cdkColumnDef="status">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Status</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.status || '-'}} </td>
+          </ng-container>
+  
+          <ng-container cdkColumnDef="memberStatus">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.memberStatus || '-'}} </td>
+          </ng-container>
+  
+          <ng-container cdkColumnDef="churchHierarchy">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Hierarchy</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.churchHierarchy || '-'}} </td>
+          </ng-container>
+  
+          <ng-container cdkColumnDef="primaryLeader">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Primary Leader</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.primaryLeader || '-'}} </td>
+          </ng-container>
+  
+          <ng-container cdkColumnDef="churchProcess">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Process</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.churchProcess || '-'}} </td>
+          </ng-container>
+  
+          <ng-container cdkColumnDef="network">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Network</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.network}} </td>
+          </ng-container>
+  
+          <ng-container cdkColumnDef="actions">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Actions</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300">
+              <div class="flex items-center gap-2">
+                <lucide-angular class="w-5 h-5 cursor-pointer" [img]="SquarePen"></lucide-angular>
+                <lucide-angular class="w-5 h-5 text-red-500 cursor-pointer" [img]="Trash"></lucide-angular>
+              </div>
+            </td>
+          </ng-container>
+  
+          <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+          <tr cdk-row *cdkRowDef="let row; columns: displayedColumns;"></tr>
+        </table>  
+      </div>
+    }
+
+    <mat-paginator
+      #checkedInPaginator
+      [length]="attendees.totalCount" 
+      [pageSize]="pageLimit" 
+      [pageSizeOptions]="[5, 10, 25, 50]" 
+      aria-label="Select attendance page"
+      (page)="onPageChange($event)"
+    ></mat-paginator>
   </section>
 </main>

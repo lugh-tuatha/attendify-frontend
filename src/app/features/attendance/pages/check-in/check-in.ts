@@ -1,83 +1,229 @@
-import { Component, inject } from '@angular/core';
-import { Button } from '@/app/shared/ui/button/button'; 
-import { WebcamImage, WebcamModule } from 'ngx-webcam';
-import { Observable, Subject } from 'rxjs';
-import { AttendanceService } from '@/app/core/attendance/services/attendance';
-import { CornerDownLeft, LucideAngularModule, SearchCheck } from 'lucide-angular';
+import { Component, inject, ViewChild } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
+import { finalize, Observable, Subject, takeUntil } from 'rxjs';
+
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RouterLink } from '@angular/router';
+import { CdkTableModule } from '@angular/cdk/table';
+
+import { CornerDownLeft, LucideAngularModule, SearchCheck } from 'lucide-angular';
+import { WebcamImage, WebcamModule } from 'ngx-webcam';
+
+import { AttendanceService } from '@/app/core/attendance/services/attendance';
+import { AttendeesService } from '@/app/core/attendees/services/attendees';
+import { EventsService } from '@/app/core/events/services/events';
+import { getWeekNumber } from '@/app/core/utils/date.utils';
+import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.dto';
+import { EventModel } from '@/app/core/events/models/event.model';
+import { Button } from '@/app/shared/ui/button/button'; 
 
 @Component({
   selector: 'app-check-in',
-  imports: [
+  imports: [  
     LucideAngularModule,
+    CdkTableModule,
     RouterLink,
-    Button, 
-    WebcamModule
-  ],
+    Button,
+    WebcamModule,
+    MatPaginator
+],
   templateUrl: './check-in.html',
   styleUrl: './check-in.css'
 })
 export class CheckIn {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  private readonly SNACKBAR_DURATION_MS = 5000;
   readonly SearchCheck = SearchCheck;
   readonly CornerDownLeft = CornerDownLeft;
 
+  private readonly organizationId = '9d9f4139-ac7d-4aa6-a2ef-bcb941e3ea96';
   private snackBar = inject(MatSnackBar);
-
-  status: string | null = null;
-  private trigger: Subject<void> = new Subject<void>();
-  previewImage: string | null = null;
+  private route = inject(ActivatedRoute);
   private attendanceService = inject(AttendanceService);
-  tempJsonRes: string = '';
+  private attendeesService = inject(AttendeesService);
+  private eventsService = inject(EventsService);
 
+  slug = this.route.snapshot.paramMap.get('slug');
+
+  previewImage: string | null = null;
+  event: EventModel | null = null;
+  isEventLoading = false;
+  isCheckInLoading = false;
+  isCheckInByFaceLoading = false;
+  
+  displayedColumns: string[] = ['fullName', 'churchHierarchy', 'memberStatus', 'actions'];
+  attendeesDataSource = new MatTableDataSource<any>([]);
+  attendees = {
+    totalCount: 0,
+    loading: false,
+    errorMessage: null,
+  }
+
+  private trigger = new Subject<void>();
   get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();
   }
 
-  snapshot(event: WebcamImage) {
-    console.log(event);
-    this.previewImage = event.imageAsDataUrl;
-    this.checkInByFace(event.imageAsDataUrl);
+  private destroy$ = new Subject<void>();
+
+  currentSearchTerm: string | undefined = undefined;
+
+  currentPage = 1;
+  pageLimit = 10;  
+
+  ngOnInit(): void {
+    if (!this.slug) return;
+    
+    this.loadEvent(this.slug);
+    this.loadAttendees();
   }
 
-  checkPermissions() {
-    navigator.mediaDevices.getUserMedia({ 
-      video: {
-        width: 500,
-        height: 500
-      } 
-    }).then((res) => {
-      console.log(res);
-      this.status = "MediaStream Active";
-    }).catch((err) => {
-      console.log(err);
-      this.status = err.message;
-    });
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   captureImage() {
     this.trigger.next()
   }
 
-  checkInByFace(imageAsDataUrl: string) {
-    const dto = {
-      "imageAsDataUrl": imageAsDataUrl
-    }
+  snapshot(event: WebcamImage) {
+    this.previewImage = event.imageAsDataUrl;
+    this.checkInByFace(event.imageAsDataUrl);
+  }
 
-    this.attendanceService.checkInByFace(dto).subscribe({
+  private loadEvent(slug: string) {
+    this.isEventLoading = true;
+
+    this.eventsService.getEventBySlug(slug).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
       next: (response) => {
-        console.log(response);
-        this.tempJsonRes = JSON.stringify(response);
+        this.event = response.data;
+        this.isEventLoading = false;
+        console.log(this.event)
       },
-      error: (err) => {
-        this.snackBar.open(`Check-in failed: ${err.error?.message || 'Server error'}`, 'Close', {
-          duration: 5000,
-        });
+      error: (error) => {
+        console.error('Error loading events:', error);
+        this.isEventLoading = false;
       }
     })
   }
 
-  onSearchManualCheckIn(event: Event): void {
-    console.log("search: " + event)
+  private loadAttendees(page: number = 1, limit: number = 10, searchTerm?: string): void {
+    this.attendees.loading = true;
+    this.attendees.errorMessage = null; 
+
+    this.attendeesService.getAttendees(this.organizationId, page, limit, searchTerm).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.attendeesDataSource.data = response.data;
+        this.attendees.totalCount = response.meta.total;
+        this.attendees.loading = false;
+
+        this.attendeesService.prefetchNextPage(
+          this.organizationId,
+          this.currentPage,
+          this.pageLimit,
+          this.attendees.totalCount,
+          this.currentSearchTerm
+        );
+      },
+      error: (error) => {
+        console.error('Error loading attendees:', error);
+        this.attendees.loading = false;
+        this.attendees.errorMessage = error?.error?.message ?? 'An unknown error occurred.';
+        this.attendees.totalCount = 0;
+        this.attendeesDataSource.data = [];
+      }
+    })
+  }
+
+  private checkInByFace(imageAsDataUrl: string) {
+    if (!this.event) return;
+    this.isCheckInByFaceLoading = true;
+    const isLate = new Date().getTime() > new Date(this.event.startTime).getTime();
+    
+    const dto = {
+      imageAsDataUrl: imageAsDataUrl,
+      isLate: isLate,
+      eventId: this.event.id,
+      organizationId: this.event.organization.id,
+    }
+
+    this.attendanceService.checkInByFace(dto).pipe(
+      finalize(() => {
+        this.isCheckInByFaceLoading = false;
+      })
+    ).subscribe({
+      next: (response) => {
+        console.log(response);
+        if (response.data.message == "checked-in") {
+          this.showSnackbar(`Presence Marked, Welcome ${response.data.attendanceRecord.attendee.firstName}!`);
+        } else {
+          this.showSnackbar(`Check-in failed: ${response.data.message}`);
+        }
+      },
+      error: (err) => {
+        this.showSnackbar(`Check-in failed: ${err.error?.message || 'Server error'}`);
+      }
+    })
+  }
+
+  manualCheckIn(attendeeId: string, firstName: string) {
+    if (!this.slug) return;
+    if (!this.event) return;
+    this.isCheckInLoading = true;
+
+    const isLate = new Date().getTime() > new Date(this.event.startTime).getTime();
+
+    const dto: CheckInAttendeeDto = {
+      isLate: isLate,
+      attendeeId: attendeeId,
+      eventId: this.event.id,
+      organizationId: this.organizationId,
+    }
+
+    this.attendanceService.checkInAttendee(dto).pipe(
+      finalize(() => {
+        this.isCheckInLoading = false;
+      })
+    ).subscribe({
+      next: (response) => {
+        console.log('Checked In', response);
+        this.showSnackbar(`Presence Marked, Welcome ${firstName}!`);
+      },
+      error: (err) => {
+        console.error('Checked In failed', err)
+        this.showSnackbar(`Check-in failed: ${err.error?.message || 'Server error'}`);
+      }
+    })
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.currentPage = event.pageIndex + 1;
+    this.pageLimit = event.pageSize;
+    this.loadAttendees(this.currentPage, this.pageLimit, this.currentSearchTerm)
+  }
+
+  onSearchAttendanceRecord(event: Event): void {
+    const searchTerm = (event.target as HTMLInputElement).value;
+    if (searchTerm === this.currentSearchTerm) return;
+    this.currentSearchTerm = searchTerm ? searchTerm : undefined;
+
+    if (this.paginator && this.paginator.pageIndex !== 0) {
+      this.paginator.firstPage();
+    }else {
+      this.loadAttendees(1, this.pageLimit, searchTerm ? searchTerm : undefined);
+    }
+  }
+
+  private showSnackbar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: this.SNACKBAR_DURATION_MS,
+    });
   }
 }

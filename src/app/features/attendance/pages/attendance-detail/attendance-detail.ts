@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 
-import { Button } from '@/app/shared/ui/button/button'; 
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatTableDataSource } from '@angular/material/table';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -13,30 +12,13 @@ import * as _moment from 'moment';
 import {default as _rollupMoment} from 'moment';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AttendanceService } from '../../../../core/attendance/services/attendance';
-import { CornerDownLeft, LucideAngularModule } from 'lucide-angular';
+import { CornerDownLeft, LucideAngularModule, SearchCheck } from 'lucide-angular';
 import { StatCard } from '@/app/shared/components/stat-card/stat-card';
+import { DatePipe, NgClass } from '@angular/common';
+import { PageEvent, MatPaginator } from '@angular/material/paginator';
+import { Subject, takeUntil } from 'rxjs';
 
 const moment = _rollupMoment || _moment;
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
 
 export const MY_FORMATS = {
   parse: {
@@ -54,7 +36,7 @@ export const MY_FORMATS = {
   selector: 'app-attendance-detail',
   imports: [
     RouterLink,
-    Button, 
+    DatePipe,
     StatCard,
     CdkTableModule,
     MatFormFieldModule,
@@ -63,44 +45,116 @@ export const MY_FORMATS = {
     MatDatepickerModule,
     FormsModule,
     ReactiveFormsModule,
+    MatPaginator,
+    NgClass
   ],
   providers: [provideMomentDateAdapter(MY_FORMATS)],
   templateUrl: './attendance-detail.html',
   styleUrl: './attendance-detail.css'
 })
+
 export class AttendanceDetail {
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  private destroy$ = new Subject<void>();
+
   readonly CornerDownLeft = CornerDownLeft;
+  readonly SearchCheck = SearchCheck;
 
   private route = inject(ActivatedRoute);
   private attendanceService = inject(AttendanceService);
 
+  private readonly organizationId = '9d9f4139-ac7d-4aa6-a2ef-bcb941e3ea96';
+  slug = this.route.snapshot.paramMap.get('slug');
+
   displayedColumns: string[] = ['fullName', 'primaryLeader', 'churchProcess', 'memberStatus', 'arival'];
   attendanceDataSource = new MatTableDataSource<any>([]);
-  readonly date = new FormControl(moment());
-
-  isAttendanceRecordLoading = false;
-  
-  ngOnInit(): void {
-    const slug = this.route.snapshot.paramMap.get('slug');
-    
-    if (!slug) return;
-    this.loadAttendanceRecord('93959e73-cfb0-447a-b5d7-fe8569e6f633', slug, '2025-10-19')
+  currentSearchTerm: string | undefined = undefined;
+  attendance = {
+    totalCount: 0,
+    loading: false,
+    errorMessage: null,
+    empty: false,
   }
 
-  private loadAttendanceRecord(organizationId: string, slug: string, date: string, searchTerm?: string): void {
-    this.isAttendanceRecordLoading = true;
+  readonly date = new FormControl(moment(), { nonNullable: true });
 
-    this.attendanceService.getAttendanceRecord(organizationId, slug, date, searchTerm).subscribe({
+  currentPage = 1;
+  pageLimit = 10;  
+
+  ngOnInit(): void {
+    if (!this.slug) return;
+
+    const lastSunday = moment().day(0);
+    this.date.setValue(lastSunday);
+
+    this.date.valueChanges.subscribe(() => {
+      this.paginator.firstPage();
+      this.loadAttendanceRecord();
+    })
+
+    this.loadAttendanceRecord();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private loadAttendanceRecord(page: number = 1, limit: number = 10, searchTerm?: string): void {
+    if (!this.slug) return;
+
+    this.attendance.loading = true;
+    this.attendance.errorMessage = null; 
+    this.attendance.empty = false;
+    const formattedDate = this.date.value.format('YYYY-MM-DD');
+
+    this.attendanceService.getAttendanceRecord(this.organizationId, this.slug, formattedDate, page, limit, searchTerm).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
       next: (response) => {
-        this.attendanceDataSource.data = response.data.data;
-        this.isAttendanceRecordLoading = false;
-        console.log(response)
+        this.attendanceDataSource.data = response.data;
+        this.attendance.totalCount = response.meta.total;
+        this.attendance.loading = false;
+        this.attendance.empty = response.data.length === 0;
+        console.log(response.data)
+
+        this.attendanceService.prefetchNextPage(
+          this.organizationId,
+          this.slug!,
+          formattedDate,
+          this.currentPage,
+          this.pageLimit,
+          this.attendance.totalCount,
+          this.currentSearchTerm
+        );
       },
       error: (error) => {
         console.error('Error loading attendance record:', error);
-        this.isAttendanceRecordLoading = false;
+        this.attendance.loading = false;
+        this.attendance.errorMessage = error?.error?.message ?? 'An unknown error occurred.';
+        this.attendance.totalCount = 0;
+        this.attendanceDataSource.data = [];
       }
     })
+  }
 
+  onSearchAttendanceRecord(event: Event): void {
+    const searchTerm = (event.target as HTMLInputElement).value;
+    this.currentSearchTerm = searchTerm ? searchTerm : undefined;
+
+    if (this.paginator && this.paginator.pageIndex !== 0) {
+      this.paginator.firstPage();
+    }else {
+      this.loadAttendanceRecord(1, this.pageLimit, searchTerm ? searchTerm : undefined);
+    }
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.currentPage = event.pageIndex + 1;
+    console.log('page-change', this.currentPage);
+    this.pageLimit = event.pageSize;
+    this.loadAttendanceRecord(this.currentPage, this.pageLimit, this.currentSearchTerm)
   }
 }

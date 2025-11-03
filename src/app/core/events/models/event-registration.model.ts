@@ -1,4 +1,4 @@
-import { LTHMIAttendeeProfile } from "../../attendee/models/lthmi-attendee-profile.model";
+import { LTHMIAttendeeProfile } from "../../attendees/models/lthmi-attendee-profile.model";
 
 export interface EventRegistrationModel {
   id: string;

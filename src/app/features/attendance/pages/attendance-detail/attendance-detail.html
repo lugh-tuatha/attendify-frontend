@@ -3,7 +3,7 @@
     <lucide-angular routerLink="/attendance" [img]="CornerDownLeft" [size]="32" class="cursor-pointer border border-text-300 rounded-md shadow-2xs shadow-text-300"></lucide-angular>
     <h1 class="text-2xl font-bold">Event Title</h1>
   </div>
-  <p routerLink="/attendance/lthmi-recto-sunday-service/check-in" class="text-lg underline cursor-pointer">http://localhost:4200/attendance/lthmi-recto-sunday-service/check-in</p>
+  <p routerLink="/attendance/{{slug}}/check-in" class="text-lg underline cursor-pointer">http://localhost:4200/attendance/{{slug}}/check-in</p>
 
   <section class="mt-4">
     <h1 class="font-bold text-xl">Attendance Overview</h1>
@@ -11,7 +11,7 @@
       <app-stat-card
         title="Attendees (Overall)" 
         icon="person"
-        [value]="0"
+        [value]="attendance.totalCount"
         description="Overall Attendee Count"
       ></app-stat-card>
 
@@ -33,36 +33,87 @@
       <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
       <mat-datepicker #dp></mat-datepicker>
     </mat-form-field>
-    <div class="overflow-x-auto">
-      <table cdk-table [dataSource]="attendanceDataSource" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
-        <ng-container cdkColumnDef="fullName">
-          <th cdk-header-cell *cdkHeaderCellDef>Full Name</th>
-          <td cdk-cell *cdkCellDef="let element"> {{element.attendee.firstName}} {{element.attendee.lastName}} </td>
-        </ng-container>
 
-        <ng-container cdkColumnDef="primaryLeader">
-          <th cdk-header-cell *cdkHeaderCellDef>  Primary Leader</th>
-          <td cdk-cell *cdkCellDef="let element"> {{element.attendee.primaryLeader}} </td>
-        </ng-container>
-
-        <ng-container cdkColumnDef="churchProcess">
-          <th cdk-header-cell *cdkHeaderCellDef>Church Process</th>
-          <td cdk-cell *cdkCellDef="let element"> {{element.churchProcess}} </td>
-        </ng-container>
-
-        <ng-container cdkColumnDef="memberStatus">
-          <th cdk-header-cell *cdkHeaderCellDef>Member Status</th>
-          <td cdk-cell *cdkCellDef="let element"> {{element.memberStatus}} </td>
-        </ng-container>
-
-        <ng-container cdkColumnDef="arival">
-          <th cdk-header-cell *cdkHeaderCellDef>Arrival</th>
-          <td cdk-cell *cdkCellDef="let element"> edit | del </td>
-        </ng-container>
-
-        <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
-        <tr cdk-row *cdkRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+    <div class="relative w-full my-2">
+      <lucide-angular class="absolute left-2 top-1/2 -translate-y-1/2 text-text-300" [img]="SearchCheck"></lucide-angular>
+      <input 
+        type="text"
+        placeholder="Type a name to search..."
+        class="w-full pl-12 px-4 py-2 border rounded-lg text-lg leading-normal" 
+        (keydown.enter)="onSearchAttendanceRecord($event)"
+      >
     </div>
+
+    @if (attendance.loading) {
+      <div class="text-center text-text-300 p-4">
+        Loading attendance records...
+      </div>
+    }
+
+    @if (attendance.errorMessage && !attendance.loading) {
+      <div class="text-center text-text-300 p-4">
+        {{ attendance.errorMessage }}
+      </div>
+    }
+
+    @if (attendance.empty && !attendance.loading && !attendance.errorMessage) {
+      <div class="text-center text-text-300 p-4">
+        No attendance records found for this date.
+      </div>
+    }
+
+    @if (!attendance.loading && !attendance.errorMessage && !attendance.empty)  {
+      <div class="overflow-x-auto">
+        <table cdk-table [dataSource]="attendanceDataSource" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
+          <ng-container cdkColumnDef="fullName">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-3 text-white">Full Name</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.attendee.firstName}} {{element.attendee.lastName}} </td>
+          </ng-container>
+  
+          <ng-container cdkColumnDef="primaryLeader">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Primary Leader</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.attendee.primaryLeader || '-'}} </td>
+          </ng-container>
+  
+          <ng-container cdkColumnDef="churchProcess">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Process</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.attendee.churchProcess || '-'}} </td>
+          </ng-container>
+  
+          <ng-container cdkColumnDef="memberStatus">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.attendee.memberStatus || '-'}} </td>
+          </ng-container>
+  
+          <ng-container cdkColumnDef="arival">
+            <th cdk-header-cell *cdkHeaderCellDef class="w-36 bg-[#067BC3] text-end pr-6 py-3 text-white">Arrival</th>
+            <td cdk-cell *cdkCellDef="let element" class="w-36 bg-monochromatic-light py-3 text-text-900 border-t border-text-300 ">
+              <div class="flex items-center justify-end gap-4 mr-6">
+                {{element.timeIn | date: 'shortTime'}} 
+                <div 
+                  class="w-2.5 h-2.5 rounded-full"
+                  [ngClass]="{
+                    'bg-danger-900': element.isLate,
+                    'bg-success-900': !element.isLate
+                  }"
+                ></div>
+              </div>
+            </td>
+          </ng-container>
+  
+          <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+          <tr cdk-row *cdkRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    }
+
+    <mat-paginator
+      #checkedInPaginator
+      [length]="attendance.totalCount" 
+      [pageSize]="pageLimit" 
+      [pageSizeOptions]="[5, 10, 25, 50]" 
+      aria-label="Select attendance page"
+      (page)="onPageChange($event)"
+    ></mat-paginator>
   </section>
 </main>
