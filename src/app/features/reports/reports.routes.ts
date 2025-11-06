@@ -2,7 +2,9 @@ import { Routes } from "@angular/router";
 import { authGuard } from "@/app/core/guards/auth.guard";
 
 import { Reports } from "./reports";
-import { AttendanceSummaryReport } from "./pages/attendance-summary-report/attendance-summary-report";
+import { AttendanceSummary } from "./pages/attendance-summary/attendance-summary";
+import { LeadersAttendanceSummary } from "./pages/leaders-attendance-summary/leaders-attendance-summary";
+import { CellMemberAttendanceSummary } from "./pages/cell-member-attendance-summary/cell-member-attendance-summary";
 
 export const reportsRoutes: Routes = [
     {
@@ -11,8 +13,18 @@ export const reportsRoutes: Routes = [
         canActivate: [authGuard],
     },
     {
-        path: 'attendance-summary-report',
-        component: AttendanceSummaryReport,
+        path: 'attendance-summary',
+        component: AttendanceSummary,
+        canActivate: [authGuard],
+    },
+    {
+        path: 'attendance-summary/leaders',
+        component: LeadersAttendanceSummary,
+        canActivate: [authGuard],
+    },
+    {
+        path: 'attendance-summary/leaders/:attendeeId',
+        component: CellMemberAttendanceSummary,
         canActivate: [authGuard],
     },
 ]

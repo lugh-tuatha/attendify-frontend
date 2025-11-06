@@ -13,10 +13,10 @@ import { WebcamImage, WebcamModule } from 'ngx-webcam';
 import { AttendanceService } from '@/app/core/attendance/services/attendance';
 import { AttendeesService } from '@/app/core/attendees/services/attendees';
 import { EventsService } from '@/app/core/events/services/events';
-import { getWeekNumber } from '@/app/core/utils/date.utils';
 import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.dto';
 import { EventModel } from '@/app/core/events/models/event.model';
 import { Button } from '@/app/shared/ui/button/button'; 
+import { ErrorHandlerService } from '@/app/core/services/error-handler';
 
 @Component({
   selector: 'app-check-in',
@@ -44,6 +44,7 @@ export class CheckIn {
   private attendanceService = inject(AttendanceService);
   private attendeesService = inject(AttendeesService);
   private eventsService = inject(EventsService);
+  private errorHandlerService = inject(ErrorHandlerService);
 
   slug = this.route.snapshot.paramMap.get('slug');
 
@@ -168,7 +169,12 @@ export class CheckIn {
         }
       },
       error: (err) => {
-        this.showSnackbar(`Check-in failed: ${err.error?.message || 'Server error'}`);
+        const status = err.status;
+        if (status === 409 || status === 502) {
+          this.errorHandlerService.showErrorModal(status, err.error?.message);
+        } else { 
+          this.showSnackbar(`Check-in failed: ${err.error?.message || 'Server error'}`);
+        }
       }
     })
   }
@@ -197,8 +203,12 @@ export class CheckIn {
         this.showSnackbar(`Presence Marked, Welcome ${firstName}!`);
       },
       error: (err) => {
-        console.error('Checked In failed', err)
-        this.showSnackbar(`Check-in failed: ${err.error?.message || 'Server error'}`);
+        const status = err.status;
+        if (status === 409 || status === 502) {
+          this.errorHandlerService.showErrorModal(status, err.error?.message);
+        } else { 
+          this.showSnackbar(`Check-in failed: ${err.error?.message || 'Server error'}`);
+        }
       }
     })
   }

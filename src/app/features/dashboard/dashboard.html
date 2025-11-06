@@ -7,21 +7,14 @@
       <mat-option value="First Half of 2025 (Jan - Jun)">First Half of 2025 (Jan - Jun)</mat-option>
       <mat-option value="January">January</mat-option>
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> 
 
   <p class="text-xl font-bold text-text-300">Overview</p>
-  <div class="grid grid-cols-4 gap-8 mt-2">
-    <app-stat-card
-      title="Overall Attendance" 
-      icon="person"
-      [value]="0"
-      description="Attendee Count (January - June)"
-    ></app-stat-card>
-    <app-stat-card
-      title="Regular Disciple" 
-      icon="person"
-      [value]="214"
-      description="Overall Attendee Count"
-    ></app-stat-card>
+  <div class="-ml-2 grid">
+    <ngx-charts-number-card
+      [scheme]="'aqua'"
+      [results]="single"
+      [cardColor]="cardColor"
+    ></ngx-charts-number-card>
   </div>
 </main>

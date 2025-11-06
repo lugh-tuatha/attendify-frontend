@@ -1,4 +1,6 @@
 import { Component, inject, ViewChild } from '@angular/core';
+import { DatePipe, NgClass } from '@angular/common';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,30 +9,15 @@ import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-
-import * as _moment from 'moment';
-import {default as _rollupMoment} from 'moment';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { AttendanceService } from '../../../../core/attendance/services/attendance';
-import { CornerDownLeft, LucideAngularModule, SearchCheck } from 'lucide-angular';
-import { StatCard } from '@/app/shared/components/stat-card/stat-card';
-import { DatePipe, NgClass } from '@angular/common';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
+
+import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
+import { CornerDownLeft, LucideAngularModule, SearchCheck } from 'lucide-angular';
 
-const moment = _rollupMoment || _moment;
-
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'LL',
-  },
-  display: {
-    dateInput: 'LL',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+import { AttendanceService } from '@/app/core/attendance/services/attendance';
+import { StatCard } from '@/app/shared/components/stat-card/stat-card';
+import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 
 @Component({
   selector: 'app-attendance-detail',
@@ -48,7 +35,7 @@ export const MY_FORMATS = {
     MatPaginator,
     NgClass
   ],
-  providers: [provideMomentDateAdapter(MY_FORMATS)],
+  providers: [provideMomentDateAdapter(DEFAULT_DATE_FORMAT)],
   templateUrl: './attendance-detail.html',
   styleUrl: './attendance-detail.css'
 })

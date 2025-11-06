@@ -32,6 +32,7 @@
     "@angular/platform-browser": "^20.2.0",
     "@angular/router": "^20.2.0",
     "@jsrob/ngx-clerk": "^0.0.1",
+    "@swimlane/ngx-charts": "^23.1.0",
     "@tailwindcss/postcss": "^4.1.12",
     "lucide-angular": "^0.544.0",
     "moment": "^2.30.1",

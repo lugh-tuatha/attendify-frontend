@@ -1,0 +1,8 @@
+<div class="modal">
+  <img [src]="data.image" alt="Error Image"  class="mx-auto w-88 aspect-[3/2] rounded-md">
+  <h2 class="mt-2 text-xl text-center font-semibold">{{ data.title }}</h2>
+  <p class="text-center">{{ data.message }}</p>
+  <div class="mt-2 flex justify-center">
+    <app-button (click)="close()">OK</app-button>
+  </div>
+</div>

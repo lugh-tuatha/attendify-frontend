@@ -57,8 +57,10 @@
     }
 
     @if (attendance.empty && !attendance.loading && !attendance.errorMessage) {
-      <div class="text-center text-text-300 p-4">
-        No attendance records found for this date.
+      <div class="text-center text-text-300">
+        <img src="/assets/http.cat/204.jpeg" class="rounded-md w-88 aspect-[3/2] mx-auto" alt="204: http.cat image">
+        <h2 class="mt-2 text-xl text-center font-semibold">204: Content Not Found</h2>
+        <p class="mt-1 text-center">No attendance records found for this date.</p>
       </div>
     }
 
@@ -72,7 +74,9 @@
   
           <ng-container cdkColumnDef="primaryLeader">
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Primary Leader</th>
-            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.attendee.primaryLeader || '-'}} </td>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300">
+              {{ element.attendee.primaryLeader ? (element.attendee.primaryLeader.firstName + " " + element.attendee.primaryLeader.lastName) : '-' }}
+            </td>
           </ng-container>
   
           <ng-container cdkColumnDef="churchProcess">
