@@ -16,6 +16,7 @@ import { SummaryCategoryModel } from '@/app/core/reports/models/attendance-summa
 import { ReportSkeleton } from "@/app/shared/components/report-skeleton/report-skeleton";
 import { ReportsService } from '@/app/core/reports/services/reports';
 import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
+import { ErrorCard } from "@/app/shared/components/error-card/error-card";
 
 @Component({
   selector: 'app-attendance-summary',
@@ -29,6 +30,7 @@ import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
     ReactiveFormsModule,
     MatSelectModule,
     DatePipe,
+    ErrorCard
 ],
   providers: [provideMomentDateAdapter(DEFAULT_DATE_FORMAT)],
   templateUrl: './attendance-summary.html',

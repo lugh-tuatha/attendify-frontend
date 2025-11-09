@@ -24,7 +24,7 @@ export class EventCard {
   @Input() href!: string;
   @Input() organization!: string;
   @Input() description!: string;
-  // @Input() image!: string;
+  @Input() image!: string;
   @Input() location!: string;
   @Input() startDate!: string;
   @Input() endDate?: string;

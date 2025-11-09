@@ -7,14 +7,19 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatSelectModule, MatInputModule, FormsModule, NgxChartsModule],
+  imports: [
+    MatSelectModule, 
+    MatInputModule, 
+    FormsModule, 
+    NgxChartsModule
+  ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 
 export class Dashboard {
   value: string = "First Half of 2025 (Jan - Jun)";
-  cardColor = '#232837';
+  cardColor = '#3A445D';
   single = [
     { 
       name: 'Germany', 

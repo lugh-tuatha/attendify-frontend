@@ -1,16 +1,17 @@
 import { Component, inject, ViewChild } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { DatePipe } from '@angular/common';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { DatePipe, NgClass } from '@angular/common';
 import { forkJoin, Subscription } from 'rxjs';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CdkTableModule } from '@angular/cdk/table';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { LucideAngularModule, CornerDownLeft, SearchCheck } from 'lucide-angular';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { EventModel } from '@/app/core/events/models/event.model';
 import { AttendanceModel } from '@/app/core/attendance/models/attendance.model';
@@ -18,9 +19,9 @@ import { EventRegistrationModel } from '@/app/core/events/models/event-registrat
 import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.dto';
 import { EventsService } from '@/app/core/events/services/events';
 import { AttendanceService } from '@/app/core/attendance/services/attendance';
-import { StatCard } from '@/app/shared/components/stat-card/stat-card';
 import { Button } from "@/app/shared/ui/button/button";
-import { getWeekNumber } from '@/app/core/utils/date.utils';
+import { BsodLoading } from '@/app/shared/components/bsod-loading/bsod-loading';
+import { ErrorCard } from "@/app/shared/components/error-card/error-card";
 
 @Component({
   selector: 'app-event-manage',
@@ -29,13 +30,16 @@ import { getWeekNumber } from '@/app/core/utils/date.utils';
     RouterLink,
     MatTableModule,
     MatPaginatorModule,
-    StatCard,
     CdkTableModule,
     MatFormFieldModule,
     MatInputModule,
     LucideAngularModule,
     DatePipe,
-    Button
+    Button,
+    BsodLoading,
+    NgClass,
+    ErrorCard,
+    NgxChartsModule
 ],
   templateUrl: './event-manage.html',
   styleUrl: './event-manage.css'
@@ -45,6 +49,7 @@ export class EventManage {
   readonly SearchCheck = SearchCheck;
   readonly CornerDownLeft = CornerDownLeft;
 
+  private router = inject(Router);
   private route = inject(ActivatedRoute);
   private eventsService = inject(EventsService);
   private attendanceService = inject(AttendanceService);
@@ -55,17 +60,33 @@ export class EventManage {
 
   registeredAttendeesColumns: string[] = ['fullName', 'primaryLeader', 'churchHierarchy','memberStatus', 'actions'];
   registeredAttendees = new MatTableDataSource<EventRegistrationModel>([]);
-  @ViewChild('registeredPaginator') registeredPaginator!: MatPaginator;
-  totalRegisteredCount = 0;
-  registeredPageSize = 10;
-  registeredCurrentPage = 1;
+  @ViewChild('registeredPaginator')
+  set registeredPaginator(paginator: MatPaginator) {
+    this.registeredAttendees.paginator = paginator;
+  }
 
   checkedInAttendeesColumns: string[] = ['fullName', 'primaryLeader', 'churchHierarchy', 'memberStatus', 'timeArrival'];
   checkedInAttendees = new MatTableDataSource<AttendanceModel>([]);
-  @ViewChild('checkedInPaginator') checkedInPaginator!: MatPaginator;
-  totalCheckedInCount = 0;
-  checkedInPageSize = 10;
-  checkedInCurrentPage = 1;
+  @ViewChild('checkedInPaginator')
+  set checkedInPaginator(paginator: MatPaginator) {
+    this.checkedInAttendees.paginator = paginator;
+  }
+
+  cardColor = '#3A445D';
+  overviewData = [
+    { 
+      name: 'Registered Attendees', 
+      value: 0,
+    },
+    { 
+      name: 'Attendees (Overall)', 
+      value: 0,
+    },
+    { 
+      name: 'Total VIP', 
+      value: 0,
+    },
+  ]
 
   isLoading = {
     event: false,
@@ -73,16 +94,30 @@ export class EventManage {
     checkedInAttendees: false,
     checkingIn: false
   }
+  isEmpty = {
+    registeredAttendees: false,
+    checkedInAttendees: false,
+  }
 
   private checkedInAttendeeIds = new Set<string>();
 
   private eventDataSub!: Subscription;
 
   ngOnInit(): void {
+    
     this.eventId = this.route.snapshot.paramMap.get('id');
 
     if (!this.eventId) return;
     this.loadInitialData(this.eventId);
+
+    this.registeredAttendees.filterPredicate = (data: EventRegistrationModel, filter: string) => {
+      const search = filter.toLowerCase();
+
+      return (
+        data.attendee.firstName.toLowerCase().includes(search) ||
+        data.attendee.lastName.toLowerCase().includes(search)
+      );
+    };
   }
 
   ngOnDestroy(): void {
@@ -94,7 +129,7 @@ export class EventManage {
 
     const event$ = this.eventsService.getEventById(eventId);
     const registered$ = this.eventsService.getRegisteredAttendees(eventId);
-    const checkedIn$ = this.attendanceService.getCheckedInAttendees(eventId);
+    const checkedIn$ = this.attendanceService.getAttendanceByEventId(eventId);
 
     this.eventDataSub = forkJoin({
       eventResponse: event$,
@@ -105,63 +140,23 @@ export class EventManage {
         this.event = eventResponse.data;
 
         this.checkedInAttendees.data = checkedInResponse.data;
-        this.totalCheckedInCount = checkedInResponse.data.length;
+        this.isEmpty.checkedInAttendees = checkedInResponse.data.length === 0;
+        this.overviewData[1].value = checkedInResponse.data.length;
 
         this.checkedInAttendeeIds.clear();
-        console.log(checkedInResponse)
         checkedInResponse.data.forEach(registration => {
           this.checkedInAttendeeIds.add(registration.attendee.id);
         });
 
         this.registeredAttendees.data = registeredResponse.data;
-        this.totalRegisteredCount = registeredResponse.data.length;
+        this.isEmpty.registeredAttendees = registeredResponse.data.length === 0;
+        this.overviewData[0].value = registeredResponse.data.length;
 
         this.setLoadingState(false)
       },
       error: (error) => {
         console.error('Error loading initial data:', error);
         this.setLoadingState(false)
-      }
-    })
-  }
-
-  private loadRegisteredAttendees(searchTerm?: string): void {
-    if (!this.eventId) return;
-    this.isLoading.registeredAttendees = true;
-
-    this.eventsService.getRegisteredAttendees(this.eventId, searchTerm).subscribe({
-      next: (response) => {
-        this.registeredAttendees.data = response.data;
-        this.isLoading.registeredAttendees = false;
-        console.log(response.data);
-      },
-      error: (error) => {
-        console.error('Error loading registered attendees:', error);
-        this.isLoading.registeredAttendees = false;
-      }
-    })
-  }
-
-  private loadCheckedInAttendees(searchTerm?: string): void {  
-    if (!this.eventId) return;
-    this.isLoading.checkedInAttendees = true;
-
-    this.attendanceService.getCheckedInAttendees(this.eventId, searchTerm).subscribe({
-      next: (response) => {
-        this.checkedInAttendees.data = response.data;
-
-        if (searchTerm === undefined) {
-          this.checkedInAttendeeIds.clear();
-          response.data.forEach(attendee => {
-            this.checkedInAttendeeIds.add(attendee.attendee.id);
-          });
-        }
-
-        this.isLoading.checkedInAttendees = false;
-      },
-      error: (error) => {
-        console.error('Error loading registered attendees:', error);
-        this.isLoading.checkedInAttendees = false;
       }
     })
   }
@@ -174,27 +169,16 @@ export class EventManage {
 
   onSearchRegisteredAttendees(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
-    this.loadRegisteredAttendees(searchTerm ? searchTerm : undefined);
+    this.registeredAttendees.filter = searchTerm.trim().toLowerCase();
   }
 
-  onSearchCheckedIn(event: Event): void {
+  onSearchCheckedInAttendees(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
-    this.loadCheckedInAttendees(searchTerm ? searchTerm : undefined);
-  }
-
-  onRegisteredPageChange(event: PageEvent): void {
-    this.registeredCurrentPage = event.pageIndex + 1;
-    this.registeredPageSize = event.pageSize;
-    this.loadRegisteredAttendees();
-  }
-
-  onCheckedInPageChange(event: PageEvent): void {
-    this.checkedInCurrentPage = event.pageIndex + 1;
-    this.checkedInPageSize = event.pageSize;
-    this.loadCheckedInAttendees();
+    this.checkedInAttendees.filter = searchTerm.trim().toLowerCase();
   }
 
   checkInAttendee(registration: EventRegistrationModel) {
+    this.isLoading.checkingIn = true;
     if (!this.event) {
       console.log('Event data not loaded');
       return;
@@ -218,6 +202,7 @@ export class EventManage {
     this.attendanceService.checkInAttendee(dto).subscribe({
       next: (response) => {
         console.log('Checked In', response);
+        this.isLoading.checkingIn = false;
         this.openSnackBar();
 
         console.log(response.data)
@@ -228,12 +213,18 @@ export class EventManage {
       },
       error: (err) => {
         console.error('Checked In failed', err)
-
+        this.isLoading.checkingIn = false;
         this.snackBar.open(`Check-in failed: ${err.error?.message || 'Server error'}`, 'Close', {
           duration: 5000,
         });
       } 
     });
+  }
+
+  onCardClick(event: any) {
+    if (event.name === 'Total VIP') {
+      this.router.navigate([`/events/${this.event?.slug}/vip`]);
+    }
   }
 
   isCheckedIn(attendeeId: string): boolean {

@@ -5,14 +5,14 @@
   </h1>
 
   <div class="print:hidden mt-2 space-x-4">
-    <mat-form-field class="w-full md:w-72">
+    <mat-form-field appearance="outline" class="w-full md:w-72">
       <mat-label>MMMM DD, YYYY</mat-label>
       <input matInput [matDatepicker]="dp" [formControl]="date">
       <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
       <mat-datepicker #dp></mat-datepicker>
     </mat-form-field>
 
-    <mat-form-field class="w-full md:w-72">
+    <mat-form-field appearance="outline" class="w-full md:w-72">
       <mat-label>Select</mat-label>
       <mat-select [(ngModel)]="selectedValue">
         <mat-option value="Sunday Service">Sunday Service</mat-option>

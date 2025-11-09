@@ -5,14 +5,14 @@
   </h1>
 
   <div class="print:hidden mt-2 space-x-4">
-    <mat-form-field class="w-full md:w-72">
+    <mat-form-field appearance="outline" class="w-full md:w-72">
       <mat-label>MMMM DD, YYYY</mat-label>
       <input matInput [matDatepicker]="dp" [formControl]="date">
       <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
       <mat-datepicker #dp></mat-datepicker>
     </mat-form-field>
 
-    <mat-form-field class="w-full md:w-72">
+    <mat-form-field appearance="outline" class="w-full md:w-72">
       <mat-label>Select</mat-label>
       <mat-select [(ngModel)]="selectedValue">
         <mat-option value="Sunday Service">Sunday Service</mat-option>
@@ -84,10 +84,13 @@
   </table>
 
   @if (isAttendanceSummaryEmpty && !isAttendanceSummaryLoading) {
-    <div class="w-3/5 mt-4 text-center text-text-300">
-      <img src="/assets/http.cat/204.jpeg" class="rounded-md w-88 aspect-[3/2] mx-auto" alt="204: http.cat image">
-      <h2 class="mt-2 text-xl text-center font-semibold">204: Content Not Found</h2>
-      <p class="mt-1 text-center">We can't generate reports, no attendance records found for this date.</p>
-    </div>
+  <div class="w-3/5 mt-4">
+    <app-error-card
+      [statusCode]="204"
+      title="Content Not Found"
+      message="No attendance records found for this date."
+      imageUrl="/assets/http.cat/204.jpeg"
+    ></app-error-card>
+  </div>
   }
 </main>

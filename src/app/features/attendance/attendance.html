@@ -2,20 +2,26 @@
   <h1 class="font-bold text-2xl mt-4">LTHMI Recto Manila - <span class="text-monochromatic-dark">Reccuring Events</span></h1>
 
   <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+    @if (isLoading) {
+      <app-event-card-skeleton></app-event-card-skeleton>
+      <app-event-card-skeleton></app-event-card-skeleton>n
+    }
+
     @for (event of events; track $index) {
-      <app-event-card 
-        id="{{event.id}}"
-        name="{{event.name}}" 
-        description="{{event.description}}"   
-        organization="{{event.organization.name}}"
-        href="/attendance/{{event.slug}}"
-        tagline="{{event.tagline}}"
-        location="{{event.location}}" 
-        startDate="{{event.startDate}}" 
-        endDate="{{event.endDate}}" 
-        startTime="{{event.startTime}}" 
-        endTime="{{event.endTime}}"
-      ></app-event-card>
+      @if (!isLoading) {
+        <app-event-card 
+          id="{{event.id}}"
+          name="{{event.name}}" 
+          description="{{event.description}}"   
+          organization="{{event.organization.name}}"
+          href="/attendance/{{event.slug}}"
+          tagline="{{event.tagline}}"
+          location="{{event.location}}" 
+          endDate="{{event.endDate}}" 
+          startTime="{{event.startTime}}" 
+          endTime="{{event.endTime}}"
+        ></app-event-card>
+      }
     }
   </section>
 </main>

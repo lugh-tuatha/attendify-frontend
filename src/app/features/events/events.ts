@@ -7,10 +7,12 @@ import { EventCard } from '@/app/shared/components/event-card/event-card';
 import { AddEventDialog } from './components/add-event-dialog/add-event-dialog';
 import { EventsService } from '@/app/core/events/services/events';
 import { EventModel } from '@/app/core/events/models/event.model';
+import { Subject, takeUntil } from 'rxjs';
+import { EventCardSkeleton } from "@/app/shared/components/event-card-skeleton/event-card-skeleton";
 
 @Component({
   selector: 'app-events',
-  imports: [Button, EventCard],
+  imports: [Button, EventCard, EventCardSkeleton],
   templateUrl: './events.html',
   styleUrl: './events.css',
 })
@@ -18,18 +20,27 @@ import { EventModel } from '@/app/core/events/models/event.model';
 export class Events {
   private dialog = inject(Dialog);
   private eventsService = inject(EventsService);
+  private destroy$ = new Subject<void>();
 
   events: EventModel[] = [];
   isLoading = false;
 
   ngOnInit(): void {
     this.loadEvents();
+    console.log(this.isLoading)
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private loadEvents(): void {
     this.isLoading = true;
     
-    this.eventsService.getEventsByCategory('SPECIAL').subscribe({
+    this.eventsService.getEventsByCategory('SPECIAL').pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
       next: (response) => {
         this.events = response.data;
         this.isLoading = false;

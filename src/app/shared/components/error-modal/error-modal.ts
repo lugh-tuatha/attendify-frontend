@@ -1,10 +1,10 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent } from '@angular/material/dialog';
 import { Button } from "../../ui/button/button";
 
 @Component({
   selector: 'app-error-modal',
-  imports: [Button],
+  imports: [Button, MatDialogContent],
   templateUrl: './error-modal.html',
   styleUrl: './error-modal.css'
 })

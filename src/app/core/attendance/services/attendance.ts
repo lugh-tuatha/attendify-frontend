@@ -84,17 +84,8 @@ export class AttendanceService {
     }
   }
   
-  getCheckedInAttendees(eventId: string, searchTerm?: string): Observable<ApiResponse<AttendanceModel[]>> {
-    const url = `${this.baseUrl}/attendance`
-
-    const paramsConfig: { [param: string]: string } = { eventId };
-    if (searchTerm) {
-      paramsConfig['search'] = searchTerm;
-    }
-
-    const params = new HttpParams({ fromObject: paramsConfig });
-
-    return this.http.get<ApiResponse<AttendanceModel[]>>(url, { params })
+  getAttendanceByEventId(eventId: string): Observable<ApiResponse<AttendanceModel[]>> {
+    return this.http.get<ApiResponse<AttendanceModel[]>>(`${this.baseUrl}/attendance/event-id/${eventId}`);
   }
 
   checkInAttendee(dto: CheckInAttendeeDto): Observable<ApiResponse<AttendanceModel>> {
@@ -103,5 +94,9 @@ export class AttendanceService {
 
   checkInByFace(dto: CheckInByFaceDto): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/attendance/face`, dto);
+  }
+
+  getAttendanceByMemberStatus(slug: string, memberStatus: string): Observable<ApiResponse<AttendanceModel[]>> {
+    return this.http.get<ApiResponse<AttendanceModel[]>>(`${this.baseUrl}/attendance/slug/${slug}/member-status/${memberStatus}`);
   }
 }

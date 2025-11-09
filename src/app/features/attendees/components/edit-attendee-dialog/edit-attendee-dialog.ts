@@ -1,0 +1,103 @@
+import { AttendeeModel } from '@/app/core/attendees/models/attendee.model';
+import { AttendeesService } from '@/app/core/attendees/services/attendees';
+import { ChurchHierarchyEnum } from '@/app/core/enums/church-hierarchy.enum';
+import { ChurchProcessEnum } from '@/app/core/enums/church-process.enum';
+import { MemberStatusEnum } from '@/app/core/enums/member-status.enum';
+import { NetworkEnum } from '@/app/core/enums/network.enum';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from '@angular/material/select';
+
+@Component({
+  selector: 'app-edit-attendee-dialog',
+  imports: [
+    MatDialogContent,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+],
+  templateUrl: './edit-attendee-dialog.html',
+  styleUrl: './edit-attendee-dialog.css'
+})
+export class EditAttendeeDialog {
+  data = inject(MAT_DIALOG_DATA);
+  private dialogRef = inject(MatDialogRef<EditAttendeeDialog>);
+
+  memberStatuses = Object.values(MemberStatusEnum);
+  churchHierarchies = Object.values(ChurchHierarchyEnum);
+  churchProcesses = Object.values(ChurchProcessEnum);
+  networks = Object.values(NetworkEnum);
+
+  private attendeesService = inject(AttendeesService);
+  private fb = inject(FormBuilder);
+
+  attendeeForm!: FormGroup;
+  isAttendeeLoading = false;
+  isSubmitting = false;
+
+  ngOnInit(): void {
+    this.attendeeForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      age: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
+      status: [''],
+      address: [''],
+      memberStatus: [],
+      churchHierarchy: [''],
+      primaryLeaderId: [''],
+      network: [''],
+    })
+
+    this.loadAttendee();
+  }
+
+  loadAttendee() {
+    this.isAttendeeLoading = true;
+
+    this.attendeesService.getAttendeeById(this.data.attendeeId).subscribe({
+      next: (response) => {
+        this.isAttendeeLoading = false;
+        this.attendeeForm.patchValue(response.data)
+      },
+      error: (error) => {
+        console.error('Error loading attendee:', error);
+      }
+    })
+  }
+
+  onSubmit() {
+    if (this.attendeeForm.invalid) {
+      this.attendeeForm.markAllAsTouched();
+      return;
+    }
+
+    this.isSubmitting = true;
+    const payload: AttendeeModel = {
+      ...this.attendeeForm.value,
+      age: Number(this.attendeeForm.value.age),
+    }
+    
+    this.attendeesService.updateAttendee(this.data.attendeeId, payload).subscribe({
+      next: (response) => {
+        this.isSubmitting = false;
+        console.log('Attendee updated', response);
+        this.dialogRef.close(true);
+      },
+      error: (error) => {
+        this.isSubmitting = false;
+        console.error('Error updating attendee:', error);
+      }
+    })
+
+  }
+
+  close() {
+    this.dialogRef.close(false);
+  }
+}

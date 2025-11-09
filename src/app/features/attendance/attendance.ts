@@ -2,10 +2,11 @@ import { EventCard } from '@/app/shared/components/event-card/event-card';
 import { Component, inject } from '@angular/core';
 import { EventsService } from '@/app/core/events/services/events';
 import { EventModel } from '@/app/core/events/models/event.model';
+import { EventCardSkeleton } from "@/app/shared/components/event-card-skeleton/event-card-skeleton";
 
 @Component({
   selector: 'app-attendance',
-  imports: [EventCard],
+  imports: [EventCard, EventCardSkeleton],
   templateUrl: './attendance.html',
   styleUrl: './attendance.css'
 })

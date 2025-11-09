@@ -2,6 +2,7 @@ export interface EventModel {
   id: string;
   name: string;
   description: string;
+  image: string;
   tagline: string;
   location: string;
   category: string;

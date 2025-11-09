@@ -1,0 +1,66 @@
+<div class="h-screen bg-gradient-to-br from-cyan-200 via-blue-300 to-blue-400">
+  <main class="main-container pt-4">
+    <div class="flex mb-2 items-center gap-2">
+      <lucide-angular 
+        [img]="CornerDownLeft" 
+        [size]="32" 
+        class="cursor-pointer border border-text-300 rounded-md shadow-2xs shadow-text-300"
+        (click)="goBack()"
+      ></lucide-angular>
+      <h1 class="text-2xl font-bold">LTHMI Church Anniversary - <span class="text-blue-500">VIP Attendees</span></h1>
+    </div>
+
+    <mat-tab-group animationDuration="0ms">
+      <mat-tab label="First Timer">
+        <div class="text-center mt-2">
+          <div class="flex items-center justify-center gap-4">
+            <lucide-angular class="w-8 h-8 text-blue-600" [img]="Sparkles"></lucide-angular>
+            <h1 class="text-5xl">Welcome!</h1>
+            <lucide-angular class="w-8 h-8 text-blue-600" [img]="Sparkles"></lucide-angular>
+          </div>
+          <p class="text-text-300 text-2xl my-2">
+            We're delighted to have you with us today
+          </p>
+        </div>
+
+        <div class="bg-white/40 backdrop-blur-md rounded-xl p-6 mb-6 border border-blue-300/50 shadow-lg">
+          <div class="grid grid-cols-2 gap-6">
+            <div class="flex items-center gap-3">
+              <lucide-angular class="w-6 h-6 text-monochromatic-dark stroke-[3]" [img]="User"></lucide-angular>
+              <h2 class="text-3xl">Name</h2>
+            </div>
+            <div class="flex items-center gap-3">
+              <lucide-angular class="w-6 h-6 text-monochromatic-dark stroke-[3]" [img]="Handshake"></lucide-angular>
+              <h2 class="text-3xl">Invited By</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          @for (record of vipAttendees; track $index) {
+            <div class="bg-white/30 backdrop-blur-sm rounded-xl p-5 border border-blue-300/40 hover:bg-white/50 hover:border-blue-400/60 hover:shadow-md transition-all duration-300 group">
+              <div class="grid grid-cols-2 gap-6">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 rounded-lg bg-monochromatic-dark flex items-center justify-center text-white">
+                    {{record.attendee.firstName.charAt(0)}}
+                  </div>
+                  <p class="text-xl md:text-2xl">{{record.attendee.firstName}} {{record.attendee.lastName}}</p>
+                </div>
+                <div class="flex items-center">
+                  <p class="text-xl md:text-2xl">{{record.attendee.invitedBy}}</p>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        
+        <div class="text-center mt-8">
+          <p class="text-text-300 text-lg">Thank you for being here! 🎉</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Second Timer">Content 2</mat-tab>
+      <mat-tab label="Third Timer">Content 3</mat-tab>
+      <mat-tab label="Fourth Timer">Content 3</mat-tab>
+    </mat-tab-group>
+  </main>
+</div>

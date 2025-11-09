@@ -1,169 +1,180 @@
-<main class="main-container p-6">
-  <div class="flex mb-2 items-center gap-2">
-    <lucide-angular routerLink="/events" [img]="CornerDownLeft" [size]="32" class="cursor-pointer border border-text-300 rounded-md shadow-2xs shadow-text-300"></lucide-angular>
-    <h1 class="text-3xl font-bold">{{event?.name}}</h1>
-  </div>
-  <p routerLink="/events/{{event?.id}}/register" class="text-lg underline cursor-pointer">http://localhost:4200/events/{{event?.id}}/register</p>
-  <p class="text-lg text-gray-500 mt-1">{{event?.startTime | date:'medium'}}</p>
+@if (isLoading.event && isLoading.registeredAttendees && isLoading.checkedInAttendees) {
+  <app-bsod-loading></app-bsod-loading>
+}
 
-  <section class="mt-4">
-    <h1 class="font-bold text-xl">Attendance Overview</h1>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-1">
-      <app-stat-card
-        title="Attendees (Overall)" 
-        icon="person"
-        [value]="totalCheckedInCount || 0"
-        description="Overall Attendee Count"
-      ></app-stat-card>
-
-      <app-stat-card
-        title="Registered Attendees"
-        icon="person"
-        [value]="totalRegisteredCount || 0"
-        description="Total Registered Attendees"
-      ></app-stat-card>
+@if (!isLoading.event) {
+  <main class="main-container pt-4">
+    <div class="flex mb-2 items-center gap-2">
+      <lucide-angular routerLink="/events" [img]="CornerDownLeft" [size]="32" class="cursor-pointer border border-text-300 rounded-md shadow-2xs shadow-text-300"></lucide-angular>
+      <h1 class="text-2xl font-bold">{{event?.name}}</h1>
     </div>
-  </section>
+    <p class="text-lg text-gray-500 mt-1">{{event?.startDate | date:'medium'}}</p>
 
-  <section class="mt-4">
-    <h1 class="font-bold text-xl">Registered Attendees</h1>
-    <div class="relative w-full my-2">
-      <lucide-angular class="absolute left-2 top-1/2 -translate-y-1/2 text-text-300" [img]="SearchCheck"></lucide-angular>
-      <input 
-        type="text"
-        placeholder="Type a name to search..."
-        class="w-full pl-12 px-4 py-2 border rounded-lg text-lg leading-normal" 
-        (keydown.enter)="onSearchRegisteredAttendees($event)"
-      >
-    </div>
-    <div class="overflow-x-auto">
-      <table cdk-table [dataSource]="registeredAttendees" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
-        <ng-container cdkColumnDef="fullName">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-3 text-white">Full Name</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.attendee.firstName}} {{element.attendee.lastName}} </td>
-        </ng-container>
-  
-        <ng-container cdkColumnDef="primaryLeader">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Primary Leader</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.attendee.primaryLeader}} </td>
-        </ng-container>
-  
-        <ng-container cdkColumnDef="churchHierarchy">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Hierarchy</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.attendee.churchHierarchy}} </td>
-        </ng-container>
-  
-        <ng-container cdkColumnDef="memberStatus">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.attendee.memberStatus}} </td>
-        </ng-container>
-  
-        <ng-container cdkColumnDef="actions">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pr-6 py-3 text-white">Actions</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light pr-6 text-left py-3 text-text-900 border-t border-text-300"> 
-            <app-button
-              (click)="checkInAttendee(element)"
-              [disabled]="isCheckedIn(element.attendee.id)"
-            >
-              Check In
-            </app-button>
-          </td>
-        </ng-container>
-  
-        <tr cdk-header-row *cdkHeaderRowDef="registeredAttendeesColumns"></tr>
-        <tr cdk-row *cdkRowDef="let row; columns: registeredAttendeesColumns;"></tr>
-      </table>
-    </div>
+    <section class="mt-2">
+      <h1 class="font-bold text-xl ml-1">Attendance Overview</h1>
+      <div class="w-full md:w-3/4 grid grid-cols-1 md:grid-cols-4 gap-4 -ml-2">
+        <ngx-charts-number-card
+          [scheme]="'aqua'"
+          [results]="overviewData" 
+          [cardColor]="cardColor"
+          (select)="onCardClick($event)"
+        ></ngx-charts-number-card>
+      </div>
+    </section>
 
-    <mat-paginator 
-      #registeredPaginator
-      showFirstLastButtons
-      [length]="totalRegisteredCount" 
-      [pageSize]="registeredPageSize" 
-      [pageSizeOptions]="[5, 10, 25, 50]" 
-      aria-label="Select page of users"
-    ></mat-paginator>
-  </section>
+    <section class="-mt-2">
+      <h1 class="font-bold text-xl ml-1">Registered Attendees</h1>
+      <mat-form-field appearance="outline" class="w-full mt-2 mb-2">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="onSearchRegisteredAttendees($event)" placeholder="Type a name to search..." #input>
+      </mat-form-field>
 
-  <section class="mt-2">
-    <h1 class="font-bold text-xl">Overall Checked In Attendees (Actual)</h1>
-    <div class="relative w-full my-2">
-      <lucide-angular class="absolute left-2 top-1/2 -translate-y-1/2 text-text-300" [img]="SearchCheck"></lucide-angular>
-      <input 
-        type="text"
-        placeholder="Type a name to search..."
-        class="w-full pl-12 px-4 py-2 border rounded-lg text-lg leading-normal" 
-        (keydown.enter)="onSearchCheckedIn($event)"
-      >
-    </div>
+      @if (isEmpty.registeredAttendees && !isLoading.registeredAttendees) {
+        <div class="mt-2">
+          <app-error-card
+            [statusCode]="204"
+            title="Content Not Foud"
+            message="No attendance records found for this date."
+            imageUrl="/assets/http.cat/204.jpeg"
+          ></app-error-card>
+        </div>
+      }
 
-    <div class="overflow-x-auto">
-      <table cdk-table [dataSource]="checkedInAttendees" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
-        <ng-container cdkColumnDef="fullName">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-3 text-white">Full Name</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.attendee.firstName}} {{element.attendee.lastName}} </td>
-        </ng-container>
+      <div class="overflow-x-auto">
+        @if (!isLoading.registeredAttendees && !isEmpty.registeredAttendees)  {
+          <table cdk-table [dataSource]="registeredAttendees" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
+            <ng-container cdkColumnDef="fullName">
+              <th cdk-header-cell *matHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-2 text-white">Full Name</th>
+              <td cdk-cell *matCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-2 text-text-900 font-bold border-t border-text-300">
+                {{ element.attendee.firstName }} {{ element.attendee.lastName }} 
+              </td>
+            </ng-container>
+      
+            <ng-container cdkColumnDef="primaryLeader">
+              <th cdk-header-cell *matHeaderCellDef class="bg-[#067BC3] text-left py-2 text-white">Primary Leader</th>
+              <td cdk-cell *matCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300">
+                {{ element.attendee.primaryLeader ? (element.attendee.primaryLeader.firstName + " " + element.attendee.primaryLeader.lastName) : '-' }}
+              </td>
+            </ng-container>
+      
+            <ng-container cdkColumnDef="churchHierarchy">
+              <th cdk-header-cell *matHeaderCellDef class="bg-[#067BC3] text-left py-2 text-white">Church Hierarchy</th>
+              <td cdk-cell *matCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300">
+                {{ element.attendee.churchHierarchy || '-' }} 
+              </td>
+            </ng-container>
+      
+            <ng-container cdkColumnDef="memberStatus">
+              <th cdk-header-cell *matHeaderCellDef class="bg-[#067BC3] text-left py-2 text-white">Member Status</th>
+              <td cdk-cell *matCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300">
+                {{element.attendee.memberStatus || '-'}} 
+              </td>
+            </ng-container>
+      
+            <ng-container cdkColumnDef="actions">
+              <th cdk-header-cell *matHeaderCellDef class="bg-[#067BC3] text-right pr-6 py-2 text-white">Actions</th>
+              <td cdk-cell *matCellDef="let element" class="bg-monochromatic-light pr-6 py-2 text-text-900 border-t border-text-300"> 
+                <app-button
+                  (click)="checkInAttendee(element)"
+                  [disabled]="isCheckedIn(element.attendee.id) || isLoading.checkingIn"
+                  class="flex justify-end"
+                >
+                  {{ isLoading.checkingIn ? 'Checking in...' : 'Check In' }}
+                </app-button>
+              </td>
+            </ng-container>
+      
+            <tr cdk-header-row *matHeaderRowDef="registeredAttendeesColumns"></tr>
+            <tr cdk-row *matRowDef="let row; columns: registeredAttendeesColumns;"></tr>
+          </table>
+        }
+      </div>
 
-        <ng-container cdkColumnDef="primaryLeader">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Primary Leader</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.attendee.primaryLeader}} </td>
-        </ng-container>
+      <mat-paginator 
+        [pageSizeOptions]="[5, 10, 20]" 
+        #registeredPaginator
+        showFirstLastButtons 
+        aria-label="Select page of users"
+      ></mat-paginator>
+    </section>
 
-        <ng-container cdkColumnDef="churchHierarchy">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Hierarchy</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.attendee.churchHierarchy}} </td>
-        </ng-container>
+    <section class="mt-2">
+      <h1 class="font-bold text-xl ml-1">Overall Checked In Attendees (Actual)</h1>
+      <mat-form-field appearance="outline" class="w-full mt-2 mb-2">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="onSearchCheckedInAttendees($event)" placeholder="Type a name to search..." #input>
+      </mat-form-field>
 
-        <ng-container cdkColumnDef="memberStatus">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300"> {{element.attendee.memberStatus}} </td>
-        </ng-container>
+      @if (isEmpty.checkedInAttendees && !isLoading.checkedInAttendees) {
+        <div class="mt-2">
+          <app-error-card
+            [statusCode]="204"
+            title="Content Not Foud"
+            message="No attendance records found for this date."
+            imageUrl="/assets/http.cat/204.jpeg"
+          ></app-error-card>
+        </div>
+      }
 
-        <ng-container cdkColumnDef="timeArrival">
-          <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pr-6 py-3 text-white">Time Arrival</th>
-          <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light pr-6 text-left py-2 text-text-900 border-t border-text-300"> 
-            {{element.timeIn | date: 'shortTime'}}
-          </td>
-        </ng-container>
+      <div class="overflow-x-auto">
+        @if (!isLoading.checkedInAttendees && !isEmpty.checkedInAttendees)  {
+          <table cdk-table [dataSource]="checkedInAttendees" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
+            <ng-container cdkColumnDef="fullName">
+              <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-3 text-white">Full Name</th>
+              <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300">
+                  {{element.attendee.firstName}} {{element.attendee.lastName}} 
+              </td>
+            </ng-container>
 
-        <tr cdk-header-row *cdkHeaderRowDef="checkedInAttendeesColumns"></tr>
-        <tr cdk-row *cdkRowDef="let row; columns: checkedInAttendeesColumns;"></tr>
-      </table>
-    </div>
-    
-    <mat-paginator 
-      #checkedInPaginator
-      showFirstLastButtons
-      [length]="totalCheckedInCount" 
-      [pageSize]="checkedInPageSize" 
-      [pageSizeOptions]="[5, 10, 25, 50]" 
-      aria-label="Select checked-in attendees page"
-    ></mat-paginator>
-  </section>
+            <ng-container cdkColumnDef="primaryLeader">
+              <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Primary Leader</th>
+              <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300">
+                {{ element.attendee.primaryLeader ? (element.attendee.primaryLeader.firstName + " " + element.attendee.primaryLeader.lastName) : '-' }}
+              </td>
+            </ng-container>
 
-  <section class="mt-4">
-    <h1 class="font-bold text-xl">Reports</h1>
-    <img src="https://imgs.search.brave.com/N2byvN9JkSILUVdzarsAc3CmTS09ObrJviNWvlQItTY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvOTYw/MjY4NTQyL3ZlY3Rv/ci91bmRlci1jb25z/dHJ1Y3Rpb24uanBn/P3M9NjEyeDYxMiZ3/PTAmaz0yMCZjPUp0/TEZheHBnc0hHTl9W/RXpPdllaZmt6Wlgy/cjZiNDN3Z2JFcFRm/d1ZrcW89" alt="website-under-construction">
-  </section>
+            <ng-container cdkColumnDef="churchHierarchy">
+              <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Hierarchy</th>
+              <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300">
+                {{ element.attendee.churchHierarchy }} 
+              </td>
+            </ng-container>
 
-<!-- 
-  <section class="mt-6 max-w-xl space-y-4">
-    <p class="font-medium">Reports</p>
-    <label class="flex items-center justify-between border rounded px-3 py-2 cursor-pointer">
-      <span>Attendance Summary</span>
-      <input type="checkbox" class="peer hidden" />
-      <span class="text-2xl peer-checked:text-yellow-400 text-gray-400">★</span>
-    </label>
-    <label class="flex items-center justify-between border rounded px-3 py-2 cursor-pointer">
-      <span>Leader Attendance Summary</span>
-      <input type="checkbox" class="peer hidden" />
-      <span class="text-2xl peer-checked:text-yellow-400 text-gray-400">★</span>
-    </label>
-    <label class="flex items-center justify-between border rounded px-3 py-2 cursor-pointer">
-      <span>Cell Member Attendance Summary</span>
-      <input type="checkbox" class="peer hidden" />
-      <span class="text-2xl peer-checked:text-yellow-400 text-gray-400">★</span>
-    </label>
-  </section> 
--->
-</main>
+            <ng-container cdkColumnDef="memberStatus">
+              <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
+              <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300">
+                {{ element.attendee.memberStatus }} 
+              </td>
+            </ng-container>
+
+            <ng-container cdkColumnDef="timeArrival">
+              <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-right pr-6 py-3 text-white">Time Arrival</th>
+              <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light pr-6 py-2 text-text-900 border-t border-text-300"> 
+                <div class="flex items-center justify-end gap-4">
+                  {{ element.timeIn | date: 'shortTime' }} 
+                  <div 
+                    class="w-2.5 h-2.5 rounded-full"
+                    [ngClass]="{
+                      'bg-danger-900': element.isLate,
+                      'bg-success-900': !element.isLate
+                    }"
+                  ></div>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr cdk-header-row *cdkHeaderRowDef="checkedInAttendeesColumns"></tr>
+            <tr cdk-row *cdkRowDef="let row; columns: checkedInAttendeesColumns;"></tr>
+          </table>
+        }
+
+        <mat-paginator 
+          [pageSizeOptions]="[5, 10, 25, 50]" 
+          #checkedInPaginator
+          showFirstLastButtons
+          aria-label="Select checked-in attendees page"
+        ></mat-paginator>
+      </div>
+    </section>
+  </main>
+}

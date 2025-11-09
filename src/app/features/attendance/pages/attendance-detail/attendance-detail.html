@@ -26,7 +26,7 @@
   </section>  
   <section class="mt-2">
     <h1 class="font-bold text-xl">Overall Checked In Attendees (Actual)</h1>
-    <mat-form-field class="my-2">
+    <mat-form-field appearance="outline" class="my-2 w-72">
       <mat-label>Verbose datepicker</mat-label>
       <input matInput [matDatepicker]="dp" [formControl]="date">
       <mat-hint>MMMM DD, YYYY</mat-hint>
@@ -34,19 +34,15 @@
       <mat-datepicker #dp></mat-datepicker>
     </mat-form-field>
 
-    <div class="relative w-full my-2">
-      <lucide-angular class="absolute left-2 top-1/2 -translate-y-1/2 text-text-300" [img]="SearchCheck"></lucide-angular>
-      <input 
-        type="text"
-        placeholder="Type a name to search..."
-        class="w-full pl-12 px-4 py-2 border rounded-lg text-lg leading-normal" 
-        (keydown.enter)="onSearchAttendanceRecord($event)"
-      >
-    </div>
+    <mat-form-field appearance="outline" class="w-full mb-4 mt-2">
+      <mat-label>Filter</mat-label>
+      <input matInput (keydown.enter)="onSearchAttendanceRecord($event)" placeholder="Type a name to search...">
+    </mat-form-field>
 
     @if (attendance.loading) {
-      <div class="text-center text-text-300 p-4">
-        Loading attendance records...
+      <div class="flex flex-col items-center gap-4 backdrop-blur-md text-text-300 rounded-lg">
+        <img src="assets/gifs/neon-cat.gif" alt="Neon Cat" class="h-40 rounded-md shadow-lg shadow-monochromatic-dark">
+        <p class="font-semibold">Calculating solar flare impact . . .</p>
       </div>
     }
 
@@ -57,38 +53,39 @@
     }
 
     @if (attendance.empty && !attendance.loading && !attendance.errorMessage) {
-      <div class="text-center text-text-300">
-        <img src="/assets/http.cat/204.jpeg" class="rounded-md w-88 aspect-[3/2] mx-auto" alt="204: http.cat image">
-        <h2 class="mt-2 text-xl text-center font-semibold">204: Content Not Found</h2>
-        <p class="mt-1 text-center">No attendance records found for this date.</p>
-      </div>
+      <app-error-card
+        [statusCode]="204"
+        title="Content Not Foud"
+        message="No attendance records found for this date."
+        imageUrl="/assets/http.cat/204.jpeg"
+      ></app-error-card>
     }
 
-    @if (!attendance.loading && !attendance.errorMessage && !attendance.empty)  {
-      <div class="overflow-x-auto">
-        <table cdk-table [dataSource]="attendanceDataSource" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
+    <div class="overflow-x-auto">
+      @if (!attendance.loading && !attendance.errorMessage && !attendance.empty)  {
+        <table cdk-table [dataSource]="attendanceDataSource" class="min-w-[650px] w-full border border-text-300 rounded-md">
           <ng-container cdkColumnDef="fullName">
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-3 text-white">Full Name</th>
             <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.attendee.firstName}} {{element.attendee.lastName}} </td>
           </ng-container>
-  
+
           <ng-container cdkColumnDef="primaryLeader">
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Primary Leader</th>
             <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300">
               {{ element.attendee.primaryLeader ? (element.attendee.primaryLeader.firstName + " " + element.attendee.primaryLeader.lastName) : '-' }}
             </td>
           </ng-container>
-  
+
           <ng-container cdkColumnDef="churchProcess">
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Process</th>
             <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.attendee.churchProcess || '-'}} </td>
           </ng-container>
-  
+
           <ng-container cdkColumnDef="memberStatus">
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
             <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.attendee.memberStatus || '-'}} </td>
           </ng-container>
-  
+
           <ng-container cdkColumnDef="arival">
             <th cdk-header-cell *cdkHeaderCellDef class="w-36 bg-[#067BC3] text-end pr-6 py-3 text-white">Arrival</th>
             <td cdk-cell *cdkCellDef="let element" class="w-36 bg-monochromatic-light py-3 text-text-900 border-t border-text-300 ">
@@ -104,20 +101,20 @@
               </div>
             </td>
           </ng-container>
-  
+
           <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
           <tr cdk-row *cdkRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-      </div>
-    }
-
-    <mat-paginator
-      #checkedInPaginator
-      [length]="attendance.totalCount" 
-      [pageSize]="pageLimit" 
-      [pageSizeOptions]="[5, 10, 25, 50]" 
-      aria-label="Select attendance page"
-      (page)="onPageChange($event)"
-    ></mat-paginator>
+      }
+      
+      <mat-paginator
+        #checkedInPaginator
+        [length]="attendance.totalCount" 
+        [pageSize]="pageLimit" 
+        [pageSizeOptions]="[5, 10, 25, 50]" 
+        aria-label="Select attendance page"
+        (page)="onPageChange($event)"
+      ></mat-paginator>
+    </div>
   </section>
 </main>

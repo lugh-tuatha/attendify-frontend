@@ -24,7 +24,8 @@ export class AttendeesService {
     organizationId: string, 
     page: number = 1, 
     limit: number = 10, 
-    searchTerm?: string
+    searchTerm?: string,
+    forceRefresh: boolean = false
   ): Observable<PaginatedResponse<AttendeeModel>> {
     const url = `${this.baseUrl}/attendees`
 
@@ -41,7 +42,7 @@ export class AttendeesService {
 
     const cacheKey = `${url}?${params.toString()}`;
     const cachedResponse = this.cache.get(cacheKey);
-    if (cachedResponse) {
+    if (!forceRefresh && cachedResponse) {
       return of(cachedResponse);
     }
 
@@ -50,6 +51,14 @@ export class AttendeesService {
         this.cache.set(cacheKey, response);
       })
     );
+  }
+
+  getAttendeeById(attendeeId: string): Observable<ApiResponse<AttendeeModel>> {
+    return this.http.get<ApiResponse<AttendeeModel>>(`${this.baseUrl}/attendees/${attendeeId}`);
+  }
+
+  updateAttendee(attendeeId: string, payload: AttendeeModel): Observable<ApiResponse<AttendeeModel>> {
+    return this.http.patch<ApiResponse<AttendeeModel>>(`${this.baseUrl}/attendees/${attendeeId}`, payload);
   }
 
   prefetchNextPage(

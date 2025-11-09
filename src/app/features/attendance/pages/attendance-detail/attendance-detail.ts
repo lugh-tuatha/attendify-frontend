@@ -18,6 +18,7 @@ import { CornerDownLeft, LucideAngularModule, SearchCheck } from 'lucide-angular
 import { AttendanceService } from '@/app/core/attendance/services/attendance';
 import { StatCard } from '@/app/shared/components/stat-card/stat-card';
 import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
+import { ErrorCard } from '@/app/shared/components/error-card/error-card';
 
 @Component({
   selector: 'app-attendance-detail',
@@ -33,7 +34,8 @@ import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
     FormsModule,
     ReactiveFormsModule,
     MatPaginator,
-    NgClass
+    NgClass,
+    ErrorCard,
   ],
   providers: [provideMomentDateAdapter(DEFAULT_DATE_FORMAT)],
   templateUrl: './attendance-detail.html',
@@ -41,7 +43,6 @@ import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 })
 
 export class AttendanceDetail {
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   private destroy$ = new Subject<void>();

@@ -76,11 +76,7 @@ export class EventRegistrations {
   register() {
     const dto: RegisterAttendeeDto = {
       "eventId": this.event?.id!,
-      "firstName": this.form.value.firstName!,
-      "lastName": this.form.value.lastName!,
-      "primaryLeader": this.form.value.primaryLeader!,
-      "churchHierarchy": this.form.value.churchHierarchy!,
-      "memberStatus": this.form.value.memberStatus!,
+      "attendeeId": this.form.value.memberStatus!,
     };
 
     this.eventsService.registerAttendee(dto).subscribe({

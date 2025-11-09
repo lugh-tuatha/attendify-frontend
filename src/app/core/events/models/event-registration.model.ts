@@ -4,7 +4,7 @@ export interface EventRegistrationModel {
   id: string;
   eventId: string;
   attendeeId: string;
-  invitedBy: string;
+  invitedBy?: string;
   createdAt: string;
   updatedAt: string;
   attendee: LTHMIAttendeeProfile;

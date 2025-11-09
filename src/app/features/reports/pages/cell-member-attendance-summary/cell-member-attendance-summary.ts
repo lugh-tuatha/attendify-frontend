@@ -16,6 +16,7 @@ import { ReportsService } from '@/app/core/reports/services/reports';
 import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ReportSkeleton } from "@/app/shared/components/report-skeleton/report-skeleton";
 import { DiscipleModel } from '@/app/core/reports/models/attendance-by-primary-leader.model';
+import { ErrorCard } from "@/app/shared/components/error-card/error-card";
 
 @Component({
   selector: 'app-cell-member-attendance-summary',
@@ -28,7 +29,8 @@ import { DiscipleModel } from '@/app/core/reports/models/attendance-by-primary-l
     MatSelectModule,
     MatDatepickerModule,
     MatFormFieldModule,
-    ReportSkeleton
+    ReportSkeleton,
+    ErrorCard
 ],
   providers: [provideMomentDateAdapter(DEFAULT_DATE_FORMAT)],
   templateUrl: './cell-member-attendance-summary.html',

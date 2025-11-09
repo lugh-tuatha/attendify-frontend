@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '@angular/material/prebuilt-themes/indigo-pink.css'; 
 
 @theme {
   --color-monochromatic-base: #90d5ff;
@@ -12,6 +13,7 @@
   --color-danger-900: rgba(255 75 75 / 100%);
   --color-danger-300: rgba(255 75 75 / 25%);
   --color-danger-100: rgb(255 225 222);
+  --color-bsod-success: #ce6300;
 }
 
 body, html {
@@ -28,6 +30,30 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Hind", sans-serif;
 }
 
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb, #6b7280) var(--scrollbar-track, transparent);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #6b7280;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #4b5563;
+}
+
 .main-container {
   @apply px-4 mx-auto max-w-7xl w-full;
 }
@@ -39,4 +65,50 @@ h1, h2, h3, h4, h5, h6 {
 
 .shadow-default {
   @apply shadow-[0_0_12px_4px_rgba(59,130,246,0.15)]
+}
+
+.default-modal {
+  border-radius: 8px; 
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); 
+  background-color: white; 
+  padding: 1rem; 
+  position: fixed; 
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+.mdc-notched-outline__notch{
+  border-right: none;
+}
+
+.mat-mdc-paginator-container {
+  background-color: #fbf8fd; 
+}
+
+/* Material Paginator Mobile Responsiveness */
+@media (max-width: 600px) {
+  .mat-mdc-paginator-page-size-label {
+    display: none;
+  }
+
+  .mat-mdc-paginator-container {
+    justify-content: space-between !important;
+    padding: 0 !important; 
+    margin-top: 8px;
+  }
+
+  .mat-mdc-paginator-range-label {
+    margin: 0 !important;
+  }
+
+  .mat-mdc-paginator-page-size {
+    width: 30%;
+  }
+
+  .mat-mdc-paginator-range-actions {
+    width: 65%;
+    justify-content: flex-end !important;
+  }
 }

@@ -1,0 +1,8 @@
+export enum ChurchHierarchyEnum {
+  CELL_MEMBER = 'CELL_MEMBER',
+  CELL_LEADER = 'CELL_LEADER',
+  PRIMARY_LEADER = 'PRIMARY_LEADER',
+  ELDER = 'ELDER',
+  PASTOR = 'PASTOR',
+  BISHOP = 'BISHOP',
+}

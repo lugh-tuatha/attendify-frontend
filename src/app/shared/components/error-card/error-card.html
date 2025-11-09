@@ -1,0 +1,10 @@
+<div class="text-center text-text-300">
+  <img 
+    [src]="imageUrl" 
+    class="rounded-md w-88 aspect-[3/2] mx-auto" 
+    [alt]="statusCode + ': ' + title"
+  >
+  <h2 class="mt-2 
+  text-xl text-center font-semibold">{{ statusCode }}: {{ title }}</h2>
+  <p class="mt-1 text-center">{{ message }}</p>
+</div>

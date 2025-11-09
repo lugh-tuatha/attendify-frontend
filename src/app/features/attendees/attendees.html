@@ -1,32 +1,28 @@
 <main class="main-container">
   <h1 class="font-bold text-2xl mt-4">LTHMI Recto Manila - <span class="text-monochromatic-dark">Unique Attendees</span></h1>
 
-  <mat-form-field class="mt-4 w-72">
-    <mat-label>Select</mat-label>
-    <mat-select [(ngModel)]="selectedValue">
-      <mat-option value="All">All</mat-option>
-      <mat-option value="Regular Attendees">Regular Attendees</mat-option>
-    </mat-select>
-  </mat-form-field>
-
   <div class="flex items-center justify-between">
     <p class="text-xl font-bold text-text-300">{{selectedValue}} ({{attendees.totalCount}})</p>
-    <app-button>Enroll Attendee</app-button>
+    <app-button routerLink="/attendees/enroll">Enroll Attendee</app-button>
   </div>
-  <section class="mt-2">
-    <div class="relative w-full my-2">
-      <lucide-angular class="absolute left-2 top-1/2 -translate-y-1/2 text-text-300" [img]="SearchCheck"></lucide-angular>
-      <input 
-        type="text"
-        placeholder="Type a name to search..."
-        class="w-full pl-12 px-4 py-2 border rounded-lg text-lg leading-normal" 
-        (keydown.enter)="onSearchAttendanceRecord($event)"
-      >
-    </div>
+  <section>
+    <mat-form-field appearance="outline" class="mt-4 w-full md:w-72">
+      <mat-label>Select</mat-label>
+      <mat-select class [(ngModel)]="selectedValue">
+        <mat-option value="All">All</mat-option>
+        <mat-option value="Regular Attendees">Regular Attendees</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full mt-4">
+      <mat-label>Filter</mat-label>
+      <input matInput (keydown.enter)="onSearchAttendeesRecord($event)" placeholder="Type a name to search...">
+    </mat-form-field>
 
     @if (attendees.loading) {
-      <div class="text-center text-text-300 p-4">
-        Loading attendees records...
+      <div class="flex flex-col items-center gap-4 backdrop-blur-md text-text-300 my-4 rounded-lg">
+        <img src="assets/gifs/neon-cat.gif" alt="Neon Cat" class="h-40 rounded-md shadow-lg shadow-monochromatic-dark">
+        <p class="font-semibold">Hacking NASA for data . . .</p>
       </div>
     }
 
@@ -37,16 +33,28 @@
     }
 
     @if (!attendees.loading && !attendees.errorMessage)  {
-      <div class="overflow-x-auto">
+      <div class="overflow-x-auto mt-2">
         <table cdk-table [dataSource]="attendeesDataSource" class="min-w-[650px] w-full border border-text-300 rounded-md mt-1">
+          <ng-container cdkColumnDef="profile">
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-3 text-white">Profile</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light pl-6 py-3 border-t border-text-300">
+              <img src="/default-avatar.webp" alt="Attendees Avatar" class="rounded-sm cursor-pointer h-8" [matMenuTriggerFor]="menu">
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item [matMenuTriggerFor]="events"><span>Event Registration</span></button>
+              </mat-menu>
+              <mat-menu #events="matMenu">
+                <button mat-menu-item (click)="registerAttendee(element.id, '01311224-4a82-412a-8860-5715353e4412')"><span>LTHMI Church Anniversary</span></button>
+              </mat-menu>
+            </td>
+          </ng-container>
           <ng-container cdkColumnDef="fullName">
-            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left pl-6 py-3 text-white">Full Name</th>
-            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left pl-6 py-3 text-text-900 font-bold border-t border-text-300"> {{element.firstName}} {{element.lastName}} </td>
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white whitespace-nowrap">Full Name</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 font-bold border-t border-text-300 whitespace-nowrap"> {{element.firstName}} {{element.lastName}} </td>
           </ng-container>
   
           <ng-container cdkColumnDef="age">
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Age</th>
-            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.age}} </td>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.age || '-'}} </td>
           </ng-container>
   
           <ng-container cdkColumnDef="status">
@@ -85,7 +93,7 @@
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Actions</th>
             <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300">
               <div class="flex items-center gap-2">
-                <lucide-angular class="w-5 h-5 cursor-pointer" [img]="SquarePen"></lucide-angular>
+                <lucide-angular class="w-5 h-5 cursor-pointer" [img]="SquarePen" (click)="editAttendee(element.id)"></lucide-angular>
                 <lucide-angular class="w-5 h-5 text-red-500 cursor-pointer" [img]="Trash"></lucide-angular>
               </div>
             </td>

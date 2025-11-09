@@ -7,6 +7,7 @@ import { EventModel } from '@/app/core/events/models/event.model';
 import { RegisterAttendeeDto } from '@/app/core/events/dto/register-attendee.dto';
 import { ApiResponse } from '@/app/core/models/api-response.interface';
 import { environment } from '@/environments/environment';
+import { AttendanceModel } from '../../attendance/models/attendance.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,17 +29,8 @@ export class EventsService {
     return this.http.get<ApiResponse<EventModel>>(`${this.baseUrl}/events/slug/${slug}`)
   }
 
-  getRegisteredAttendees(eventId: string, searchTerm?: string): Observable<ApiResponse<EventRegistrationModel[]>> {
-    const url = `${this.baseUrl}/events/${eventId}/attendees`
-
-    const paramsConfig: { [param: string]: string } = {};
-    if (searchTerm) {
-      paramsConfig['search'] = searchTerm;
-    }
-
-    const params = new HttpParams({ fromObject: paramsConfig });
-
-    return this.http.get<ApiResponse<EventRegistrationModel[]>>(url, { params });
+  getRegisteredAttendees(eventId: string): Observable<ApiResponse<EventRegistrationModel[]>> {
+    return this.http.get<ApiResponse<EventRegistrationModel[]>>(`${this.baseUrl}/event-registrations/event-id/${eventId}`);
   }
 
   registerAttendee(dto: RegisterAttendeeDto): Observable<ApiResponse<EventRegistrationModel>> {
