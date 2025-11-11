@@ -1,25 +1,28 @@
-import { AttendanceModel } from '@/app/core/attendance/models/attendance.model';
+import { VipAttendanceModel } from '@/app/core/attendance/models/vip-attendance.model';
 import { AttendanceService } from '@/app/core/attendance/services/attendance';
 import { Location } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CornerDownLeft, Handshake, LucideAngularModule, Sparkles, User } from 'lucide-angular';
+import { VipItem } from "@/app/shared/components/vip-item/vip-item";
+import { VipHeader } from "@/app/shared/components/vip-header/vip-header";
+import { ErrorCard } from "@/app/shared/components/error-card/error-card";
 
 @Component({
   selector: 'app-event-vip',
   imports: [
     MatTabsModule,
     LucideAngularModule,
-  ],
+    VipItem,
+    VipHeader,
+    ErrorCard
+],
   templateUrl: './event-vip.html',
   styleUrl: './event-vip.css'
 })
 export class EventVip {
   readonly CornerDownLeft = CornerDownLeft;
-  readonly Sparkles = Sparkles;
-  readonly User = User;
-  readonly Handshake = Handshake;
 
   private route = inject(ActivatedRoute);
   private location = inject(Location);
@@ -27,7 +30,15 @@ export class EventVip {
 
   slug = this.route.snapshot.paramMap.get('slug');
 
-  vipAttendees: AttendanceModel[] = [];
+  vips: VipAttendanceModel = {
+    FIRST_TIMER: [],
+    SECOND_TIMER: [],
+    THIRD_TIMER: [],
+    FOURTH_TIMER: [],
+  };
+
+  isVipAttendeesLoading = false;
+  isVipAttendeesEmpty = false;
 
   ngOnInit(): void {
     if (!this.slug) return;
@@ -37,11 +48,15 @@ export class EventVip {
 
   loadVipAttendees() {
     if (!this.slug) return;
+    this.isVipAttendeesLoading = true,
+    this.isVipAttendeesEmpty = false,
 
-    this.attendanceService.getAttendanceByMemberStatus(this.slug, 'THIRD_TIMER').subscribe({
+    this.attendanceService.getVipAttendanceBySlug(this.slug).subscribe({
       next: (response) => {
-        console.log(response)
-        this.vipAttendees = response.data;
+        this.isVipAttendeesLoading = false;
+
+
+        this.vips = response.data;
       },
       error: (error) => {
         console.error('Error loading attendance by member status:', error);

@@ -17,6 +17,8 @@ import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ReportSkeleton } from "@/app/shared/components/report-skeleton/report-skeleton";
 import { DiscipleModel } from '@/app/core/reports/models/attendance-by-primary-leader.model';
 import { ErrorCard } from "@/app/shared/components/error-card/error-card";
+import { EventModel } from '@/app/core/events/models/event.model';
+import { EventsService } from '@/app/core/events/services/events';
 
 @Component({
   selector: 'app-cell-member-attendance-summary',
@@ -39,12 +41,14 @@ import { ErrorCard } from "@/app/shared/components/error-card/error-card";
 export class CellMemberAttendanceSummary {
   private route = inject(ActivatedRoute);
   private reportService = inject(ReportsService);
+  private eventsService = inject(EventsService);
   private destroy$ = new Subject<void>();
 
   readonly date = new FormControl(moment(), { nonNullable: true });
-  selectedValue: string = "Sunday Service";
+  selectedEvent: string = "8757623d-1714-409c-a05d-f3896d44b5cf";
 
-  attendeeId = this.route.snapshot.paramMap.get('attendeeId');
+  events: EventModel[] = [];
+  primaryLeaderId = this.route.snapshot.paramMap.get('primaryLeaderId');
   primaryLeader: {firstName: string, lastName: string } | null = null;
   disciples: DiscipleModel[] = [];
   isDisciplesDataLoading = false;
@@ -59,6 +63,7 @@ export class CellMemberAttendanceSummary {
     })
 
     this.loadAttendanceByPrimaryLeader();
+    this.loadEvents();
   }
 
   ngOnDestroy(): void {
@@ -74,12 +79,12 @@ export class CellMemberAttendanceSummary {
   }
 
   loadAttendanceByPrimaryLeader() {
-    if (!this.attendeeId) return;
+    if (!this.primaryLeaderId) return;
     this.isDisciplesDataLoading = true;
     this.isDisciplesDataEmpty = false;
     const formattedDate = this.date.value.format('YYYY-MM-DD');
 
-    this.reportService.getAttendanceByPrimaryLeader('8757623d-1714-409c-a05d-f3896d44b5cf', formattedDate, this.attendeeId).pipe(
+    this.reportService.getAttendanceByPrimaryLeader(this.selectedEvent, formattedDate, this.primaryLeaderId).pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: (response) => {
@@ -95,7 +100,19 @@ export class CellMemberAttendanceSummary {
     })
   }
 
-  loadPrimaryLeadersList() {
+  loadEvents() {
+    this.eventsService.getEvents().subscribe({
+      next: (response) => {
+        this.events = response.data;
+        console.log(this.events)
+      },
+      error: (error) => {
+        console.error('Error loading events:', error);
+      }
+    })
+  }
 
+  onSelectionChange(event: any) {
+    this.loadAttendanceByPrimaryLeader();
   }
 }

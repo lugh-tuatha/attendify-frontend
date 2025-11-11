@@ -8,6 +8,7 @@ import { PaginatedResponse } from '@/app/core/models/paginated-api-response.inte
 import { ApiResponse } from '@/app/core/models/api-response.interface';
 import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.dto';
 import { CheckInByFaceDto } from '@/app/core/attendance/dto/check-in-by-face.dto';
+import { VipAttendanceModel } from '../models/vip-attendance.model';
 
 @Injectable({
   providedIn: 'root'
@@ -96,7 +97,7 @@ export class AttendanceService {
     return this.http.post<any>(`${this.baseUrl}/attendance/face`, dto);
   }
 
-  getAttendanceByMemberStatus(slug: string, memberStatus: string): Observable<ApiResponse<AttendanceModel[]>> {
-    return this.http.get<ApiResponse<AttendanceModel[]>>(`${this.baseUrl}/attendance/slug/${slug}/member-status/${memberStatus}`);
+  getVipAttendanceBySlug(slug: string, date?: string): Observable<ApiResponse<VipAttendanceModel>> {
+    return this.http.get<ApiResponse<VipAttendanceModel>>(`${this.baseUrl}/attendance/slug/${slug}/vip`);
   }
 }

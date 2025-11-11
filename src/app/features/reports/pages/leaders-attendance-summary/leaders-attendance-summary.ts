@@ -16,6 +16,8 @@ import { ReportsService } from '@/app/core/reports/services/reports';
 import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ReportSkeleton } from "@/app/shared/components/report-skeleton/report-skeleton";
 import { AttendanceByHierarchyModel } from '@/app/core/reports/models/attendance-by-hierarchy.model';
+import { EventsService } from '@/app/core/events/services/events';
+import { EventModel } from '@/app/core/events/models/event.model';
 
 @Component({
   selector: 'app-leaders-attendance-summary',
@@ -37,11 +39,13 @@ import { AttendanceByHierarchyModel } from '@/app/core/reports/models/attendance
 })
 export class LeadersAttendanceSummary {
   readonly date = new FormControl(moment(), { nonNullable: true });
-  selectedValue: string = "Sunday Service";
+  selectedEvent: string = "8757623d-1714-409c-a05d-f3896d44b5cf";
   
   private destroy$ = new Subject<void>();
   private reportService = inject(ReportsService);
+  private eventsService = inject(EventsService);
 
+  events: EventModel[] = [];
   leaderAttendanceListData: AttendanceByHierarchyModel[] = [];
   leaderAttendanceList = {
     isLoading: false,
@@ -57,6 +61,7 @@ export class LeadersAttendanceSummary {
     })
 
     this.loadAttendanceByHierarchy();
+    this.loadEvents();
   }
 
   ngOnDestroy(): void {
@@ -69,7 +74,7 @@ export class LeadersAttendanceSummary {
     this.leaderAttendanceList.isEmpty = false;
     const formattedDate = this.date.value.format('YYYY-MM-DD');
 
-    this.reportService.getAttendanceByHierarchy('8757623d-1714-409c-a05d-f3896d44b5cf', formattedDate, 'PRIMARY_LEADER').pipe(
+    this.reportService.getAttendanceByHierarchy(this.selectedEvent, formattedDate, 'PRIMARY_LEADER').pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: (response) => {
@@ -83,5 +88,21 @@ export class LeadersAttendanceSummary {
         console.error('Error loading attendance by hierarchy:', error);
       }
     });
+  }
+
+  loadEvents() {
+    this.eventsService.getEvents().subscribe({
+      next: (response) => {
+        this.events = response.data;
+        console.log(this.events)
+      },
+      error: (error) => {
+        console.error('Error loading events:', error);
+      }
+    })
+  }
+
+  onSelectionChange(event: any) {
+    this.loadAttendanceByHierarchy();
   }
 }

@@ -1,3 +1,151 @@
 <main class="main-container">
   <h1 class="font-bold text-2xl mt-4">LTHMI Recto Manila - <span class="text-monochromatic-dark">Enroll Attendee</span></h1>
+
+  <mat-card class="mt-4 mb-8" appearance="outlined">
+    <mat-card-header class="bg-monochromatic-light border-b border-monochromatic-base">
+      <mat-card-title-group class="pb-4">
+        <mat-card-title class="text-monochromatic-dark">Attendee Information</mat-card-title>
+        <mat-card-subtitle>Whoever enters invalid data into the field is gay.</mat-card-subtitle>
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="attendeeForm" class="pt-4" (ngSubmit)="onSubmit()">
+        <div class="flex items-center gap-2">
+          <lucide-angular class="w-4 h-4 stroke-[3]" [img]="UserPlus"></lucide-angular>
+          <span class="font-semibold text-lg poppins">Personal Information</span>
+        </div>
+        
+        <div class="grid grid-cols-2 space-y-0 gap-x-6 gap-y-4 mt-2">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" placeholder="e.g. John">
+            <mat-hint>The attendee's given name.</mat-hint>
+            @if (attendeeForm.get('firstName')?.hasError('pattern')) {
+              <mat-error>Name should only contain letters, what are you gay?</mat-error>
+            }
+            @if (attendeeForm.get('firstName')?.hasError('required')) {
+              <mat-error>First name is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" placeholder="e.g. Doe">
+            <mat-hint>Family or surname.</mat-hint>
+            @if (attendeeForm.get('lastName')?.hasError('pattern')) {
+              <mat-error>Last name should only contain letters, you're gay or smth?</mat-error>
+            }
+            @if (attendeeForm.get('lastName')?.hasError('required')) {
+              <mat-error>Last name is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Age</mat-label>
+            <input matInput type="number" formControlName="age" placeholder="e.g. 25">
+            <mat-hint>Helps track demographics by age group.</mat-hint>
+            @if (attendeeForm.get('age')?.hasError('required')) {
+              <mat-error>Age is required</mat-error>
+            }
+            @if (attendeeForm.get('age')?.hasError('min')) {
+              <mat-error>Age must be greater than 0</mat-error>
+            }
+            @if (attendeeForm.get('age')?.hasError('max')) {
+              <mat-error>Age must be less than or equal to 100</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Invited By</mat-label>
+            <input matInput formControlName="invitedBy" placeholder="e.g. John Doe">
+            <mat-hint>Who invited this person.</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+              @for (cs of civilStatuses; track $index) {
+                <mat-option [value]="cs">{{cs}}</mat-option>
+              }
+            </mat-select>
+            <mat-hint>Choose attendee's current civil status.</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full md:w-auto col-span-2">
+            <mat-label>Address</mat-label>
+            <textarea matInput formControlName="address" placeholder="e.g. 123 Recto Avenue, Sampaloc, Manila"></textarea>
+            <mat-hint>Used for follow-up or outreach.</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="flex items-center gap-2 mt-4">
+          <lucide-angular class="w-4 h-4 stroke-[3]" [img]="Church"></lucide-angular>
+          <span class="font-semibold text-lg poppins">Church Role</span>
+        </div>
+
+        <div class="grid grid-cols-2 space-y-0 gap-x-6 gap-y-4 mt-2">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Member Status</mat-label>
+            <mat-select formControlName="memberStatus">
+              @for (status of memberStatuses; track $index) {
+                <mat-option [value]="status">{{ status }}</mat-option>
+              }
+            </mat-select>
+            <mat-hint>Are they a regular attendee or a VIP?</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Church Hierarchy</mat-label>
+            <mat-select formControlName="churchHierarchy">
+              @for (ch of churchHierarchies; track $index) {
+                <mat-option [value]="ch">{{ ch }}</mat-option>
+              }
+            </mat-select>
+            <mat-hint>Current level of leadership.</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Church Process</mat-label>
+            <mat-select formControlName="churchProcess">
+              @for (cp of churchProcesses; track $index) {
+                <mat-option [value]="cp">{{ cp }}</mat-option>
+              }
+            </mat-select>
+            <mat-hint>Select the church process this attendee is part of.</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Primary Leader</mat-label>
+            <mat-select formControlName="primaryLeaderId">
+              @for (leader of primaryLeadersList; track $index) {
+                <mat-option [value]="leader.id">{{ leader.firstName }} {{ leader.lastName }}</mat-option>
+              }
+            </mat-select>
+            <mat-hint>The person directly guiding them.</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Network</mat-label>
+            <mat-select formControlName="network">
+              @for (network of networks; track $index) {
+                <mat-option [value]="network">{{ network }}</mat-option>
+              }
+            </mat-select>
+            <mat-hint>Which network they belong to.</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="flex gap-4 justify-end">
+          <button 
+            mat-flat-button 
+            color="primary" 
+            type="submit" 
+            [disabled]="attendeeForm.invalid || isSubmitting"
+          >
+            {{ isSubmitting ? 'Saving...' : 'Save Changes' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </main>

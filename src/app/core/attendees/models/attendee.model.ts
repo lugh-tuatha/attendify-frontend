@@ -1,9 +1,10 @@
 export interface AttendeeModel {
-  id: string;  
+  id?: string;  
   firstName: string,
   lastName: string,
   age: number,
   email?: string,
+  invitedBy?: string,
   status?: string,
   address?: string,
   birthday?: string,
@@ -18,6 +19,6 @@ export interface AttendeeModel {
   gradeLevel?: string,
   section?: string,
   organizationId?: string,
-  createdAt: string,
-  updatedAt: string,
+  createdAt?: string,
+  updatedAt?: string,
 }

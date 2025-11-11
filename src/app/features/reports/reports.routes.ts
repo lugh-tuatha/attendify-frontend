@@ -23,7 +23,7 @@ export const reportsRoutes: Routes = [
         canActivate: [authGuard],
     },
     {
-        path: 'attendance-summary/leaders/:attendeeId',
+        path: 'attendance-summary/leaders/:primaryLeaderId',
         component: CellMemberAttendanceSummary,
         canActivate: [authGuard],
     },

@@ -4,7 +4,7 @@
   <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
     @if (isLoading) {
       <app-event-card-skeleton></app-event-card-skeleton>
-      <app-event-card-skeleton></app-event-card-skeleton>n
+      <app-event-card-skeleton></app-event-card-skeleton>
     }
 
     @for (event of events; track $index) {

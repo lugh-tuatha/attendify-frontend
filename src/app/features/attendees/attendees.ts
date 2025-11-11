@@ -69,7 +69,7 @@ export class Attendees {
 
   ngOnInit(): void {
     this.breakpointObserver.observe([
-      Breakpoints.XSmall, // This is a common breakpoint for phones
+      Breakpoints.XSmall,
       Breakpoints.Small
     ]).subscribe(result => {
       
@@ -86,7 +86,7 @@ export class Attendees {
       }
     });
 
-    this.loadAttendees();
+    this.loadAttendees(1, 10, undefined, true);
   }
 
   ngOnDestroy(): void {

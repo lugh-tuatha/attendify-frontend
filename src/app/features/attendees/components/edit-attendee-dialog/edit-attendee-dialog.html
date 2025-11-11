@@ -1,8 +1,6 @@
 <mat-dialog-content class="default-modal w-11/12 md:w-[700px] md:edit-attendee-dialog">
   <h1 class="text-xl font-semibold ">Edit Attendee</h1>
-  <p class="my-2">
-    Whoever enters invalid data into the field is gay.
-  </p>
+  <p class="my-2">Whoever enters invalid data into the field is gay.</p>
 
   @if (isAttendeeLoading) {
     <p>luding</p>
@@ -16,10 +14,6 @@
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>First Name</mat-label>
         <input matInput formControlName="firstName" placeholder="e.g. John">
-        <mat-hint>The attendee's given name.</mat-hint>
-        @if (attendeeForm.get('firstName')?.hasError('required')) {
-          <mat-error>First name is required</mat-error>
-        }
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-full">
@@ -29,16 +23,11 @@
             <mat-option [value]="status">{{ status }}</mat-option>
           }
         </mat-select>
-        <mat-hint>Are they a regular attendee or a VIP?</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Last Name</mat-label>
         <input matInput formControlName="lastName" placeholder="e.g. Doe">
-        <mat-hint>Family or surname.</mat-hint>
-        @if (attendeeForm.get('lastName')?.hasError('required')) {
-          <mat-error>Last name is required</mat-error>
-        }
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-full">
@@ -48,21 +37,20 @@
             <mat-option [value]="ch">{{ ch }}</mat-option>
           }
         </mat-select>
-        <mat-hint>Current level of leadership.</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Age</mat-label>
-        <input matInput formControlName="age" placeholder="e.g. 25">
-        <mat-hint>Helps track demographics by age group.</mat-hint>
-        @if (attendeeForm.get('age')?.hasError('required')) {
-          <mat-error>Age is required</mat-error>
-        }
+        <input matInput type="number" formControlName="age" placeholder="e.g. 25">
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Primary Leader</mat-label>
-        <input matInput formControlName="primaryLeaderId" placeholder="Enter first name">
+        <mat-select formControlName="primaryLeaderId">
+          @for (leader of primaryLeadersList; track $index) {
+            <mat-option [value]="leader.id">{{ leader.firstName }} {{ leader.lastName }}</mat-option>
+          }
+        </mat-select>
         <mat-hint>The person directly guiding them.</mat-hint>
       </mat-form-field>
 
@@ -71,7 +59,6 @@
         <mat-select formControlName="status">
           <mat-option value="single">single</mat-option>
         </mat-select>
-        <mat-hint>Choose attendee's current civil status.</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-full">
@@ -81,23 +68,20 @@
             <mat-option [value]="network">{{ network }}</mat-option>
           }
         </mat-select>
-        <mat-hint>Which network they belong to.</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Church Process</mat-label>
-        <mat-select formControlName="network">
+        <mat-select formControlName="churchProcess">
           @for (cp of churchProcesses; track $index) {
             <mat-option [value]="cp">{{ cp }}</mat-option>
           }
         </mat-select>
-        <mat-hint>Which network they belong to.</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-full md:w-auto col-span-2">
         <mat-label>Address</mat-label>
         <textarea matInput formControlName="address" placeholder="e.g. 123 Recto Avenue, Sampaloc, Manila"></textarea>
-        <mat-hint>Used for follow-up or outreach.</mat-hint>
       </mat-form-field>
 
       <div class="flex justify-end gap-4 col-span-2">

@@ -12,55 +12,117 @@
 
     <mat-tab-group animationDuration="0ms">
       <mat-tab label="First Timer">
-        <div class="text-center mt-2">
-          <div class="flex items-center justify-center gap-4">
-            <lucide-angular class="w-8 h-8 text-blue-600" [img]="Sparkles"></lucide-angular>
-            <h1 class="text-5xl">Welcome!</h1>
-            <lucide-angular class="w-8 h-8 text-blue-600" [img]="Sparkles"></lucide-angular>
+        @if (vips.FIRST_TIMER.length === 0) {
+          <div class="mt-4 overflow-hidden">
+            <app-error-card
+              [statusCode]="204"
+              title="Content Not Found"
+              message="No first-timers have checked in for this event yet."
+              imageUrl="/assets/http.cat/204.jpeg"
+            ></app-error-card>
           </div>
-          <p class="text-text-300 text-2xl my-2">
-            We're delighted to have you with us today
-          </p>
-        </div>
+        }
 
-        <div class="bg-white/40 backdrop-blur-md rounded-xl p-6 mb-6 border border-blue-300/50 shadow-lg">
-          <div class="grid grid-cols-2 gap-6">
-            <div class="flex items-center gap-3">
-              <lucide-angular class="w-6 h-6 text-monochromatic-dark stroke-[3]" [img]="User"></lucide-angular>
-              <h2 class="text-3xl">Name</h2>
-            </div>
-            <div class="flex items-center gap-3">
-              <lucide-angular class="w-6 h-6 text-monochromatic-dark stroke-[3]" [img]="Handshake"></lucide-angular>
-              <h2 class="text-3xl">Invited By</h2>
-            </div>
+        @if (vips.FIRST_TIMER.length > 0) {
+          <app-vip-header></app-vip-header>
+  
+          <div class="space-y-4">
+            @for (record of vips.FIRST_TIMER; track $index) {
+              <app-vip-item 
+                firstName="{{record.attendee.firstName}}" 
+                lastName="{{record.attendee.lastName}}" 
+                invitedBy="{{record.attendee.invitedBy}}"
+              ></app-vip-item>
+            }
           </div>
-        </div>
-
-        <div class="space-y-4">
-          @for (record of vipAttendees; track $index) {
-            <div class="bg-white/30 backdrop-blur-sm rounded-xl p-5 border border-blue-300/40 hover:bg-white/50 hover:border-blue-400/60 hover:shadow-md transition-all duration-300 group">
-              <div class="grid grid-cols-2 gap-6">
-                <div class="flex items-center gap-4">
-                  <div class="w-10 h-10 rounded-lg bg-monochromatic-dark flex items-center justify-center text-white">
-                    {{record.attendee.firstName.charAt(0)}}
-                  </div>
-                  <p class="text-xl md:text-2xl">{{record.attendee.firstName}} {{record.attendee.lastName}}</p>
-                </div>
-                <div class="flex items-center">
-                  <p class="text-xl md:text-2xl">{{record.attendee.invitedBy}}</p>
-                </div>
-              </div>
-            </div>
-          }
-        </div>
-        
-        <div class="text-center mt-8">
-          <p class="text-text-300 text-lg">Thank you for being here! 🎉</p>
-        </div>
+          
+          <p class="text-center mt-8 text-text-300 text-lg">Thank you for being here! 🎉</p>
+        }
       </mat-tab>
-      <mat-tab label="Second Timer">Content 2</mat-tab>
-      <mat-tab label="Third Timer">Content 3</mat-tab>
-      <mat-tab label="Fourth Timer">Content 3</mat-tab>
+      <mat-tab label="Second Timer">
+        @if (vips.SECOND_TIMER.length === 0) {
+          <div class="mt-4 overflow-hidden">
+            <app-error-card
+              [statusCode]="204"
+              title="Content Not Found"
+              message="No second-timers have checked in for this event yet."
+              imageUrl="/assets/http.cat/204.jpeg"
+            ></app-error-card>
+          </div>
+        }
+
+        @if (vips.SECOND_TIMER.length > 0) {
+          <app-vip-header></app-vip-header>
+  
+          <div class="space-y-4">
+            @for (record of vips.SECOND_TIMER; track $index) {
+              <app-vip-item 
+                firstName="{{record.attendee.firstName}}" 
+                lastName="{{record.attendee.lastName}}" 
+                invitedBy="{{record.attendee.invitedBy}}"
+              ></app-vip-item>
+            }
+          </div>
+          
+          <p class="text-center mt-8 text-text-300 text-lg">Thank you for being here! 🎉</p>
+        }
+      </mat-tab>
+      <mat-tab label="Third Timer">
+        @if (vips.THIRD_TIMER.length === 0) {
+          <div class="mt-4 overflow-hidden">
+            <app-error-card
+              [statusCode]="204"
+              title="Content Not Found"
+              message="No third-timers have checked in for this event yet."
+              imageUrl="/assets/http.cat/204.jpeg"
+            ></app-error-card>
+          </div>
+        }
+
+        @if (vips.THIRD_TIMER.length > 0) {
+          <app-vip-header></app-vip-header>
+
+          <div class="space-y-4">
+            @for (record of vips.THIRD_TIMER; track $index) {
+              <app-vip-item 
+                firstName="{{record.attendee.firstName}}" 
+                lastName="{{record.attendee.lastName}}" 
+                invitedBy="{{record.attendee.invitedBy}}"
+              ></app-vip-item>
+            }
+          </div>
+          
+          <p class="text-center mt-8 text-text-300 text-lg">Thank you for being here! 🎉</p>
+        }
+      </mat-tab>
+      <mat-tab label="Fourth Timer">
+        @if (vips.FOURTH_TIMER.length === 0) {
+          <div class="mt-4 overflow-hidden">
+            <app-error-card
+              [statusCode]="204"
+              title="Content Not Found"
+              message="No fourth checked in for this event yet."
+              imageUrl="/assets/http.cat/204.jpeg"
+            ></app-error-card>
+          </div>
+        }
+
+        @if (vips.FOURTH_TIMER.length > 0) {
+          <app-vip-header></app-vip-header>
+
+          <div class="space-y-4">
+            @for (record of vips.FOURTH_TIMER; track $index) {
+              <app-vip-item 
+                firstName="{{record.attendee.firstName}}" 
+                lastName="{{record.attendee.lastName}}" 
+                invitedBy="{{record.attendee.invitedBy}}"
+              ></app-vip-item>
+            }
+          </div>
+          
+          <p class="text-center mt-8 text-text-300 text-lg">Thank you for being here! 🎉</p>
+        }
+      </mat-tab>
     </mat-tab-group>
   </main>
 </div>

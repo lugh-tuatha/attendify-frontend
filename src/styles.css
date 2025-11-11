@@ -58,6 +58,10 @@ h1, h2, h3, h4, h5, h6 {
   @apply px-4 mx-auto max-w-7xl w-full;
 }
 
+.poppins {
+  font-family: "Poppins", sans-serif;
+}
+
 .icon-sm {
   text-align: center;
   line-height: 1.5rem;

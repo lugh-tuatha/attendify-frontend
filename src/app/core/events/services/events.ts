@@ -17,6 +17,10 @@ export class EventsService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiBaseUrl;
 
+  getEvents(): Observable<ApiResponse<EventModel[]>> {
+    return this.http.get<ApiResponse<EventModel[]>>(`${this.baseUrl}/events`);
+  }
+
   getEventsByCategory(category: string): Observable<ApiResponse<EventModel[]>> {  
     return this.http.get<ApiResponse<EventModel[]>>(`${this.baseUrl}/events/category/${category}`);
   }

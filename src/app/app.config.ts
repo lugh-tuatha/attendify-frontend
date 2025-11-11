@@ -12,7 +12,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideClerk({
-      publishableKey: 'pk_test_d29ydGh5LWhhZ2Zpc2gtMzUuY2xlcmsuYWNjb3VudHMuZGV2JA'
+      publishableKey: 'pk_live_Y2xlcmsuYXR0ZW5kaWZ5LndlYnNpdGUk'
     }),
   ]
 };

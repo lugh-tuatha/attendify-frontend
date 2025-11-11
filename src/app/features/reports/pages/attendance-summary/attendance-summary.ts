@@ -17,6 +17,8 @@ import { ReportSkeleton } from "@/app/shared/components/report-skeleton/report-s
 import { ReportsService } from '@/app/core/reports/services/reports';
 import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ErrorCard } from "@/app/shared/components/error-card/error-card";
+import { EventsService } from '@/app/core/events/services/events';
+import { EventModel } from '@/app/core/events/models/event.model';
 
 @Component({
   selector: 'app-attendance-summary',
@@ -41,9 +43,12 @@ export class AttendanceSummary {
   readonly Users = Users;
 
   private reportService = inject(ReportsService);
+  private eventsService = inject(EventsService);
 
   readonly date = new FormControl(moment(), { nonNullable: true });
-  selectedValue: string = "Sunday Service";
+  selectedEvent: string = "8757623d-1714-409c-a05d-f3896d44b5cf";
+
+  events: EventModel[] = [];
 
   isAttendanceSummaryLoading = false;
   isAttendanceSummaryEmpty = false;
@@ -63,6 +68,7 @@ export class AttendanceSummary {
     })
     
     this.loadAttendanceSummary();
+    this.loadEvents();
   }
 
   ngOnDestroy(): void {
@@ -75,7 +81,7 @@ export class AttendanceSummary {
     this.isAttendanceSummaryEmpty = false;
     const formattedDate = this.date.value.format('YYYY-MM-DD');
 
-    this.reportService.getAttendanceSummary('8757623d-1714-409c-a05d-f3896d44b5cf', formattedDate).pipe(
+    this.reportService.getAttendanceSummary(this.selectedEvent, formattedDate).pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: (response) => {
@@ -93,5 +99,21 @@ export class AttendanceSummary {
         console.error('Error loading initial data:', error);
       }
     })
+  }
+
+  loadEvents() {
+    this.eventsService.getEvents().subscribe({
+      next: (response) => {
+        this.events = response.data;
+        console.log(this.events)
+      },
+      error: (error) => {
+        console.error('Error loading events:', error);
+      }
+    })
+  }
+
+  onSelectionChange(event: any) {
+    this.loadAttendanceSummary();
   }
 }

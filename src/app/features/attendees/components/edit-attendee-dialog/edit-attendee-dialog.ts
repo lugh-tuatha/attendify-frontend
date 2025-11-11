@@ -34,6 +34,8 @@ export class EditAttendeeDialog {
   churchProcesses = Object.values(ChurchProcessEnum);
   networks = Object.values(NetworkEnum);
 
+  primaryLeadersList: AttendeeModel[] = [];
+
   private attendeesService = inject(AttendeesService);
   private fb = inject(FormBuilder);
 
@@ -43,18 +45,20 @@ export class EditAttendeeDialog {
 
   ngOnInit(): void {
     this.attendeeForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstName: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
+      lastName: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
       age: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
       status: [''],
       address: [''],
-      memberStatus: [],
+      memberStatus: [''],
       churchHierarchy: [''],
+      churchProcess: [''],
       primaryLeaderId: [''],
       network: [''],
     })
 
     this.loadAttendee();
+    this.loadPrimaryLeader();
   }
 
   loadAttendee() {
@@ -71,12 +75,18 @@ export class EditAttendeeDialog {
     })
   }
 
-  onSubmit() {
-    if (this.attendeeForm.invalid) {
-      this.attendeeForm.markAllAsTouched();
-      return;
-    }
+  loadPrimaryLeader() {
+    this.attendeesService.getAttendeesByChurchHierarchy('PRIMARY_LEADER').subscribe({
+      next: (response) => {
+        this.primaryLeadersList = response.data;
+      },
+      error: (error) => {
+        console.error('Error loading primary leaders:', error);
+      }
+    })
+  }
 
+  onSubmit() {
     this.isSubmitting = true;
     const payload: AttendeeModel = {
       ...this.attendeeForm.value,
@@ -94,7 +104,6 @@ export class EditAttendeeDialog {
         console.error('Error updating attendee:', error);
       }
     })
-
   }
 
   close() {

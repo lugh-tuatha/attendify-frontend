@@ -20,7 +20,7 @@ export class ErrorHandlerService {
   showErrorModal(status: number, message: string) {
     let modalData: ModalData = {
       title: '0: Unknown Error',
-      message: 'Backend is unreachable or network error.',
+      message: message || 'Backend is unreachable or network error.',
       image: 'assets/http.cat/0.jpeg'
     };
 

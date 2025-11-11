@@ -53,8 +53,16 @@ export class AttendeesService {
     );
   }
 
+  createAttendee(payload: AttendeeModel): Observable<ApiResponse<AttendeeModel>> {
+    return this.http.post<ApiResponse<AttendeeModel>>(`${this.baseUrl}/attendees`, payload);
+  }
+
   getAttendeeById(attendeeId: string): Observable<ApiResponse<AttendeeModel>> {
     return this.http.get<ApiResponse<AttendeeModel>>(`${this.baseUrl}/attendees/${attendeeId}`);
+  }
+
+  getAttendeesByChurchHierarchy(churchHierarchy: string): Observable<ApiResponse<AttendeeModel[]>> {
+    return this.http.get<ApiResponse<AttendeeModel[]>>(`${this.baseUrl}/attendees/church-hierarchy/${churchHierarchy}`);
   }
 
   updateAttendee(attendeeId: string, payload: AttendeeModel): Observable<ApiResponse<AttendeeModel>> {
