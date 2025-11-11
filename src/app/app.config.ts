@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { provideClerk } from '@jsrob/ngx-clerk'
+import { environment } from '@/environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideClerk({
-      publishableKey: 'pk_live_Y2xlcmsuYXR0ZW5kaWZ5LndlYnNpdGUk'
+      publishableKey: environment.clerkPublishableKey,
     }),
   ]
 };

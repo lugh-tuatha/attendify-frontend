@@ -18,6 +18,7 @@ import { ReportSkeleton } from "@/app/shared/components/report-skeleton/report-s
 import { AttendanceByHierarchyModel } from '@/app/core/reports/models/attendance-by-hierarchy.model';
 import { EventsService } from '@/app/core/events/services/events';
 import { EventModel } from '@/app/core/events/models/event.model';
+import { ErrorCard } from "@/app/shared/components/error-card/error-card";
 
 @Component({
   selector: 'app-leaders-attendance-summary',
@@ -31,8 +32,9 @@ import { EventModel } from '@/app/core/events/models/event.model';
     MatInputModule,
     RouterLink,
     MatSelectModule,
-    ReportSkeleton
-  ],
+    ReportSkeleton,
+    ErrorCard
+],
   templateUrl: './leaders-attendance-summary.html',
   providers: [provideMomentDateAdapter(DEFAULT_DATE_FORMAT)],
   styleUrl: './leaders-attendance-summary.css'

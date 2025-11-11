@@ -6,11 +6,13 @@
       <ul class="hidden md:flex gap-4 font-semibold">
         <li class="cursor-pointer" routerLink="dashboard">Dashboard</li>
         <li class="cursor-pointer" routerLink="attendees">Attendees</li>
-        <li class="cursor-pointer" routerLink="calendar">Calendar</li>
+        <!-- <li class="cursor-pointer" routerLink="calendar">Calendar</li> -->
         <li class="cursor-pointer" routerLink="attendance">Attendance</li>
         <li class="cursor-pointer" routerLink="events">Events</li>
         <li class="cursor-pointer" routerLink="reports">Reports</li>
       </ul>
+
+      <lucide-angular class="md:hidden w-8 h-8 stroke-[3] cursor-pointer" [img]="Menu" (click)="toggleMenu()"></lucide-angular>
 
       @if (isSignedIn()) {
         <clerk-user-button class="flex"></clerk-user-button>
@@ -18,6 +20,35 @@
         <app-button routerLink="login">Login</app-button>
       }
     </div>
-    <!-- <img src="" alt=""> -->
   </nav>
 </header>
+
+@if (isMenuOpen()) {
+  <nav class="bg-monochromatic-light h-screen fixed z-100 w-full">
+    <div class="main-container py-4">
+      <ul class="space-y-4 text-2xl" (click)="toggleMenu()">
+        <li class="flex items-center gap-2 poppins" routerLink="dashboard">
+          <lucide-angular class="w-5 h-5" [img]="LayoutDashboard"></lucide-angular>
+          Dashboard
+        </li>
+        <li class="flex items-center gap-2 poppins" routerLink="attendees">
+          <lucide-angular class="w-5 h-5" [img]="Users"></lucide-angular>
+          Attendees
+        </li>
+        <!-- <li>Calendar</li> -->
+        <li class="flex items-center gap-2 poppins" routerLink="attendance">
+          <lucide-angular class="w-5 h-5" [img]="CalendarSync"></lucide-angular>
+          Attendance
+        </li>
+        <li class="flex items-center gap-2 poppins" routerLink="events">
+          <lucide-angular class="w-5 h-5" [img]="CalendarFold"></lucide-angular>
+          Events
+        </li>
+        <li class="flex items-center gap-2 poppins" routerLink="reports">
+          <lucide-angular class="w-5 h-5" [img]="FileText"></lucide-angular>
+          Reports
+        </li>
+      </ul>
+    </div>
+  </nav>
+}

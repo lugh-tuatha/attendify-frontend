@@ -74,18 +74,9 @@ export class EventManage {
 
   cardColor = '#3A445D';
   overviewData = [
-    { 
-      name: 'Registered Attendees', 
-      value: 0,
-    },
-    { 
-      name: 'Attendees (Overall)', 
-      value: 0,
-    },
-    { 
-      name: 'Total VIP', 
-      value: 0,
-    },
+    { name: 'Registered Attendees', value: 0, },
+    { name: 'Attendees (Overall)', value: 0,  },
+    { name: 'Total VIP', value: 0, },
   ]
 
   isLoading = {

@@ -76,10 +76,13 @@
   </table>
 
   @if (leaderAttendanceList.isEmpty && !leaderAttendanceList.isLoading) {
-    <div class="w-3/5 mt-4 text-center text-text-300">
-      <img src="/assets/http.cat/204.jpeg" class="rounded-md w-88 aspect-[3/2] mx-auto" alt="204: http.cat image">
-      <h2 class="mt-2 text-xl text-center font-semibold">204: Content Not Found</h2>
-      <p class="mt-1 text-center">We can't generate reports, no attendance records found for this date.</p>
+    <div class="md:w-3/5 mt-4">
+      <app-error-card
+        [statusCode]="204"
+        title="Content Not Found"
+        message="We can't generate reports, no attendance records found for this date."
+        imageUrl="/assets/http.cat/204.jpeg"
+      ></app-error-card>
     </div>
   }
 </main>

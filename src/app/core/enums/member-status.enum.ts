@@ -1,4 +1,5 @@
 export enum MemberStatusEnum {
+  NEWCOMER = 'NEWCOMER',
   FIRST_TIMER = 'FIRST_TIMER',
   SECOND_TIMER = 'SECOND_TIMER',
   THIRD_TIMER = 'THIRD_TIMER',

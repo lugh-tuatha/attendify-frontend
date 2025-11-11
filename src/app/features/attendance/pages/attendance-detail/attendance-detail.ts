@@ -1,6 +1,6 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { DatePipe, NgClass } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,13 +20,13 @@ import { StatCard } from '@/app/shared/components/stat-card/stat-card';
 import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ErrorCard } from '@/app/shared/components/error-card/error-card';
 import { environment } from '@/environments/environment';
+import { NgxChartsModule } from "@swimlane/ngx-charts";
 
 @Component({
   selector: 'app-attendance-detail',
   imports: [
     RouterLink,
     DatePipe,
-    StatCard,
     CdkTableModule,
     MatFormFieldModule,
     MatInputModule,
@@ -37,7 +37,8 @@ import { environment } from '@/environments/environment';
     MatPaginator,
     NgClass,
     ErrorCard,
-  ],
+    NgxChartsModule
+],
   providers: [provideMomentDateAdapter(DEFAULT_DATE_FORMAT)],
   templateUrl: './attendance-detail.html',
   styleUrl: './attendance-detail.css'
@@ -52,8 +53,10 @@ export class AttendanceDetail {
   readonly SearchCheck = SearchCheck;
 
   readonly organizationId = environment.organizationId;
+  readonly date = new FormControl(moment(), { nonNullable: true });
 
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private attendanceService = inject(AttendanceService);
 
   slug = this.route.snapshot.paramMap.get('slug');
@@ -67,11 +70,14 @@ export class AttendanceDetail {
     errorMessage: null,
     empty: false,
   }
-
-  readonly date = new FormControl(moment(), { nonNullable: true });
-
   currentPage = 1;
   pageLimit = 10;  
+
+  cardColor = '#3A445D';
+  overviewData = [
+    { name: 'Attendees (Overall)', value: 0 },
+    { name: 'Total VIP', value: 0 }
+  ];
 
   ngOnInit(): void {
     if (!this.slug) return;
@@ -108,7 +114,10 @@ export class AttendanceDetail {
         this.attendance.totalCount = response.meta.total;
         this.attendance.loading = false;
         this.attendance.empty = response.data.length === 0;
-        console.log(response.data)
+        this.overviewData = [
+          { name: 'Attendees (Overall)', value: response.meta.total },
+          { name: 'Total VIP', value: this.overviewData[1].value }
+        ];
 
         this.attendanceService.prefetchNextPage(
           this.organizationId,
@@ -128,6 +137,12 @@ export class AttendanceDetail {
         this.attendanceDataSource.data = [];
       }
     })
+  }
+
+  onCardClick(event: any) {
+    if (event.name === 'Total VIP') {
+      this.router.navigate([`/attendance/${this.slug}/vip`]);
+    }
   }
 
   onSearchAttendanceRecord(event: Event): void {

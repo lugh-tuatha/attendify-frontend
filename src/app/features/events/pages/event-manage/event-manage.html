@@ -136,14 +136,14 @@
             <ng-container cdkColumnDef="churchHierarchy">
               <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Hierarchy</th>
               <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300">
-                {{ element.attendee.churchHierarchy }} 
+                {{ element.attendee.churchHierarchy || '-' }} 
               </td>
             </ng-container>
 
             <ng-container cdkColumnDef="memberStatus">
               <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
               <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-2 text-text-900 border-t border-text-300">
-                {{ element.attendee.memberStatus }} 
+                {{ element.attendee.memberStatus || '-' }} 
               </td>
             </ng-container>
 

@@ -8,11 +8,11 @@ export const AttendeesRoutes: Routes = [
     {
         path: '',
         component: Attendees,
-        canActivate: [authGuard],
+        // canActivate: [authGuard],
     },
     {
         path: 'enroll',    
         component: EnrollAttendee,
-        canActivate: [authGuard],
+        // canActivate: [authGuard],
     },
 ]

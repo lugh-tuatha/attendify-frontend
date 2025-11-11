@@ -15,10 +15,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { ReportsService } from '@/app/core/reports/services/reports';
 import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ReportSkeleton } from "@/app/shared/components/report-skeleton/report-skeleton";
-import { DiscipleModel } from '@/app/core/reports/models/attendance-by-primary-leader.model';
+import { DiscipleModel, SummaryModel } from '@/app/core/reports/models/attendance-by-primary-leader.model';
 import { ErrorCard } from "@/app/shared/components/error-card/error-card";
 import { EventModel } from '@/app/core/events/models/event.model';
 import { EventsService } from '@/app/core/events/services/events';
+import { LucideAngularModule, Users } from 'lucide-angular';
 
 @Component({
   selector: 'app-cell-member-attendance-summary',
@@ -32,6 +33,7 @@ import { EventsService } from '@/app/core/events/services/events';
     MatDatepickerModule,
     MatFormFieldModule,
     ReportSkeleton,
+    LucideAngularModule,
     ErrorCard
 ],
   providers: [provideMomentDateAdapter(DEFAULT_DATE_FORMAT)],
@@ -39,6 +41,8 @@ import { EventsService } from '@/app/core/events/services/events';
   styleUrl: './cell-member-attendance-summary.css'
 })
 export class CellMemberAttendanceSummary {
+  readonly Users = Users;
+
   private route = inject(ActivatedRoute);
   private reportService = inject(ReportsService);
   private eventsService = inject(EventsService);
@@ -50,6 +54,7 @@ export class CellMemberAttendanceSummary {
   events: EventModel[] = [];
   primaryLeaderId = this.route.snapshot.paramMap.get('primaryLeaderId');
   primaryLeader: {firstName: string, lastName: string } | null = null;
+  summary: SummaryModel | null = null;
   disciples: DiscipleModel[] = [];
   isDisciplesDataLoading = false;
   isDisciplesDataEmpty = false;
@@ -90,9 +95,10 @@ export class CellMemberAttendanceSummary {
       next: (response) => {
         this.primaryLeader = response.data.primaryLeader;
         this.disciples = response.data.disciples;
+        this.summary = response.data.summary;
         this.isDisciplesDataLoading = false;
         this.isDisciplesDataEmpty = this.disciples.length === 0;
-        console.log(response)
+        console.log(this.summary)
       },
       error: (error) => {
         console.error('Error loading attendance by primary leader:', error);

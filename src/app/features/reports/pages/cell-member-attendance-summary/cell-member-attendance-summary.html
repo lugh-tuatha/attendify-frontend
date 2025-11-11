@@ -25,10 +25,8 @@
   <table class="w-full md:w-3/5 print:w-full print:-mx-4 border-2 border-monochromatic-base shadow-default border-collapse">
     <thead class="text-xl font-normal rounded-3xl">
       <tr>
-        <th class="text-left px-4 py-3 font-bold">Name</th>
         <th class="text-left px-4 py-3 font-bold">Member Status</th>
-        <th class="text-left px-4 py-3 font-bold">Process</th>
-        <th class="text-rigTht px-4 py-3 font-bold">Time Arrival</th> 
+        <th class="text-right px-4 py-3 font-bold">Attendees</th> 
       </tr>
     </thead>
 
@@ -39,45 +37,107 @@
 
       @if (!isDisciplesDataEmpty && !isDisciplesDataLoading) {
         <tr class="border">
-          <th colspan="4" class="px-4 py-1 bg-monochromatic-dark font-bold text-left">
-            {{ primaryLeaderFullName }}
+          <th colspan="2" class="px-4 py-1 bg-monochromatic-dark font-bold text-left">
+            Attendees
           </th>
         </tr>
 
-        @for (record of disciples; track $index) {
+        @for (category of summary?.attendees?.categories; track category.name) {
           <tr class="border">
-            <td class="px-4 py-1">
-              {{record.firstName}} {{record.lastName}}
-            </td>
-            <td class="px-4 py-1">
-              {{ record.memberStatus }}
-            </td>
-            <td class="px-4 py-1">
-              {{ record.churchProcess }}
-            </td>
+            <td class="px-4 py-1">{{category.name}}</td>
             <td class="px-4 py-1 flex gap-2 justify-end items-center">
-              <div class="flex items-center justify-end gap-4">
-                <span>
-                  {{ record.attendance.length > 0
-                    ? (record.attendance[0].timeIn | date: 'shortTime') 
-                    : "-"
-                  }}
-                </span>
-                <div 
-                  class="w-2.5 h-2.5 rounded-full"
-                  [ngClass]="{
-                    'bg-danger-900': record.attendance.length > 0 && record.attendance[0].isLate,
-                    'bg-success-900': record.attendance.length > 0 && !record.attendance[0].isLate,
-                    'bg-gray-400': record.attendance.length === 0
-                  }"
-                ></div>
-              </div>
+              <span>{{category.count || 0}}</span>
+              <lucide-angular class="w-4 h-4" [img]="Users"></lucide-angular>
             </td>
           </tr>
         }
+        <tr class="border">
+          <td class="px-4 py-1 font-bold">TOTAL</td>
+          <td class="px-4 py-1 font-bold flex gap-2 justify-end items-center">
+            <span>{{summary?.attendees?.total || 0}}</span>
+            <lucide-angular class="w-4 h-4" [img]="Users"></lucide-angular>
+          </td>
+        </tr>
+
+        <tr class="border">
+          <th colspan="2" class="px-4 py-1 bg-monochromatic-dark font-bold text-left">
+            VIPs
+          </th>
+        </tr>
+        @for (category of summary?.vips?.categories; track category.name) {
+          <tr class="border">
+            <td class="px-4 py-1">{{category.name}}</td>
+            <td class="px-4 py-1 flex gap-2 justify-end items-center">
+              <span>{{category.count || 0}}</span>
+              <lucide-angular class="w-4 h-4" [img]="Users"></lucide-angular>
+            </td>
+          </tr>
+        }
+        <tr class="border">
+          <td class="px-4 py-1 font-bold">TOTAL</td>
+          <td class="px-4 py-1 font-bold flex gap-2 justify-end items-center">
+            <span>{{summary?.vips?.total || 0}}</span>
+            <lucide-angular class="w-4 h-4" [img]="Users"></lucide-angular>
+          </td>
+        </tr>
       }
     </tbody>
   </table>
+
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full md:w-3/5 print:w-full print:-mx-4 border-2 border-monochromatic-base shadow-default border-collapse">
+      <thead class="text-xl font-normal rounded-3xl">
+        <tr>
+          <th class="text-left px-4 py-3 font-bold">Name</th>
+          <th class="text-left px-4 py-3 font-bold text-nowrap">Member Status</th>
+          <th class="text-left px-4 py-3 font-bold">Process</th>
+          <th class="text-right px-4 py-3 font-bold text-nowrap">Time Arrival</th> 
+        </tr>
+      </thead>
+  
+      <tbody>
+        @if (!isDisciplesDataEmpty && !isDisciplesDataLoading) {
+          <tr class="border">
+            <th colspan="4" class="px-4 py-1 bg-monochromatic-dark font-bold text-left">
+              {{ primaryLeaderFullName }}
+            </th>
+          </tr>
+  
+          @for (record of disciples; track $index) {
+            <tr class="border">
+              <td class="px-4 py-1 text-nowrap">
+                {{record.firstName}} {{record.lastName}}
+              </td>
+              <td class="px-4 py-1">
+                {{ record.memberStatus }}
+              </td>
+              <td class="px-4 py-1">
+                {{ record.churchProcess }}
+              </td>
+              <td class="px-4 py-1 flex gap-2 justify-end items-center">
+                <div class="flex items-center justify-end gap-4">
+                  <span>
+                    {{ record.attendance.length > 0
+                      ? (record.attendance[0].timeIn | date: 'shortTime') 
+                      : "-"
+                    }}
+                  </span>
+                  <div 
+                    class="w-2.5 h-2.5 rounded-full"
+                    [ngClass]="{
+                      'bg-danger-900': record.attendance.length > 0 && record.attendance[0].isLate,
+                      'bg-success-900': record.attendance.length > 0 && !record.attendance[0].isLate,
+                      'bg-gray-400': record.attendance.length === 0
+                    }"
+                  ></div>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
 
   @if (isDisciplesDataEmpty && !isDisciplesDataLoading) {
     <div class="w-3/5 mt-4">

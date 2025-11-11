@@ -43,6 +43,7 @@
             Attendees
           </th>
         </tr>
+        
         @for (category of regularAttendees; track category.name) {
           <tr class="border">
             <td class="px-4 py-1">{{category.name}}</td>
@@ -86,11 +87,11 @@
   </table>
 
   @if (isAttendanceSummaryEmpty && !isAttendanceSummaryLoading) {
-  <div class="w-3/5 mt-4">
+  <div class="md:w-3/5 mt-4">
     <app-error-card
       [statusCode]="204"
       title="Content Not Found"
-      message="No attendance records found for this date."
+      message="We can't generate reports, no attendance records found for this date."
       imageUrl="/assets/http.cat/204.jpeg"
     ></app-error-card>
   </div>
