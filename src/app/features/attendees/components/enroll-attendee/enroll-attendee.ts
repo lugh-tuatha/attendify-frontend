@@ -1,21 +1,24 @@
-import { AttendeeModel } from '@/app/core/attendees/models/attendee.model';
-import { ChurchHierarchyEnum } from '@/app/core/enums/church-hierarchy.enum';
-import { ChurchProcessEnum } from '@/app/core/enums/church-process.enum';
-import { MemberStatusEnum } from '@/app/core/enums/member-status.enum';
-import { NetworkEnum } from '@/app/core/enums/network.enum';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { Church, LucideAngularModule, UserPlus } from "lucide-angular";
 import { MatSliderModule } from '@angular/material/slider';
-import { CivilStatusesEnum } from '@/app/core/enums/status.enum';
-import { AttendeesService } from '@/app/core/attendees/services/attendees';
+
+import { Church, LucideAngularModule, UserPlus } from "lucide-angular";
 import { finalize } from 'rxjs';
+
+import { AttendeeModel } from '@/app/core/attendees/models/attendee.model';
+import { ChurchHierarchyEnum } from '@/app/core/enums/church-hierarchy.enum';
+import { ChurchProcessEnum } from '@/app/core/enums/church-process.enum';
+import { MemberStatusEnum } from '@/app/core/enums/member-status.enum';
+import { NetworkEnum } from '@/app/core/enums/network.enum';
+import { CivilStatusesEnum } from '@/app/core/enums/status.enum';
 import { environment } from '@/environments/environment';
+import { AttendeesService } from '@/app/core/attendees/services/attendees';
 import { ErrorHandlerService } from '@/app/core/services/error-handler';
 
 @Component({

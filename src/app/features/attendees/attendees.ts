@@ -17,6 +17,7 @@ import { EventsService } from '@/app/core/events/services/events';
 import { ErrorHandlerService } from '@/app/core/services/error-handler';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { RouterLink } from '@angular/router';
+import { environment } from '@/environments/environment';
 
 @Component({
   selector: 'app-attendees',
@@ -43,8 +44,9 @@ export class Attendees {
   readonly Trash = Trash; 
   readonly SearchCheck = SearchCheck;
   readonly EllipsisVertical = EllipsisVertical;
+  
+  readonly organizationId = environment.organizationId;
 
-  private readonly organizationId = '9d9f4139-ac7d-4aa6-a2ef-bcb941e3ea96';
   private attendeesService = inject(AttendeesService);
   private eventsService = inject(EventsService);
   private errorHandlerService = inject(ErrorHandlerService);

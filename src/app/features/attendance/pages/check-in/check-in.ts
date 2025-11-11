@@ -17,6 +17,7 @@ import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.
 import { EventModel } from '@/app/core/events/models/event.model';
 import { Button } from '@/app/shared/ui/button/button'; 
 import { ErrorHandlerService } from '@/app/core/services/error-handler';
+import { environment } from '@/environments/environment';
 
 @Component({
   selector: 'app-check-in',
@@ -38,7 +39,8 @@ export class CheckIn {
   readonly SearchCheck = SearchCheck;
   readonly CornerDownLeft = CornerDownLeft;
 
-  private readonly organizationId = '9d9f4139-ac7d-4aa6-a2ef-bcb941e3ea96';
+  readonly organizationId = environment.organizationId;
+
   private snackBar = inject(MatSnackBar);
   private route = inject(ActivatedRoute);
   private attendanceService = inject(AttendanceService);

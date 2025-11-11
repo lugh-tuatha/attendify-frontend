@@ -19,6 +19,7 @@ import { AttendanceService } from '@/app/core/attendance/services/attendance';
 import { StatCard } from '@/app/shared/components/stat-card/stat-card';
 import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ErrorCard } from '@/app/shared/components/error-card/error-card';
+import { environment } from '@/environments/environment';
 
 @Component({
   selector: 'app-attendance-detail',
@@ -50,10 +51,11 @@ export class AttendanceDetail {
   readonly CornerDownLeft = CornerDownLeft;
   readonly SearchCheck = SearchCheck;
 
+  readonly organizationId = environment.organizationId;
+
   private route = inject(ActivatedRoute);
   private attendanceService = inject(AttendanceService);
 
-  private readonly organizationId = '9d9f4139-ac7d-4aa6-a2ef-bcb941e3ea96';
   slug = this.route.snapshot.paramMap.get('slug');
 
   displayedColumns: string[] = ['fullName', 'primaryLeader', 'churchProcess', 'memberStatus', 'arival'];
