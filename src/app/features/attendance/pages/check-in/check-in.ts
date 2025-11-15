@@ -186,7 +186,11 @@ export class CheckIn {
     if (!this.event) return;
     this.isCheckInLoading = true;
 
-    const isLate = new Date().getTime() > new Date(this.event.startTime).getTime();
+    const eventTime = new Date(this.event.startTime);
+    const now = new Date();
+    const isLate = 
+      now.getHours() > eventTime.getHours() ||
+     (now.getHours() === eventTime.getHours() && now.getMinutes() >= eventTime.getMinutes());
 
     const dto: CheckInAttendeeDto = {
       isLate: isLate,
