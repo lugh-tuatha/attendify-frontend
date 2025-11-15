@@ -31,6 +31,7 @@ export class AttendanceService {
     page: number = 1, 
     limit: number = 10, 
     searchTerm?: string,
+    forceRefresh: boolean = false
   ): Observable<PaginatedResponse<AttendanceModel>> {
     const url = `${this.baseUrl}/attendance`;
 
@@ -50,7 +51,7 @@ export class AttendanceService {
 
     const cacheKey = `${url}?${params.toString()}`;
     const cachedResponse = this.cache.get(cacheKey);
-    if (cachedResponse) {
+    if (!forceRefresh && cachedResponse) {
       return of(cachedResponse);
     }
 
@@ -98,6 +99,13 @@ export class AttendanceService {
   }
 
   getVipAttendanceBySlug(slug: string, date?: string): Observable<ApiResponse<VipAttendanceModel>> {
-    return this.http.get<ApiResponse<VipAttendanceModel>>(`${this.baseUrl}/attendance/slug/${slug}/vip`);
+    const url = `${this.baseUrl}/attendance/slug/${slug}/vip`
+    let params = new HttpParams();
+    
+    if (date) {
+      params = params.set('date', date);
+    }
+
+    return this.http.get<ApiResponse<VipAttendanceModel>>(url, { params });
   }
 }

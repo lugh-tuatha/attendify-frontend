@@ -90,7 +90,7 @@ export class AttendanceDetail {
       this.loadAttendanceRecord();
     })
 
-    this.loadAttendanceRecord();
+    this.loadAttendanceRecord(1, 10, undefined, true);
   }
 
   ngOnDestroy(): void {
@@ -98,7 +98,12 @@ export class AttendanceDetail {
     this.destroy$.complete();
   }
 
-  private loadAttendanceRecord(page: number = 1, limit: number = 10, searchTerm?: string): void {
+  private loadAttendanceRecord(
+    page: number = 1, 
+    limit: number = 10, 
+    searchTerm?: string,
+    forceRefresh: boolean = false,
+  ): void {
     if (!this.slug) return;
 
     this.attendance.loading = true;
@@ -106,7 +111,7 @@ export class AttendanceDetail {
     this.attendance.empty = false;
     const formattedDate = this.date.value.format('YYYY-MM-DD');
 
-    this.attendanceService.getAttendanceRecord(this.organizationId, this.slug, formattedDate, page, limit, searchTerm).pipe(
+    this.attendanceService.getAttendanceRecord(this.organizationId, this.slug, formattedDate, page, limit, searchTerm, forceRefresh).pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: (response) => {
@@ -140,8 +145,10 @@ export class AttendanceDetail {
   }
 
   onCardClick(event: any) {
+    const formattedDate = this.date.value.format('YYYY-MM-DD');
+
     if (event.name === 'Total VIP') {
-      this.router.navigate([`/attendance/${this.slug}/vip`]);
+      this.router.navigate([`/attendance/${this.slug}/vip/${formattedDate}`]);
     }
   }
 

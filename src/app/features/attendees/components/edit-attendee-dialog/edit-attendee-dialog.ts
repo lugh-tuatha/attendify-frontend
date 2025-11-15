@@ -45,9 +45,9 @@ export class EditAttendeeDialog {
 
   ngOnInit(): void {
     this.attendeeForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
-      lastName: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
-      age: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
+      firstName: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñ\s\.]+$/)]],
+      lastName: ['', Validators.pattern(/^[A-Za-zÑñ\s\.]+$/)],
+      age: [null, [Validators.min(1), Validators.max(100)]],
       status: [''],
       address: [''],
       memberStatus: [''],
@@ -90,7 +90,9 @@ export class EditAttendeeDialog {
     this.isSubmitting = true;
     const payload: AttendeeModel = {
       ...this.attendeeForm.value,
-      age: Number(this.attendeeForm.value.age),
+      age: this.attendeeForm.value.age
+        ? Number(this.attendeeForm.value.age)
+        : null,
     }
     
     this.attendeesService.updateAttendee(this.data.attendeeId, payload).subscribe({

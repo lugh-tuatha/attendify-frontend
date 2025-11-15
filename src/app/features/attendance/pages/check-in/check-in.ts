@@ -56,7 +56,7 @@ export class CheckIn {
   isCheckInLoading = false;
   isCheckInByFaceLoading = false;
   
-  displayedColumns: string[] = ['fullName', 'churchHierarchy', 'memberStatus', 'actions'];
+  displayedColumns: string[] = ['fullName',  'memberStatus', 'primaryLeader', 'actions'];
   attendeesDataSource = new MatTableDataSource<any>([]);
   attendees = {
     totalCount: 0,

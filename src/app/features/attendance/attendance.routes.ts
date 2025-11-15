@@ -5,7 +5,7 @@ import { authGuard } from "@/app/core/guards/auth.guard";
 import { Attendance } from "./attendance";
 import { AttendanceDetail } from "./pages/attendance-detail/attendance-detail";
 import { CheckIn } from "./pages/check-in/check-in";
-import { Vip } from "./pages/vip/vip";
+import { AttendanceVip } from "./pages/attendance-vip/attendance-vip";
 
 export const attendanceRoutes: Routes = [
     {
@@ -24,8 +24,8 @@ export const attendanceRoutes: Routes = [
         canActivate: [authGuard],
     },
     {
-        path: ':slug/vip',
-        component: Vip,
+        path: ':slug/vip/:date',
+        component: AttendanceVip,
         canActivate: [authGuard],
     },
 ]

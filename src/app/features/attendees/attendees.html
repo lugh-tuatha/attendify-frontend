@@ -49,27 +49,37 @@
           </ng-container>
           <ng-container cdkColumnDef="fullName">
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white whitespace-nowrap">Full Name</th>
-            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 font-bold border-t border-text-300 whitespace-nowrap"> {{element.firstName}} {{element.lastName}} </td>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 font-bold border-t border-text-300 whitespace-nowrap capitalize">
+              {{element.firstName}} {{element.lastName}} 
+            </td>
           </ng-container>
   
           <ng-container cdkColumnDef="age">
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Age</th>
-            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.age || '-'}} </td>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300">
+              {{element.age || '-'}} 
+            </td>
           </ng-container>
   
           <ng-container cdkColumnDef="status">
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Status</th>
-            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.status || '-'}} </td>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> 
+              {{element.status || '-'}} 
+            </td>
           </ng-container>
   
           <ng-container cdkColumnDef="memberStatus">
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
-            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.memberStatus || '-'}} </td>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300">
+              {{element.memberStatus || '-'}} 
+            </td>
           </ng-container>
   
           <ng-container cdkColumnDef="churchHierarchy">
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Hierarchy</th>
-            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.churchHierarchy || '-'}} </td>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300">
+              {{element.churchHierarchy || '-'}} 
+            </td>
           </ng-container>
   
           <ng-container cdkColumnDef="primaryLeader">
@@ -81,12 +91,16 @@
   
           <ng-container cdkColumnDef="churchProcess">
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Church Process</th>
-            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.churchProcess || '-'}} </td>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300">
+              {{element.churchProcess || '-'}} 
+            </td>
           </ng-container>
   
           <ng-container cdkColumnDef="network">
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Network</th>
-            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> {{element.network}} </td>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300">
+              {{element.network}} 
+            </td>
           </ng-container>
   
           <ng-container cdkColumnDef="actions">

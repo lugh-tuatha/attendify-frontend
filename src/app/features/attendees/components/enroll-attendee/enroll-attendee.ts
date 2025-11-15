@@ -63,9 +63,9 @@ export class EnrollAttendee {
 
   ngOnInit(): void {
     this.attendeeForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
-      lastName: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
-      age: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
+      firstName: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñ\s\.]+$/)]],
+      lastName: ['', Validators.pattern(/^[A-Za-zÑñ\s\.]+$/)],
+      age: [null, [Validators.min(1), Validators.max(100)]],
       invitedBy: [null],
       status: [null],
       address: [null],

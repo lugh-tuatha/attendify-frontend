@@ -35,18 +35,12 @@
             @if (attendeeForm.get('lastName')?.hasError('pattern')) {
               <mat-error>Last name should only contain letters, you're gay or smth?</mat-error>
             }
-            @if (attendeeForm.get('lastName')?.hasError('required')) {
-              <mat-error>Last name is required</mat-error>
-            }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>Age</mat-label>
             <input matInput type="number" formControlName="age" placeholder="e.g. 25">
             <mat-hint>Helps track demographics by age group.</mat-hint>
-            @if (attendeeForm.get('age')?.hasError('required')) {
-              <mat-error>Age is required</mat-error>
-            }
             @if (attendeeForm.get('age')?.hasError('min')) {
               <mat-error>Age must be greater than 0</mat-error>
             }

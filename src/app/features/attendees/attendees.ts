@@ -80,7 +80,7 @@ export class Attendees {
           'profile', 
           'fullName', 
           'memberStatus',
-          'churchHierarchy',
+          'primaryLeader',
           'actions'
         ];
       } else {
