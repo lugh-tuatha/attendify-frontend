@@ -58,9 +58,6 @@ export class EnrollAttendee {
   attendeeForm!: FormGroup;
   isSubmitting = false;
 
-  step = 1;
-  value = 9000000000;
-
   ngOnInit(): void {
     this.attendeeForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñ\s\.]+$/)]],
@@ -122,6 +119,4 @@ export class EnrollAttendee {
   onSlide(value: any) {
     console.log("Slider:", value);
   }
-
-
 }

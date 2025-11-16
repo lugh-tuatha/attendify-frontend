@@ -69,6 +69,10 @@ export class AttendeesService {
     return this.http.patch<ApiResponse<AttendeeModel>>(`${this.baseUrl}/attendees/${attendeeId}`, payload);
   }
 
+  archiveAttendee(attendeeId: string): Observable<ApiResponse<AttendeeModel>> {
+    return this.http.patch<ApiResponse<AttendeeModel>>(`${this.baseUrl}/attendees/${attendeeId}`, { isArchived: true });
+  }
+
   prefetchNextPage(
     organizationId: string, 
     currentPage: number = 1, 

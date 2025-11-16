@@ -1,0 +1,15 @@
+<mat-dialog-content class="default-modal w-11/12 md:w-auto">
+  <h2 mat-dialog-title>Confirm Delete</h2>
+
+  <p class="my-4">
+    Are you sure you want to archive this attendee?
+    This action can be undone from the archive list.
+  </p>
+
+  <div class="flex gap-4 justify-end" mat-dialog-actions>
+    <button mat-button type="button" (click)="onCancel()" mat-stroked-button>Cancel</button>
+    <button mat-raised-button color="warn" type="button" (click)="onConfirm()">
+      Archive
+    </button>
+  </div>
+</mat-dialog-content>

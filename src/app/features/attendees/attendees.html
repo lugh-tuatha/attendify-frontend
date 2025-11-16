@@ -108,7 +108,7 @@
             <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300">
               <div class="flex items-center gap-2">
                 <lucide-angular class="w-5 h-5 cursor-pointer" [img]="SquarePen" (click)="editAttendee(element.id)"></lucide-angular>
-                <lucide-angular class="w-5 h-5 text-red-500 cursor-pointer" [img]="Trash"></lucide-angular>
+                <lucide-angular class="w-5 h-5 text-red-500 cursor-pointer" [img]="Trash" (click)="archiveAttendee(element.id)"></lucide-angular>
               </div>
             </td>
           </ng-container>

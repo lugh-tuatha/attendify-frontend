@@ -18,6 +18,7 @@ import { ErrorHandlerService } from '@/app/core/services/error-handler';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { RouterLink } from '@angular/router';
 import { environment } from '@/environments/environment';
+import { DeleteConfirmationModal } from '@/app/shared/components/delete-confirmation-modal/delete-confirmation-modal';
 
 @Component({
   selector: 'app-attendees',
@@ -164,6 +165,28 @@ export class Attendees {
         }
       }
     })
+  }
+
+  archiveAttendee(id: string) {
+    const dialogRef = this.dialog.open(DeleteConfirmationModal)
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (!confirmed) return;
+
+      this.attendeesService.archiveAttendee(id).subscribe({
+        next: (response) => {
+          console.log('Attendee archived', response);
+          this.errorHandlerService.showErrorModal(response.statusCode, `Attendee Successfully Archived`);
+          this.loadAttendees(1, this.pageLimit, this.currentSearchTerm, true);
+        },
+        error: (error) => {
+          console.error('Error archiving attendee:', error);
+          this.errorHandlerService.showErrorModal(error.status, error.error?.message);
+        }
+      })
+    })
+
+    
   }
 
   onSearchAttendeesRecord(event: Event): void {

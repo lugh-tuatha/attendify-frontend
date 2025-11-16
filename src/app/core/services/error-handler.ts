@@ -14,9 +14,6 @@ interface ModalData {
 export class ErrorHandlerService {
   private dialog = inject(MatDialog);
 
-
-
-
   showErrorModal(status: number, message: string) {
     let modalData: ModalData = {
       title: '0: Unknown Error',
@@ -25,6 +22,13 @@ export class ErrorHandlerService {
     };
 
     switch (status) {
+      case 200:
+        modalData = {
+          title: '200: OK',
+          message: message || 'An unexpected error occurred.',
+          image: 'assets/http.cat/200.jpeg'
+        }
+        break;
       case 201:
         modalData = {
           title: '201: Created',
