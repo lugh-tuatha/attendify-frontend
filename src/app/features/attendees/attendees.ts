@@ -185,8 +185,6 @@ export class Attendees {
         }
       })
     })
-
-    
   }
 
   onSearchAttendeesRecord(event: Event): void {

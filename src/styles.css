@@ -71,6 +71,10 @@ h1, h2, h3, h4, h5, h6 {
   @apply shadow-[0_0_12px_4px_rgba(59,130,246,0.15)]
 }
 
+.gradient-cyan-blue {
+  @apply bg-gradient-to-br from-cyan-200 via-blue-300 to-blue-400;
+}
+
 .default-modal {
   border-radius: 8px; 
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); 

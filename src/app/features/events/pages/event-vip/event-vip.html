@@ -1,4 +1,4 @@
-<div class="h-screen bg-gradient-to-br from-cyan-200 via-blue-300 to-blue-400">
+<div class="min-h-screen bg-gradient-to-br from-cyan-200 via-blue-300 to-blue-400">
   <main class="main-container pt-4">
     <div class="flex mb-2 items-center gap-2">
       <lucide-angular 
@@ -24,19 +24,21 @@
         }
 
         @if (vips.FIRST_TIMER.length > 0) {
-          <app-vip-header></app-vip-header>
-  
-          <div class="space-y-4">
-            @for (record of vips.FIRST_TIMER; track $index) {
-              <app-vip-item 
-                firstName="{{record.attendee.firstName}}" 
-                lastName="{{record.attendee.lastName}}" 
-                invitedBy="{{record.attendee.invitedBy}}"
-              ></app-vip-item>
-            }
+          <div class="overflow-hidden">
+            <app-vip-header></app-vip-header>
+    
+            <div class="space-y-4">
+              @for (record of vips.FIRST_TIMER; track $index) {
+                <app-vip-item 
+                  firstName="{{record.attendee.firstName}}" 
+                  lastName="{{record.attendee.lastName}}" 
+                  invitedBy="{{record.attendee.invitedBy}}"
+                ></app-vip-item>
+              }
+            </div>
+            
+            <p class="text-center mt-8 text-text-300 text-lg">Thank you for being here! 🎉</p>
           </div>
-          
-          <p class="text-center mt-8 text-text-300 text-lg">Thank you for being here! 🎉</p>
         }
       </mat-tab>
       <mat-tab label="Second Timer">
@@ -52,19 +54,21 @@
         }
 
         @if (vips.SECOND_TIMER.length > 0) {
-          <app-vip-header></app-vip-header>
-  
-          <div class="space-y-4">
-            @for (record of vips.SECOND_TIMER; track $index) {
-              <app-vip-item 
-                firstName="{{record.attendee.firstName}}" 
-                lastName="{{record.attendee.lastName}}" 
-                invitedBy="{{record.attendee.invitedBy}}"
-              ></app-vip-item>
-            }
+          <div class="overflow-hidden">
+            <app-vip-header></app-vip-header>
+    
+            <div class="space-y-4">
+              @for (record of vips.SECOND_TIMER; track $index) {
+                <app-vip-item 
+                  firstName="{{record.attendee.firstName}}" 
+                  lastName="{{record.attendee.lastName}}" 
+                  invitedBy="{{record.attendee.invitedBy}}"
+                ></app-vip-item>
+              }
+            </div>
+            
+            <p class="text-center mt-8 text-text-300 text-lg">Thank you for being here! 🎉</p>
           </div>
-          
-          <p class="text-center mt-8 text-text-300 text-lg">Thank you for being here! 🎉</p>
         }
       </mat-tab>
       <mat-tab label="Third Timer">
@@ -80,19 +84,21 @@
         }
 
         @if (vips.THIRD_TIMER.length > 0) {
-          <app-vip-header></app-vip-header>
-
-          <div class="space-y-4">
-            @for (record of vips.THIRD_TIMER; track $index) {
-              <app-vip-item 
-                firstName="{{record.attendee.firstName}}" 
-                lastName="{{record.attendee.lastName}}" 
-                invitedBy="{{record.attendee.invitedBy}}"
-              ></app-vip-item>
-            }
+          <div class="overflow-hidden">
+            <app-vip-header></app-vip-header>
+    
+            <div class="space-y-4">
+              @for (record of vips.THIRD_TIMER; track $index) {
+                <app-vip-item 
+                  firstName="{{record.attendee.firstName}}" 
+                  lastName="{{record.attendee.lastName}}" 
+                  invitedBy="{{record.attendee.invitedBy}}"
+                ></app-vip-item>
+              }
+            </div>
+            
+            <p class="text-center mt-8 text-text-300 text-lg">Thank you for being here! 🎉</p>
           </div>
-          
-          <p class="text-center mt-8 text-text-300 text-lg">Thank you for being here! 🎉</p>
         }
       </mat-tab>
       <mat-tab label="Fourth Timer">
@@ -108,19 +114,21 @@
         }
 
         @if (vips.FOURTH_TIMER.length > 0) {
-          <app-vip-header></app-vip-header>
-
-          <div class="space-y-4">
-            @for (record of vips.FOURTH_TIMER; track $index) {
-              <app-vip-item 
-                firstName="{{record.attendee.firstName}}" 
-                lastName="{{record.attendee.lastName}}" 
-                invitedBy="{{record.attendee.invitedBy}}"
-              ></app-vip-item>
-            }
+          <div class="overflow-hidden">
+            <app-vip-header></app-vip-header>
+  
+            <div class="space-y-4">
+              @for (record of vips.FOURTH_TIMER; track $index) {
+                <app-vip-item 
+                  firstName="{{record.attendee.firstName}}" 
+                  lastName="{{record.attendee.lastName}}" 
+                  invitedBy="{{record.attendee.invitedBy}}"
+                ></app-vip-item>
+              }
+            </div>
+            
+            <p class="text-center mt-8 text-text-300 text-lg">Thank you for being here! 🎉</p>
           </div>
-          
-          <p class="text-center mt-8 text-text-300 text-lg">Thank you for being here! 🎉</p>
         }
       </mat-tab>
     </mat-tab-group>

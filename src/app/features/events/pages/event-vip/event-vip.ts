@@ -21,6 +21,7 @@ import { ErrorCard } from "@/app/shared/components/error-card/error-card";
   templateUrl: './event-vip.html',
   styleUrl: './event-vip.css'
 })
+
 export class EventVip {
   readonly CornerDownLeft = CornerDownLeft;
 
