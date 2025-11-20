@@ -9,6 +9,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
 
 import { LucideAngularModule, CornerDownLeft, SearchCheck } from 'lucide-angular';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -19,7 +20,6 @@ import { EventRegistrationModel } from '@/app/core/events/models/event-registrat
 import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.dto';
 import { EventsService } from '@/app/core/events/services/events';
 import { AttendanceService } from '@/app/core/attendance/services/attendance';
-import { Button } from "@/app/shared/ui/button/button";
 import { BsodLoading } from '@/app/shared/components/bsod-loading/bsod-loading';
 import { ErrorCard } from "@/app/shared/components/error-card/error-card";
 
@@ -35,7 +35,7 @@ import { ErrorCard } from "@/app/shared/components/error-card/error-card";
     MatInputModule,
     LucideAngularModule,
     DatePipe,
-    Button,
+    MatButtonModule,
     BsodLoading,
     NgClass,
     ErrorCard,
@@ -131,8 +131,9 @@ export class EventManage {
         this.event = eventResponse.data;
 
         this.checkedInAttendees.data = checkedInResponse.data;
-        this.isEmpty.checkedInAttendees = checkedInResponse.data.length === 0;
-        this.overviewData[1].value = checkedInResponse.data.length;
+        this.isEmpty.checkedInAttendees = checkedInResponse.data.length === 0
+        this.overviewData[1].value = checkedInResponse.meta.total;
+        this.overviewData[2].value = checkedInResponse.meta.totalVips;
 
         this.checkedInAttendeeIds.clear();
         checkedInResponse.data.forEach(registration => {

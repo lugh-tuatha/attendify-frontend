@@ -16,10 +16,12 @@
     </div>
     
     <div class="flex gap-2">
-      <app-button 
+      <button 
+      mat-flat-button
+      color="primary"
       (click)="captureImage()"
       [disabled]="isCheckInByFaceLoading"
-    >Capture</app-button>
+    >Capture</button>
     </div>
   </section>
 
@@ -67,14 +69,16 @@
           </ng-container>
   
           <ng-container cdkColumnDef="actions">
-            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Actions</th>
-            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300">
-              <app-button
+            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] pr-6 py-3 text-white text-right">Actions</th>
+            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light pr-6 py-3 text-text-900 border-t border-text-300 text-right">
+              <button
+                mat-flat-button
+                color="primary"
                 (click)="manualCheckIn(element.id, element.firstName)"
                 [disabled]="isCheckInLoading"
               >
                 Check In
-              </app-button>
+              </button>
             </td>
           </ng-container>
   

@@ -5,6 +5,7 @@ import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { provideClerk } from '@jsrob/ngx-clerk'
 import { environment } from '@/environments/environment';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,5 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideClerk({
       publishableKey: environment.clerkPublishableKey,
     }),
+    provideAnimationsAsync()
   ]
 };

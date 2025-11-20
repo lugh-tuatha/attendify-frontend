@@ -120,7 +120,7 @@ export class AttendanceDetail {
         this.attendance.empty = response.data.length === 0;
         this.overviewData = [
           { name: 'Attendees (Overall)', value: response.meta.total },
-          { name: 'Total VIP', value: this.overviewData[1].value }
+          { name: 'Total VIP', value: response.meta.totalVips }
         ];
 
         this.attendanceService.prefetchNextPage(

@@ -2,7 +2,7 @@ import { environment } from '@/environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
-import { PaginatedResponse } from '../../models/paginated-api-response.interface';
+import { PaginatedApiResponse } from '../../models/paginated-api-response.interface';
 import { AttendeeModel } from '../models/attendee.model';
 import { ApiResponse } from '../../models/api-response.interface';
 
@@ -13,7 +13,7 @@ export class AttendeesService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiBaseUrl;
 
-  private cache = new Map<string, PaginatedResponse<AttendeeModel>>();
+  private cache = new Map<string, PaginatedApiResponse<AttendeeModel>>();
 
   clearCache(): void {
     this.cache.clear();
@@ -26,7 +26,7 @@ export class AttendeesService {
     limit: number = 10, 
     searchTerm?: string,
     forceRefresh: boolean = false
-  ): Observable<PaginatedResponse<AttendeeModel>> {
+  ): Observable<PaginatedApiResponse<AttendeeModel>> {
     const url = `${this.baseUrl}/attendees`
 
     const paramsConfig: { [param: string]: string | number } = { 
@@ -46,7 +46,7 @@ export class AttendeesService {
       return of(cachedResponse);
     }
 
-    return this.http.get<PaginatedResponse<AttendeeModel>>(url, { params }).pipe(
+    return this.http.get<PaginatedApiResponse<AttendeeModel>>(url, { params }).pipe(
       tap((response) => {
         this.cache.set(cacheKey, response);
       })

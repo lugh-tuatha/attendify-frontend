@@ -4,11 +4,12 @@ import { Observable, of, tap } from 'rxjs';
 
 import { environment } from '@/environments/environment';
 import { AttendanceModel } from '@/app/core/attendance/models/attendance.model';
-import { PaginatedResponse } from '@/app/core/models/paginated-api-response.interface';
+import { PaginatedApiResponse } from '@/app/core/models/paginated-api-response.interface';
 import { ApiResponse } from '@/app/core/models/api-response.interface';
 import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.dto';
 import { CheckInByFaceDto } from '@/app/core/attendance/dto/check-in-by-face.dto';
 import { VipAttendanceModel } from '../models/vip-attendance.model';
+import { ApiResponseWithMeta } from '../../models/api-response-with-meta';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AttendanceService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiBaseUrl;
 
-  private cache = new Map<string, PaginatedResponse<AttendanceModel>>();
+  private cache = new Map<string, PaginatedApiResponse<AttendanceModel>>();
 
   clearCache(): void {
     this.cache.clear();
@@ -32,7 +33,7 @@ export class AttendanceService {
     limit: number = 10, 
     searchTerm?: string,
     forceRefresh: boolean = false
-  ): Observable<PaginatedResponse<AttendanceModel>> {
+  ): Observable<PaginatedApiResponse<AttendanceModel>> {
     const url = `${this.baseUrl}/attendance`;
 
     const paramsConfig: { [param: string]: string | number } = {
@@ -55,7 +56,7 @@ export class AttendanceService {
       return of(cachedResponse);
     }
 
-    return this.http.get<PaginatedResponse<AttendanceModel>>(url, { params }).pipe(
+    return this.http.get<PaginatedApiResponse<AttendanceModel>>(url, { params }).pipe(
       tap((response) => {
         this.cache.set(cacheKey, response);
       })
@@ -86,8 +87,8 @@ export class AttendanceService {
     }
   }
   
-  getAttendanceByEventId(eventId: string): Observable<ApiResponse<AttendanceModel[]>> {
-    return this.http.get<ApiResponse<AttendanceModel[]>>(`${this.baseUrl}/attendance/event-id/${eventId}`);
+  getAttendanceByEventId(eventId: string): Observable<ApiResponseWithMeta<AttendanceModel>> {
+    return this.http.get<ApiResponseWithMeta<AttendanceModel>>(`${this.baseUrl}/attendance/event-id/${eventId}`);
   }
 
   checkInAttendee(dto: CheckInAttendeeDto): Observable<ApiResponse<AttendanceModel>> {

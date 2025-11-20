@@ -6,6 +6,7 @@ import { finalize, Observable, Subject, takeUntil } from 'rxjs';
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CdkTableModule } from '@angular/cdk/table';
+import { MatButtonModule } from '@angular/material/button';
 
 import { CornerDownLeft, LucideAngularModule, SearchCheck } from 'lucide-angular';
 import { WebcamImage, WebcamModule } from 'ngx-webcam';
@@ -15,7 +16,6 @@ import { AttendeesService } from '@/app/core/attendees/services/attendees';
 import { EventsService } from '@/app/core/events/services/events';
 import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.dto';
 import { EventModel } from '@/app/core/events/models/event.model';
-import { Button } from '@/app/shared/ui/button/button'; 
 import { ErrorHandlerService } from '@/app/core/services/error-handler';
 import { environment } from '@/environments/environment';
 
@@ -25,7 +25,7 @@ import { environment } from '@/environments/environment';
     LucideAngularModule,
     CdkTableModule,
     RouterLink,
-    Button,
+    MatButtonModule,
     WebcamModule,
     MatPaginator
 ],

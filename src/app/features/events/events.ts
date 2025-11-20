@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 
 import { Dialog } from '@angular/cdk/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
-import { Button } from '@/app/shared/ui/button/button'; 
 import { EventCard } from '@/app/shared/components/event-card/event-card'; 
 import { AddEventDialog } from './components/add-event-dialog/add-event-dialog';
 import { EventsService } from '@/app/core/events/services/events';
@@ -12,7 +12,11 @@ import { EventCardSkeleton } from "@/app/shared/components/event-card-skeleton/e
 
 @Component({
   selector: 'app-events',
-  imports: [Button, EventCard, EventCardSkeleton],
+  imports: [
+    EventCard,
+    EventCardSkeleton,
+    MatButtonModule
+  ],
   templateUrl: './events.html',
   styleUrl: './events.css',
 })

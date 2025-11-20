@@ -3,14 +3,13 @@ import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 import { MatIconModule } from '@angular/material/icon';
-
-import { Button } from '../../ui/button/button';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-event-card',
   imports: [
     RouterLink, 
-    Button, 
+    MatButtonModule,
     MatIconModule,
     DatePipe
   ],

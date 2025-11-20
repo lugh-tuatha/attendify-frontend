@@ -17,4 +17,19 @@
       [cardColor]="cardColor"
     ></ngx-charts-number-card>
   </div>
+
+  <ngx-charts-line-chart
+    [view]="[1220, 400]"
+    [scheme]="'forest'"
+    [results]="attendanceTrends"
+    [xAxis]="true"
+    [yAxis]="true"
+    [gradient]="false"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [xAxisLabel]="'date'"
+    [yAxisLabel]="'attendees'"
+  >
+  </ngx-charts-line-chart>
 </main>
