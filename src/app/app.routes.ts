@@ -20,7 +20,7 @@ export const routes: Routes = [
     },
     {
         path: 'attendees',
-        // canActivate: [authGuard],
+        canActivate: [authGuard],
         loadChildren: () => 
             import('@/app/features/attendees/attendees.routes').then(m => m.AttendeesRoutes)
     },
@@ -38,7 +38,7 @@ export const routes: Routes = [
     },
     {
         path: 'reports',    
-        // canActivate: [authGuard],
+        canActivate: [authGuard],
         loadChildren: () =>
             import('@/app/features/reports/reports.routes').then(m => m.reportsRoutes)
     }

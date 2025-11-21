@@ -19,6 +19,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { RouterLink } from '@angular/router';
 import { environment } from '@/environments/environment';
 import { DeleteConfirmationModal } from '@/app/shared/components/delete-confirmation-modal/delete-confirmation-modal';
+import { MatAnchor, MatButtonModule } from "@angular/material/button";
 
 @Component({
   selector: 'app-attendees',
@@ -26,12 +27,13 @@ import { DeleteConfirmationModal } from '@/app/shared/components/delete-confirma
     MatSelectModule,
     MatInputModule,
     FormsModule,
-    Button,
     CdkTableModule,
     LucideAngularModule,
     MatPaginator,
     MatMenuModule,
-    RouterLink
+    RouterLink,
+    MatAnchor,
+    MatButtonModule
 ],
   templateUrl: './attendees.html',
   styleUrl: './attendees.css'

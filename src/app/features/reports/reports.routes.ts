@@ -10,21 +10,21 @@ export const reportsRoutes: Routes = [
     {
         path: '',
         component: Reports,
-        // canActivate: [authGuard],
+        canActivate: [authGuard],
     },
     {
         path: 'attendance-summary',
         component: AttendanceSummary,
-        // canActivate: [authGuard],
+        canActivate: [authGuard],
     },
     {
         path: 'attendance-summary/leaders',
         component: LeadersAttendanceSummary,
-        // canActivate: [authGuard],
+        canActivate: [authGuard],
     },
     {
         path: 'attendance-summary/leaders/:primaryLeaderId',
         component: CellMemberAttendanceSummary,
-        // canActivate: [authGuard],
+        canActivate: [authGuard],
     },
 ]

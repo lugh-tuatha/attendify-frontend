@@ -41,14 +41,13 @@ export class Dashboard {
   cardColor = '#3A445D';
   single = [
     { 
-      name: 'Germany', 
-      
-      value: 8940000,
+      name: 'Overall Attendance', 
+      value: 1700,
     },
-    { name: 'Japan', value: 12313 },
-    { name: 'Hatdog', value: 12313 },
-    { name: 'Hatdog', value: 12313 },
-    { name: 'pase', value: 12313 },
+    { name: 'Regular Disciple', value: 214 },
+    { name: 'Regular Attendees', value: 233 },
+    { name: 'Regular Startup', value: 50 },
+    { name: 'Children Overview', value: 21 },
   ]
 
   attendanceTrends: any[] = [];
