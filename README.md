@@ -1,59 +1,48 @@
-# AttendifyFrontend
+# Attendify 2.0 - Attendance Simplified
+Attendify is an all-in-one platform designed to help organizations manage attendees with analytics, all with modern UX, & face recognition.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.1.
+### ⭐ Check us out on Trustpilot
+[![Trustpilot](https://img.shields.io/badge/Trustpilot-00B67A?logo=trustpilot&logoColor=fff)](https://www.trustpilot.com/review/attendify.website)
 
-## Development server
+## Repositories
+Linked services that work together to power Attendify.
 
-To start a local development server, run:
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=lugh-tuatha&repo=attendify-backend)](https://github.com/lugh-tuatha/attendify-backend)
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=lugh-tuatha&repo=attendify-face-recognition)](https://github.com/lugh-tuatha/attendify-face-recognition)
 
-```bash
-ng serve
-```
+## Tech Stack
+![Angular.js](https://img.shields.io/badge/angular.js-%23E23237.svg?style=for-the-badge&logo=angularjs&logoColor=white) <br />
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) <br />
+![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white) <br />
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white) <br />
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) <br />
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Attendify is currently used by
+[Life Transform Harvest Ministry International](https://www.facebook.com/lthmrectomanila) — since 2024 to Present
 
-## Code scaffolding
+## 📸 Screenshots
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Real-time Analytics Dashboard
 
-```bash
-ng generate component component-name
-```
+*View weekly attendance trends and demographic breakdowns at a glance.*
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Face Recognition Check-in
 
-```bash
-ng generate --help
-```
+*Seamless check-in using pre-trained Facenet512 DeepFace model.*
 
-## Building
+## 📅 Version History
 
-To build the project run:
+### 🟢 v2.0.0 - The "Smart" Update (Current)
+*Released: November 2025* <br />
+**Focus:** Enhancing security and user experience with Face Recognition.
+* **[New]** Implemented **Face Recognition** (FaceNet/Python)
+* **[Enhanced]** Live dashboards with attendance insights, trends, and detailed reports.
+* **[Enhanced]** Overall Performance & User Experience
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### 🟠 v1.0.0 - The "Contactless" MVP
+*Released: December 2024* <br />
+**Focus:** Moving away from paper-based attendance. <br />
+**Tech:** MongoDB + ExpressJS + React + NodeJS + Chakra UI
+* **[Feature]** Manual "Click" Attendance. (Admins search and click "Present" for each attendee) to replace physical logbooks.
+* **[Feature]** Basic Scanner Web App for church admins.
+* **[Flaw Identified]** Efficiency Bottleneck: Manually searching for names and clicking them one by one was too slow during peak service hours, causing long lines or missed data.
