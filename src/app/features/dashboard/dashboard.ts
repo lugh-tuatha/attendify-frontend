@@ -1,22 +1,30 @@
-import { DashboardService } from '@/app/core/dashboard/services/dashboard';
-import { ApiResponse } from '@/app/core/models/api-response.interface';
-import { environment } from '@/environments/environment';
 import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+
+import { environment } from '@/environments/environment';
+import { DashboardService } from '@/app/core/dashboard/services/dashboard';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { getLastMonthDate } from '@/app/shared/utils/date';
+import { LeadersAttendeesTrends } from '@/app/data/leaders-attendees-trends';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
-    MatSelectModule, 
-    MatInputModule, 
-    FormsModule, 
+    MatDatepickerModule, 
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
     NgxChartsModule
   ],
+  providers: [provideMomentDateAdapter()],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -27,9 +35,25 @@ export class Dashboard {
   private destroy$ = new Subject<void>();
 
   readonly organizationId = environment.organizationId;
+  readonly range = new FormGroup({
+    start: new FormControl<Date | null>(getLastMonthDate()),
+    end: new FormControl<Date | null>(new Date()),
+  });
 
   ngOnInit(): void {
-    this.getAttendanceTrendsByTimeframe('YEARLY', '2025', this.organizationId, '8757623d-1714-409c-a05d-f3896d44b5cf');
+    this.setView();
+
+    const start = this.range.value.start!;
+    const end = this.range.value.end!;
+
+    this.range.valueChanges.pipe(debounceTime(300)).subscribe((val) => {
+      if (val.start && val.end) {
+        this.getAttendanceTrendsByTimeframe(val.start, val.end);
+      }
+    })
+
+    this.getAttendanceTrendsByTimeframe(start, end);
+    this.getAttendeesOverview()
   }
 
   ngOnDestroy(): void {
@@ -37,23 +61,13 @@ export class Dashboard {
     this.destroy$.complete();
   }
 
-  value: string = "First Half of 2025 (Jan - Jun)";
-  cardColor = '#3A445D';
-  single = [
-    { 
-      name: 'Overall Attendance', 
-      value: 1700,
-    },
-    { name: 'Regular Disciple', value: 214 },
-    { name: 'Regular Attendees', value: 233 },
-    { name: 'Regular Startup', value: 50 },
-    { name: 'Children Overview', value: 21 },
-  ]
-
+  view: [number, number] = [0, 0];
+  single: any[] = [];
   attendanceTrends: any[] = [];
+  leadersAttendeesTrends = LeadersAttendeesTrends;
 
-  getAttendanceTrendsByTimeframe(timeframe: string, year: string, organizationId: string, eventId: string): void {
-    this.dashboardService.getTrendsByTimeframe(timeframe, year, organizationId, eventId).pipe(
+  getAttendanceTrendsByTimeframe(from: Date, to: Date): void {
+    this.dashboardService.getTrendsByTimeframe(from, to, this.organizationId, '8757623d-1714-409c-a05d-f3896d44b5cf').pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: (response) => {
@@ -63,6 +77,25 @@ export class Dashboard {
         console.error('Error loading attendance trends:', error);
       }
     })
+  }
+
+  getAttendeesOverview(): void {
+    this.dashboardService.getAttendeesOverview(this.organizationId).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        this.single = response.data;
+      },
+      error: (error) => {
+        console.error('Error loading attendance trends:', error);
+      }
+    })
+  }
+
+  setView() {
+    const width = window.innerWidth * 0.77; 
+    const height = 250;
+    this.view = [width, height];
   }
 }
   

@@ -23,11 +23,11 @@ Linked services that work together to power Attendify.
 ## 📸 Screenshots
 
 ### Real-time Analytics Dashboard
-
+![Dashboard Screenshot](public/assets/example/dashboard-screenshot.png)
 *View weekly attendance trends and demographic breakdowns at a glance.*
 
 ### Face Recognition Check-in
-
+![Dashboard Screenshot](public/assets/example/face-recognition.png)
 *Seamless check-in using pre-trained Facenet512 DeepFace model.*
 
 ## 📅 Version History
@@ -35,7 +35,7 @@ Linked services that work together to power Attendify.
 ### 🟢 v2.0.0 - The "Smart" Update (Current)
 *Released: November 2025* <br />
 **Focus:** Enhancing security and user experience with Face Recognition.
-* **[New]** Implemented **Face Recognition** (FaceNet/Python)
+* **[New]** Implemented **Face Recognition**
 * **[Enhanced]** Live dashboards with attendance insights, trends, and detailed reports.
 * **[Enhanced]** Overall Performance & User Experience
 

@@ -72,7 +72,6 @@ export class EventManage {
     this.checkedInAttendees.paginator = paginator;
   }
 
-  cardColor = '#3A445D';
   overviewData = [
     { name: 'Registered Attendees', value: 0, },
     { name: 'Attendees (Overall)', value: 0,  },

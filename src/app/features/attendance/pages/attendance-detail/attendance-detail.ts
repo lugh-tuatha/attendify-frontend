@@ -37,7 +37,7 @@ import { NgxChartsModule } from "@swimlane/ngx-charts";
     NgClass,
     ErrorCard,
     NgxChartsModule
-],
+  ],
   providers: [provideMomentDateAdapter(DEFAULT_DATE_FORMAT)],
   templateUrl: './attendance-detail.html',
   styleUrl: './attendance-detail.css'
@@ -72,7 +72,6 @@ export class AttendanceDetail {
   currentPage = 1;
   pageLimit = 10;  
 
-  cardColor = '#3A445D';
   overviewData = [
     { name: 'Attendees (Overall)', value: 0 },
     { name: 'Total VIP', value: 0 }

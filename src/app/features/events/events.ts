@@ -1,10 +1,8 @@
 import { Component, inject } from '@angular/core';
 
-import { Dialog } from '@angular/cdk/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
 import { EventCard } from '@/app/shared/components/event-card/event-card'; 
-import { AddEventDialog } from './components/add-event-dialog/add-event-dialog';
 import { EventsService } from '@/app/core/events/services/events';
 import { EventModel } from '@/app/core/events/models/event.model';
 import { Subject, takeUntil } from 'rxjs';
@@ -22,7 +20,6 @@ import { EventCardSkeleton } from "@/app/shared/components/event-card-skeleton/e
 })
 
 export class Events {
-  private dialog = inject(Dialog);
   private eventsService = inject(EventsService);
   private destroy$ = new Subject<void>();
 
@@ -55,9 +52,5 @@ export class Events {
         this.isLoading = false;
       }
     })
-  }
-
-  openAddEventDialog(): void {  
-    const dialogRef = this.dialog.open(AddEventDialog);
   }
 }

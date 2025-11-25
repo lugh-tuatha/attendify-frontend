@@ -11,11 +11,20 @@ export class DashboardService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiBaseUrl;
 
-  getTrendsByTimeframe(timeframe: string, year: string, organizationId: string, eventId: string): Observable<ApiResponse<any>> {
-    const url = `${this.baseUrl}/dashboard/attendance/trends/${timeframe}`
-    const paramsConfig: { [param: string]: string } = { year, organizationId, eventId };
+  getTrendsByTimeframe(from: Date, to: Date, organizationId: string, eventId: string): Observable<ApiResponse<any>> {
+    const url = `${this.baseUrl}/dashboard/attendance/trends`
+    const paramsConfig: { [param: string]: string } = { 
+      from: from.toISOString(), 
+      to: to.toISOString(), 
+      organizationId, 
+      eventId 
+    };
     const params = new HttpParams({ fromObject: paramsConfig });
 
     return this.http.get<ApiResponse<any>>(url, { params });
+  }
+
+  getAttendeesOverview(organizationId: string): Observable<ApiResponse<any>> {
+    return this.http.get<ApiResponse<any>>(`${this.baseUrl}/dashboard/attendees/overview/${organizationId}`);
   }
 }

@@ -17,14 +17,12 @@ import { ReportSkeleton } from "@/app/shared/components/report-skeleton/report-s
 import { ReportsService } from '@/app/core/reports/services/reports';
 import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ErrorCard } from "@/app/shared/components/error-card/error-card";
-import { EventsService } from '@/app/core/events/services/events';
-import { EventModel } from '@/app/core/events/models/event.model';
+import { Event, EVENTS } from '@/app/core/constants/events';
 
 @Component({
-  selector: 'app-attendance-summary',
+  selector: 'app-attendance-summary-by-church-process',
   imports: [
     LucideAngularModule,
-    ReportSkeleton,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
@@ -32,33 +30,37 @@ import { EventModel } from '@/app/core/events/models/event.model';
     ReactiveFormsModule,
     MatSelectModule,
     DatePipe,
-    ErrorCard
-],
+    ErrorCard,
+    ReportSkeleton,
+  ],
   providers: [provideMomentDateAdapter(DEFAULT_DATE_FORMAT)],
-  templateUrl: './attendance-summary.html',
-  styleUrl: './attendance-summary.css'
+  templateUrl: './attendance-summary-by-church-process.html',
+  styleUrl: './attendance-summary-by-church-process.css'
 })
-
-export class AttendanceSummary {
+export class AttendanceSummaryByChurchProcess {
   readonly Users = Users;
 
   private reportService = inject(ReportsService);
-  private eventsService = inject(EventsService);
 
   readonly date = new FormControl(moment(), { nonNullable: true });
   selectedEvent: string = "8757623d-1714-409c-a05d-f3896d44b5cf";
 
-  events: EventModel[] = [];
+  events: Event[] = EVENTS;
 
   isAttendanceSummaryLoading = false;
   isAttendanceSummaryEmpty = false;
   regularAttendees: SummaryCategoryModel[] = [];
-  totalRegulars: number = 0;
   vipAttendees: SummaryCategoryModel[] = [];
   totalVips: number = 0;
-  
+  grandTotal: number = 0;
+
   private destroy$ = new Subject<void>();
-  
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   ngOnInit() {
     const lastSunday = moment().day(0);
     this.date.setValue(lastSunday);
@@ -68,12 +70,6 @@ export class AttendanceSummary {
     })
     
     this.loadAttendanceSummary();
-    this.loadEvents();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   loadAttendanceSummary() {
@@ -81,7 +77,7 @@ export class AttendanceSummary {
     this.isAttendanceSummaryEmpty = false;
     const formattedDate = this.date.value.format('YYYY-MM-DD');
 
-    this.reportService.getAttendanceSummary(this.selectedEvent, formattedDate).pipe(
+    this.reportService.getAttendanceSummary(this.selectedEvent, formattedDate, 'churchProcess').pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: (response) => {
@@ -90,25 +86,13 @@ export class AttendanceSummary {
         const { attendees, vips } = response.data.summary;
 
         this.regularAttendees = attendees.categories;
-        this.totalRegulars = attendees.total;
         this.vipAttendees = vips.categories;
         this.totalVips = vips.total;
+        this.grandTotal = response.data.summary.totalAttendees;
       },
       error: (error) => {
         this.isAttendanceSummaryLoading = false;
         console.error('Error loading initial data:', error);
-      }
-    })
-  }
-
-  loadEvents() {
-    this.eventsService.getEvents().subscribe({
-      next: (response) => {
-        this.events = response.data;
-        console.log(this.events)
-      },
-      error: (error) => {
-        console.error('Error loading events:', error);
       }
     })
   }

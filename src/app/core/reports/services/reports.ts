@@ -14,9 +14,9 @@ export class ReportsService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiBaseUrl;
 
-  getAttendanceSummary(eventId: string, date: string): Observable<ApiResponse<AttendanceSummaryModel>> {
+  getAttendanceSummary(eventId: string, date: string, groupBy: string): Observable<ApiResponse<AttendanceSummaryModel>> {
     const url = `${this.baseUrl}/reports/summary/attendance`
-    const paramsConfig: { [param: string]: string } = { eventId, date };
+    const paramsConfig: { [param: string]: string } = { eventId, date, groupBy };
     const params = new HttpParams({ fromObject: paramsConfig });
 
     return this.http.get<ApiResponse<AttendanceSummaryModel>>(url, { params });

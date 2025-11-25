@@ -1,7 +1,7 @@
 <main class="main-container">
   <h1 class="font-bold text-2xl mt-4 print:-mx-4">
     LTHMI Recto Manila - 
-    <span class="text-monochromatic-dark">Attendance Summary</span>
+    <span class="text-monochromatic-dark">Attendance Summary by Member Status</span>
   </h1>
 
   <div class="print:hidden mt-2 space-x-4">
@@ -79,6 +79,13 @@
           <td class="px-4 py-1 font-bold">TOTAL</td>
           <td class="px-4 py-1 font-bold flex gap-2 justify-end items-center">
             <span>{{totalVips}}</span>
+            <lucide-angular class="w-4 h-4" [img]="Users"></lucide-angular>
+          </td>
+        </tr>
+        <tr class="border">
+          <td class="px-4 py-1 font-bold">GRAND TOTAL</td>
+          <td class="px-4 py-1 font-bold flex gap-2 justify-end items-center">
+            <span>{{grandTotal}}</span>
             <lucide-angular class="w-4 h-4" [img]="Users"></lucide-angular>
           </td>
         </tr>

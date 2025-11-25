@@ -17,9 +17,8 @@ import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ReportSkeleton } from "@/app/shared/components/report-skeleton/report-skeleton";
 import { DiscipleModel, SummaryModel } from '@/app/core/reports/models/attendance-by-primary-leader.model';
 import { ErrorCard } from "@/app/shared/components/error-card/error-card";
-import { EventModel } from '@/app/core/events/models/event.model';
-import { EventsService } from '@/app/core/events/services/events';
 import { LucideAngularModule, Users } from 'lucide-angular';
+import { Event, EVENTS } from '@/app/core/constants/events';
 
 @Component({
   selector: 'app-cell-member-attendance-summary',
@@ -45,13 +44,12 @@ export class CellMemberAttendanceSummary {
 
   private route = inject(ActivatedRoute);
   private reportService = inject(ReportsService);
-  private eventsService = inject(EventsService);
   private destroy$ = new Subject<void>();
 
   readonly date = new FormControl(moment(), { nonNullable: true });
   selectedEvent: string = "8757623d-1714-409c-a05d-f3896d44b5cf";
 
-  events: EventModel[] = [];
+  events: Event[] = EVENTS;
   primaryLeaderId = this.route.snapshot.paramMap.get('primaryLeaderId');
   primaryLeader: {firstName: string, lastName: string } | null = null;
   summary: SummaryModel | null = null;
@@ -68,7 +66,6 @@ export class CellMemberAttendanceSummary {
     })
 
     this.loadAttendanceByPrimaryLeader();
-    this.loadEvents();
   }
 
   ngOnDestroy(): void {
@@ -102,18 +99,6 @@ export class CellMemberAttendanceSummary {
       },
       error: (error) => {
         console.error('Error loading attendance by primary leader:', error);
-      }
-    })
-  }
-
-  loadEvents() {
-    this.eventsService.getEvents().subscribe({
-      next: (response) => {
-        this.events = response.data;
-        console.log(this.events)
-      },
-      error: (error) => {
-        console.error('Error loading events:', error);
       }
     })
   }
