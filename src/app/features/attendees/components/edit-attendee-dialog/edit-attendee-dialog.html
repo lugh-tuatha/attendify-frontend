@@ -57,7 +57,9 @@
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Status</mat-label>
         <mat-select formControlName="status">
-          <mat-option value="single">single</mat-option>
+          @for (cs of civilStatuses; track $index) {
+            <mat-option [value]="cs">{{cs}}</mat-option>
+          }
         </mat-select>
       </mat-form-field>
 

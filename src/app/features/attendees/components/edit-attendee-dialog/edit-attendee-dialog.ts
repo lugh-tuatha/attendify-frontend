@@ -4,6 +4,7 @@ import { ChurchHierarchyEnum } from '@/app/core/enums/church-hierarchy.enum';
 import { ChurchProcessEnum } from '@/app/core/enums/church-process.enum';
 import { MemberStatusEnum } from '@/app/core/enums/member-status.enum';
 import { NetworkEnum } from '@/app/core/enums/network.enum';
+import { CivilStatusesEnum } from '@/app/core/enums/status.enum';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,6 +34,8 @@ export class EditAttendeeDialog {
   churchHierarchies = Object.values(ChurchHierarchyEnum);
   churchProcesses = Object.values(ChurchProcessEnum);
   networks = Object.values(NetworkEnum);
+  civilStatuses = Object.values(CivilStatusesEnum);
+
 
   primaryLeadersList: AttendeeModel[] = [];
 

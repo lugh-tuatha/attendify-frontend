@@ -139,6 +139,57 @@
     </table>
   </div>
 
+  <div class="mt-4 w-3/5 border-2 border-monochromatic-dark rounded-md p-4 bg-monochromatic-light">
+    Subject for visitation feature is not a working prototype!! It is currently under development.
+  </div>
+
+  <div class="overflow-x-auto my-4">
+    <table class="w-full md:w-3/5 print:w-full print:-mx-4 border-2 border-monochromatic-base shadow-default border-collapse">
+      <thead class="text-xl font-normal rounded-3xl">
+        <tr>
+          <th class="text-left px-4 py-3 font-bold">Name</th>
+          <th class="text-right px-4 py-3 font-bold text-nowrap">Time Arrival</th> 
+        </tr>
+      </thead>
+  
+      <tbody>
+        <tr class="border">
+          <th colspan="4" class="px-4 py-1 bg-monochromatic-dark font-bold text-left">
+            Subject for Visitation
+          </th>
+        </tr>
+
+        <tr class="border">
+          <td class="px-4 py-1 text-nowrap">
+            Ace Gabriel P. Pasiliao
+          </td>
+          <td class="px-4 py-1 flex gap-2 justify-end items-center">
+            <div class="flex items-center justify-end gap-4">
+              <span>
+                2 consecutive absences
+              </span>
+              <div class="w-2.5 h-2.5 rounded-full bg-gray-400"></div>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="border">
+          <td class="px-4 py-1 text-nowrap">
+            Ace Gabriel P. Pasiliao
+          </td>
+          <td class="px-4 py-1 flex gap-2 justify-end items-center">
+            <div class="flex items-center justify-end gap-4">
+              <span>
+                3 consecutive absences
+              </span>
+              <div class="w-2.5 h-2.5 rounded-full bg-gray-400"></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   @if (isDisciplesDataEmpty && !isDisciplesDataLoading) {
     <div class="w-3/5 mt-4">
       <app-error-card
