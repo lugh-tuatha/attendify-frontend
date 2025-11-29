@@ -3,6 +3,7 @@ import { authGuard } from './core/guards/auth.guard';
 
 import { Login } from './features/auth/login/login';
 import { Home } from './features/home/home';
+import { NotFound } from './features/not-found/not-found';
 
 export const routes: Routes = [
     {
@@ -41,5 +42,10 @@ export const routes: Routes = [
         canActivate: [authGuard],
         loadChildren: () =>
             import('@/app/features/reports/reports.routes').then(m => m.reportsRoutes)
+    },
+    { 
+        path: '**',
+        component: NotFound,
+        title: 'Page Not Found | Attendify'
     }
 ];

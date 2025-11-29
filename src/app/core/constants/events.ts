@@ -8,4 +8,5 @@ export const EVENTS: Event[] = [
   { id: '0e2c44c7-1d5a-41f3-9244-c1c879478ce2', name: 'LTHMI - Recto Prayer Night'},
   { id: '8757623d-1714-409c-a05d-f3896d44b5cf', name: 'LTHMI - Recto Sunday Service'},
   { id: '8b2104f2-39fb-46ed-b4c6-586fa6e20503', name: 'LTHMI - Valenzuela Sunday Service'},
+  { id: 'cb50f39b-0ac0-429e-a3a7-e72b26f9afc6', name: 'LTHMI - Recto Pesol'},
 ];
