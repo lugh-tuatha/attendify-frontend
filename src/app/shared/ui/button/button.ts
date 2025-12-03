@@ -3,7 +3,9 @@ import { Loader, LucideAngularModule } from "lucide-angular";
 
 @Component({
   selector: 'app-button',
-  imports: [LucideAngularModule],
+  imports: [
+    LucideAngularModule
+  ],
   templateUrl: './button.html',
   styleUrl: './button.css',
 })

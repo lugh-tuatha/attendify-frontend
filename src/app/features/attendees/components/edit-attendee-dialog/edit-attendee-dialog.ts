@@ -79,7 +79,7 @@ export class EditAttendeeDialog {
   }
 
   loadPrimaryLeader() {
-    this.attendeesService.getAttendeesByChurchHierarchy('PRIMARY_LEADER').subscribe({
+    this.attendeesService.getAttendeesByChurchHierarchy(['PRIMARY_LEADER', 'PASTOR']).subscribe({
       next: (response) => {
         this.primaryLeadersList = response.data;
       },

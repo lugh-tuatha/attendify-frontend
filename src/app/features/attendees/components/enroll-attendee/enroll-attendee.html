@@ -127,6 +127,16 @@
             </mat-select>
             <mat-hint>Which network they belong to.</mat-hint>
           </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Church</mat-label>
+            <mat-select formControlName="organizationId">
+              @for (org of organizations; track $index) {
+                <mat-option [value]="org.id">{{ org.name }}</mat-option>
+              }
+            </mat-select>
+            <mat-hint>Which Church they attend.</mat-hint>
+          </mat-form-field>
         </div>
 
         <div class="mt-4 md:mt-0 flex gap-4 justify-end">

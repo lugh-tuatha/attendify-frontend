@@ -3,6 +3,7 @@ export interface EventModel {
   name: string;
   description: string;
   image: string;
+  bannerImageUrl: string;
   tagline: string;
   location: string;
   category: string;

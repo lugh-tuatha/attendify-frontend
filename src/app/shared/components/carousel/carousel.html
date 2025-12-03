@@ -1,0 +1,48 @@
+@if (images && images.length > 0) {
+  <div class="relative m-auto text-center w-full rounded-lg">
+    @for (image of images; track $index) {
+      <img 
+        [src]="image.imageSrc" 
+        [alt]="image.imageAlt" 
+        [ngClass]="{
+          'block w-full aspect-video' : selectedIndex === $index,
+          'hidden' : selectedIndex !== $index
+        }"
+        class="rounded-lg fade "
+      >
+    }
+
+    <div class="absolute right-0 left-0 bottom-4 flex justify-center gap-2">
+      @if (indicators) {
+        @for (dot of images; track $index) {
+          <span 
+            class="cursor-pointer w-4 h-4 my-1 bg-white rounded-full inline-block opacity-50 transition-all duration-600 hover:opacity-100"
+            [ngClass]="{ 'opacity-100' : selectedIndex === $index }"
+            (click)="selectImage($index)"
+          ></span>
+        }
+      }
+    </div>
+    
+    @if (controls) {
+      <div class="absolute top-0 bottom-0 left-0 flex items-center justify-center w-1/12 p-0 cursor-pointer opacity-50 transition-all duration-150">
+        <lucide-angular 
+          [img]="ChevronLeft" 
+          [size]="32" 
+          class="hover:opacity-90 w-12 h-12 stroke-2 rounded-lg"
+          (click)="onPrevClick()"
+        ></lucide-angular>
+      </div>
+
+      <div class="absolute top-0 bottom-0 right-0 flex items-center justify-center w-1/12 p-0 cursor-pointer opacity-50 transition-all duration-150">
+        <lucide-angular 
+          [img]="ChevronRight" 
+          [size]="32" 
+          class="hover:opacity-90 w-12 h-12 stroke-2 rounded-lg"
+          (click)="onNextClick()"
+        ></lucide-angular>
+      </div>
+    }
+  </div>
+
+} 

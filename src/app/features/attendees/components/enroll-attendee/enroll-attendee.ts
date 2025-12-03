@@ -17,6 +17,7 @@ import { ChurchProcessEnum } from '@/app/core/enums/church-process.enum';
 import { MemberStatusEnum } from '@/app/core/enums/member-status.enum';
 import { NetworkEnum } from '@/app/core/enums/network.enum';
 import { CivilStatusesEnum } from '@/app/core/enums/status.enum';
+import { Organization, ORGANIZATIONS } from '@/app/core/constants/organizations';
 import { environment } from '@/environments/environment';
 import { AttendeesService } from '@/app/core/attendees/services/attendees';
 import { ErrorHandlerService } from '@/app/core/services/error-handler';
@@ -42,6 +43,7 @@ export class EnrollAttendee {
   readonly Church = Church;
 
   readonly organizationId = environment.organizationId;
+  organizations: Organization[] = ORGANIZATIONS;
 
   memberStatuses = Object.values(MemberStatusEnum);
   churchHierarchies = Object.values(ChurchHierarchyEnum);
@@ -71,6 +73,7 @@ export class EnrollAttendee {
       churchProcess: [null],
       primaryLeaderId: [null],
       network: [null],
+      organizationId: [this.organizationId, [Validators.required]],
     })
 
     this.loadPrimaryLeader()
@@ -104,7 +107,7 @@ export class EnrollAttendee {
   }
 
   loadPrimaryLeader() {
-    this.attendeesService.getAttendeesByChurchHierarchy('PRIMARY_LEADER').subscribe({
+    this.attendeesService.getAttendeesByChurchHierarchy(['PRIMARY_LEADER', 'PASTOR']).subscribe({
       next: (response) => {
         console.log(response);
         this.primaryLeadersList = response.data;

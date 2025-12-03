@@ -1,7 +1,8 @@
 <main class="main-container">
-  <h1 class="font-bold text-2xl mt-4">LTHMI Recto Manila - <span class="text-monochromatic-dark">Dashboard</span></h1>
+  <h1 class="mt-4 text-xl">Welcome Back, Admin!</h1>
+  <h1 class="font-bold text-2xl mt-2">LTHMI Recto Manila - <span class="text-monochromatic-dark">Dashboard</span></h1>
 
-  <mat-form-field class="my-2" appearance="outline">
+  <mat-form-field class="mt-4" appearance="outline">
     <mat-label>Enter a date range</mat-label>
     <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
       <input matStartDate formControlName="start" placeholder="Start date">
@@ -19,20 +20,42 @@
     }
   </mat-form-field>
 
-  <p class="text-xl font-bold text-text-300 -mb-2">Overview</p>
-  <div class="-ml-2 grid">
-    <ngx-charts-number-card
-      [scheme]="'aqua'"
-      [results]="single"
-      [cardColor]="'#3A445D'"
-      [view]="view"
-    ></ngx-charts-number-card>
-  </div>
+  <section class="grid grid-cols-4 gap-4 mt-6">
+    <div class="bg-blue-100 border border-slate-300 rounded-lg p-6 space-y-1 hover:shadow-md transition-shadow">
+      <div class="bg-blue-200 p-4 inline-block rounded-lg">
+        <lucide-angular routerLink="/attendance" [img]="Users" class="text-blue-800"></lucide-angular>
+      </div>
+      <p class="text-lg">Total Attendees</p>
+      <h3 class="text-xl">1700</h3>
+      <p class="font-thin">Overall Attendees</p>
+    </div>
+
+    <div class="bg-green-100 border border-slate-300 rounded-lg p-6 space-y-1 hover:shadow-md transition-shadow">
+      <div class="bg-green-200 p-4 inline-block rounded-lg">
+        <lucide-angular routerLink="/attendance" [img]="TrendingUp" class="text-green-800"></lucide-angular>
+      </div>
+      <p class="text-lg">Average Attendancce</p>
+      <h3 class="text-xl">180</h3>
+      <p class="font-thin">Weekly Average</p>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <p class="text-xl font-bold text-text-300 -mb-2">Attendees Overview</p>
+    <div class="-ml-2 grid">
+      <ngx-charts-number-card
+        [scheme]="'aqua'"
+        [results]="single"
+        [cardColor]="'#3A445D'"
+        [view]="view"
+      ></ngx-charts-number-card>
+    </div>
+  </section>
 
   <p class="text-xl font-bold text-text-300">Attendance Trends - Sunday Service</p>
   <ngx-charts-line-chart
     [view]="[1220, 400]"
-    [scheme]="'forest'"
+    [scheme]="'picnic'"
     [results]="attendanceTrends"
     [xAxis]="true"
     [yAxis]="true"
@@ -44,6 +67,25 @@
     [yAxisLabel]="'Attendees'"
   >
   </ngx-charts-line-chart>
+
+  <p class="text-xl font-bold text-text-300">Service Comparison</p>
+  <div class="border-2 border-monochromatic-dark rounded-md p-4 bg-monochromatic-light">
+    This feature requires 2 - 3 years of data to be displayed.
+  </div>
+  <ngx-charts-bar-vertical-2d
+    [view]="[1220, 400]"
+    [scheme]="'horizon'"
+    [results]="serviceComparison"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [xAxisLabel]="'Date'"
+    [yAxisLabel]="'Attendees'"
+    [legendTitle]="'Church'"
+  >
+  </ngx-charts-bar-vertical-2d>
 
   <p class="text-xl font-bold text-text-300">Primary Leaders Attendees Trends</p>
   <div class="border-2 border-monochromatic-dark rounded-md p-4 bg-monochromatic-light">

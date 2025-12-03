@@ -2,7 +2,7 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Button } from '@/app/shared/ui/button/button'; 
 import { ClerkService, ClerkUserButtonComponent } from '@jsrob/ngx-clerk';
-import { CalendarFold, CalendarSync, FileText, LayoutDashboard, LucideAngularModule, Menu, Users } from 'lucide-angular';
+import { CalendarFold, CalendarSync, FileText, Info, LayoutDashboard, LucideAngularModule, Menu, Users } from 'lucide-angular';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +17,7 @@ import { CalendarFold, CalendarSync, FileText, LayoutDashboard, LucideAngularMod
 })
 export class Header {
   readonly Menu = Menu;
+  readonly Info = Info;
   readonly LayoutDashboard = LayoutDashboard
   readonly Users = Users;
   readonly CalendarFold = CalendarFold;

@@ -1,4 +1,4 @@
-<div class="p-4 bg-white border border-slate-400 rounded-lg shadow-sm overflow-hidden flex flex-col">
+<div class="p-4 bg-white border border-slate-400 rounded-lg shadow-sm overflow-hidden flex flex-col h-full">
   <img [src]="image" alt="card image" class="h-52 w-full" />
   <div class="mt-2">
     <h1 class="text-text-900 font-bold text-xl">{{ name }}</h1>
@@ -15,8 +15,8 @@
       <mat-icon class="icon-sm">timer</mat-icon> 
       {{ startTime | date:'mediumTime' }} - {{ endTime | date:'mediumTime' }} 
     </p>
-    <button mat-flat-button color="primary" [routerLink]="href">
-      Manage Attendance
-    </button>
   </div>
+  <button mat-flat-button color="primary" [routerLink]="href" class="mt-auto self-start">
+    Manage Attendance
+  </button>
 </div>

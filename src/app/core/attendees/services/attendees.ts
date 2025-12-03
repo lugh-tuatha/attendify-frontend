@@ -61,8 +61,15 @@ export class AttendeesService {
     return this.http.get<ApiResponse<AttendeeModel>>(`${this.baseUrl}/attendees/${attendeeId}`);
   }
 
-  getAttendeesByChurchHierarchy(churchHierarchy: string): Observable<ApiResponse<AttendeeModel[]>> {
-    return this.http.get<ApiResponse<AttendeeModel[]>>(`${this.baseUrl}/attendees/church-hierarchy/${churchHierarchy}`);
+  getAttendeesByChurchHierarchy(churchHierarchies: string[]): Observable<ApiResponse<AttendeeModel[]>> {
+    const url = `${this.baseUrl}/attendees/filter/by-hierarchy`;
+
+    const params = new HttpParams().set(
+      'roles',
+      churchHierarchies.join(',')
+    )
+
+    return this.http.get<ApiResponse<AttendeeModel[]>>(url, { params });
   }
 
   updateAttendee(attendeeId: string, payload: AttendeeModel): Observable<ApiResponse<AttendeeModel>> {

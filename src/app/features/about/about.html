@@ -1,0 +1,84 @@
+<section class="main-container">
+  <div class="flex my-8 gap-8 h-40">
+    <img src="project-luke-logo.jpg" alt="Project Luke Brand Logo" class="border-slate-300 border rounded-2xl h-full">
+
+    <div class="border-slate-300 border bg-white p-8 rounded-2xl h-full w-full flex flex-col justify-between">
+      <h2 class="text-xl">Quick Actions: </h2>
+      <div class="grid grid-cols-3 gap-6">
+        <button 
+          routerLink="/attendance/lthmi-recto-sunday-service/check-in" 
+          class="flex gap-4 items-center poppins bg-blue-600 px-6 py-4 rounded-lg text-white cursor-pointer hover:bg-blue-700"
+        >
+          <lucide-angular [img]="UserPlus" [size]="20"></lucide-angular>
+          Check In Attendeesw
+        </button>
+  
+        <button 
+          routerLink="/reports/attendance-summary/member-status" 
+          class="flex gap-4 items-center poppins bg-green-600 px-6 py-4 rounded-lg text-white cursor-pointer hover:bg-green-700"
+        >
+          <lucide-angular [img]="FileText" [size]="20"></lucide-angular>
+          View Reports
+        </button>
+  
+        <button 
+          [routerLink]="'/attendance/lthmi-recto-sunday-service/vip/' + lastSunday"
+          class="flex gap-4 items-center poppins bg-yellow-600 px-6 py-4 rounded-lg text-white cursor-pointer hover:bg-yellow-700"
+        >
+          <lucide-angular [img]="Crown" [size]="20"></lucide-angular>
+          View VIPs
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-carousel
+    [images]="carouselImages"
+    [autoSlide]="true"
+    [slideInterval]="10000"
+  ></app-carousel>
+
+  <div class="flex justify-between gap-8 mt-8">
+    <div class="w-1/2 space-y-4">
+      <h1 class="font-semibold text-2xl">Our Foundation</h1>
+      <p class="text-lg">" 36 as though you were waiting for your master to return from the wedding feast. Then you will be ready to open the door and let him in the moment he arrives and knocks. 37 The servants who are ready and waiting for his return will be rewarded. I tell you the truth, he himself will seat them, put on an apron, and serve them as they sit and eat! 38 He may come in the middle of the night or just before dawn. But whenever he comes, he will reward the servants who are ready."</p>
+      <p class="text-end font-semibold text-lg">Luke 12:36-38</p>
+    </div>
+    <img src="project-luke-logo.jpg" alt="Project Luke Brand Logo" class="border-slate-200 border rounded-2xl w-1/2 mx-auto">
+  </div>
+
+  <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg overflow-hidden mt-8">
+    <div class="grid md:grid-cols-2 gap-0">
+
+      <div class="p-8 lg:p-12 flex flex-col justify-center">
+        <div class="flex items-center gap-2 mb-6">
+          <div class="p-2 bg-white/10 rounded-lg">
+            <lucide-angular [img]="BookOpen" class="text-white"></lucide-angular>
+          </div>
+          <span class="text-white/90 text-sm">Weekly Verse</span>
+        </div>
+        
+        <blockquote class="text-white mb-6 leading-relaxed italic">
+          "Be dressed ready for service and keep your lamps burning, like servants waiting for their master to return from a wedding banquet, so that when he comes and knocks they can immediately open the door for him."
+        </blockquote>
+        
+        <div class="text-white/90">
+          <span>— Luke 12:36-38</span>
+        </div>
+        
+        <button 
+          routerLink="/attendance/lthmi-recto-sunday-service" 
+          class="mt-8 bg-white text-blue-600 hover:bg-blue-50 rounded-lg px-6 py-3 transition-colors w-fit cursor-pointer"
+        >
+          View Attendees This Week
+        </button>
+      </div>
+
+      <div class="relative h-64 md:h-auto">
+        <img src="https://images.unsplash.com/photo-1504052434569-70ad5836ab65?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800" alt="Worship" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/40 to-transparent"></div>
+      </div>
+    </div>
+  </div>
+
+</section>

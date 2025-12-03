@@ -20,6 +20,8 @@ import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ErrorCard } from '@/app/shared/components/error-card/error-card';
 import { environment } from '@/environments/environment';
 import { NgxChartsModule } from "@swimlane/ngx-charts";
+import { EventsService } from '@/app/core/events/services/events';
+import { EventModel } from '@/app/core/events/models/event.model';
 
 @Component({
   selector: 'app-attendance-detail',
@@ -57,6 +59,7 @@ export class AttendanceDetail {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private attendanceService = inject(AttendanceService);
+  private eventsService = inject(EventsService);
 
   slug = this.route.snapshot.paramMap.get('slug');
 
@@ -71,6 +74,9 @@ export class AttendanceDetail {
   }
   currentPage = 1;
   pageLimit = 10;  
+
+  event: EventModel | null = null;
+  isEventLoading = false;
 
   overviewData = [
     { name: 'Attendees (Overall)', value: 0 },
@@ -89,6 +95,7 @@ export class AttendanceDetail {
     })
 
     this.loadAttendanceRecord(1, 10, undefined, true);
+    this.loadEvent(this.slug);
   }
 
   ngOnDestroy(): void {
@@ -132,7 +139,7 @@ export class AttendanceDetail {
           this.currentSearchTerm
         );
       },
-      error: (error) => {
+      error: (error) => {event
         console.error('Error loading attendance record:', error);
         this.attendance.loading = false;
         this.attendance.errorMessage = error?.error?.message ?? 'An unknown error occurred.';
@@ -141,6 +148,24 @@ export class AttendanceDetail {
       }
     })
   }
+
+   private loadEvent(slug: string) {
+      this.isEventLoading = true;
+  
+      this.eventsService.getEventBySlug(slug).pipe(
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: (response) => {
+          this.event = response.data;
+          this.isEventLoading = false;
+          console.log(this.event)
+        },
+        error: (error) => {
+          console.error('Error loading events:', error);
+          this.isEventLoading = false;
+        }
+      })
+    }
 
   onCardClick(event: any) {
     const formattedDate = this.date.value.format('YYYY-MM-DD');

@@ -11,8 +11,10 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { environment } from '@/environments/environment';
 import { DashboardService } from '@/app/core/dashboard/services/dashboard';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { getLastMonthDate } from '@/app/shared/utils/date';
+import { getLastTwoMonthDate } from '@/app/shared/utils/date';
 import { LeadersAttendeesTrends } from '@/app/data/leaders-attendees-trends';
+import { LucideAngularModule, TrendingUp, Users } from 'lucide-angular';
+import { ServiceComparison } from '@/app/data/service-comparison';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,7 +24,8 @@ import { LeadersAttendeesTrends } from '@/app/data/leaders-attendees-trends';
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxChartsModule
+    NgxChartsModule,
+    LucideAngularModule,
   ],
   providers: [provideMomentDateAdapter()],
   templateUrl: './dashboard.html',
@@ -30,13 +33,16 @@ import { LeadersAttendeesTrends } from '@/app/data/leaders-attendees-trends';
 })
 
 export class Dashboard {
+  readonly Users = Users;
+  readonly TrendingUp = TrendingUp;
+
   private dashboardService = inject(DashboardService);
 
   private destroy$ = new Subject<void>();
 
   readonly organizationId = environment.organizationId;
   readonly range = new FormGroup({
-    start: new FormControl<Date | null>(getLastMonthDate()),
+    start: new FormControl<Date | null>(getLastTwoMonthDate()),
     end: new FormControl<Date | null>(new Date()),
   });
 
@@ -65,6 +71,7 @@ export class Dashboard {
   single: any[] = [];
   attendanceTrends: any[] = [];
   leadersAttendeesTrends = LeadersAttendeesTrends;
+  serviceComparison = ServiceComparison;
 
   getAttendanceTrendsByTimeframe(from: Date, to: Date): void {
     this.dashboardService.getTrendsByTimeframe(from, to, this.organizationId, '8757623d-1714-409c-a05d-f3896d44b5cf').pipe(

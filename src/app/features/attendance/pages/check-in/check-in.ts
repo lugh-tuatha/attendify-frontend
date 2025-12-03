@@ -18,6 +18,8 @@ import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.
 import { EventModel } from '@/app/core/events/models/event.model';
 import { ErrorHandlerService } from '@/app/core/services/error-handler';
 import { environment } from '@/environments/environment';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-check-in',
@@ -27,7 +29,9 @@ import { environment } from '@/environments/environment';
     RouterLink,
     MatButtonModule,
     WebcamModule,
-    MatPaginator
+    MatPaginator,
+    MatInputModule,
+    FormsModule,
 ],
   templateUrl: './check-in.html',
   styleUrl: './check-in.css'
