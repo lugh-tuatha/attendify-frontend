@@ -15,13 +15,13 @@ import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { CornerDownLeft, LucideAngularModule, SearchCheck } from 'lucide-angular';
 
-import { AttendanceService } from '@/app/core/attendance/services/attendance';
+import { AttendanceService } from '@/app/features/attendance/services/attendance';
 import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ErrorCard } from '@/app/shared/components/error-card/error-card';
 import { environment } from '@/environments/environment';
 import { NgxChartsModule } from "@swimlane/ngx-charts";
-import { EventsService } from '@/app/core/events/services/events';
-import { EventModel } from '@/app/core/events/models/event.model';
+import { EventsService } from '@/app/features/events/services/events';
+import { EventModel } from '@/app/features/events/models/event.model';
 
 @Component({
   selector: 'app-attendance-detail',

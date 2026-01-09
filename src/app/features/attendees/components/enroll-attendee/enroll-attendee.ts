@@ -11,7 +11,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { Church, LucideAngularModule, UserPlus } from "lucide-angular";
 import { finalize } from 'rxjs';
 
-import { AttendeeModel } from '@/app/core/attendees/models/attendee.model';
+import { AttendeeModel } from '@/app/features/attendees/models/attendee.model';
 import { ChurchHierarchyEnum } from '@/app/core/enums/church-hierarchy.enum';
 import { ChurchProcessEnum } from '@/app/core/enums/church-process.enum';
 import { MemberStatusEnum } from '@/app/core/enums/member-status.enum';
@@ -19,7 +19,7 @@ import { NetworkEnum } from '@/app/core/enums/network.enum';
 import { CivilStatusesEnum } from '@/app/core/enums/status.enum';
 import { Organization, ORGANIZATIONS } from '@/app/core/constants/organizations';
 import { environment } from '@/environments/environment';
-import { AttendeesService } from '@/app/core/attendees/services/attendees';
+import { AttendeesService } from '@/app/features/attendees/services/attendees';
 import { ErrorHandlerService } from '@/app/core/services/error-handler';
 
 @Component({

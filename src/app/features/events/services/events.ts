@@ -1,13 +1,12 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { EventRegistrationModel } from '@/app/core/events/models/event-registration.model';
-import { EventModel } from '@/app/core/events/models/event.model';
-import { RegisterAttendeeDto } from '@/app/core/events/dto/register-attendee.dto';
+import { EventRegistrationModel } from '@/app/features/events/models/event-registration.model';
+import { EventModel } from '@/app/features/events/models/event.model';
+import { RegisterAttendeeDto } from '@/app/features/events/dto/register-attendee.dto';
 import { ApiResponse } from '@/app/core/models/api-response.interface';
 import { environment } from '@/environments/environment';
-import { AttendanceModel } from '../../attendance/models/attendance.model';
 
 @Injectable({
   providedIn: 'root'

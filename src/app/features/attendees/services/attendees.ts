@@ -2,9 +2,9 @@ import { environment } from '@/environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
-import { PaginatedApiResponse } from '../../models/paginated-api-response.interface';
+import { PaginatedApiResponse } from '@/app/core/models/paginated-api-response.interface';
 import { AttendeeModel } from '../models/attendee.model';
-import { ApiResponse } from '../../models/api-response.interface';
+import { ApiResponse } from '@/app/core/models/api-response.interface';
 
 @Injectable({
   providedIn: 'root'

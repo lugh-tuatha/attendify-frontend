@@ -1,25 +1,27 @@
 import { Component, inject, ViewChild } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { Button } from "@/app/shared/ui/button/button";
-import { AttendeesService } from '@/app/core/attendees/services/attendees';
 import { MatTableDataSource } from '@angular/material/table';
-import { CdkTableModule } from '@angular/cdk/table';
-import { SquarePen, LucideAngularModule, Trash, SearchCheck, EllipsisVertical } from 'lucide-angular';
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
-import { Subject, takeUntil } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { EditAttendeeDialog } from './components/edit-attendee-dialog/edit-attendee-dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import { RegisterAttendeeDto } from '@/app/core/events/dto/register-attendee.dto';
-import { EventsService } from '@/app/core/events/services/events';
-import { ErrorHandlerService } from '@/app/core/services/error-handler';
+import { MatMenuModule } from '@angular/material/menu';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { RouterLink } from '@angular/router';
+import { CdkTableModule } from '@angular/cdk/table';
+import { MatAnchor, MatButtonModule } from "@angular/material/button";
+
+import { SquarePen, LucideAngularModule, Trash, SearchCheck, EllipsisVertical } from 'lucide-angular';
+import { Subject, takeUntil } from 'rxjs';
+
+import { AttendeesService } from '@/app/features/attendees/services/attendees';
+import { EventsService } from '@/app/features/events/services/events';
+import { ErrorHandlerService } from '@/app/core/services/error-handler';
+import { RegisterAttendeeDto } from '@/app/features/events/dto/register-attendee.dto';
 import { environment } from '@/environments/environment';
 import { DeleteConfirmationModal } from '@/app/shared/components/delete-confirmation-modal/delete-confirmation-modal';
-import { MatAnchor, MatButtonModule } from "@angular/material/button";
+import { EditAttendeeDialog } from './components/edit-attendee-dialog/edit-attendee-dialog';
 
 @Component({
   selector: 'app-attendees',
@@ -33,7 +35,7 @@ import { MatAnchor, MatButtonModule } from "@angular/material/button";
     MatMenuModule,
     RouterLink,
     MatAnchor,
-    MatButtonModule
+    MatButtonModule,
 ],
   templateUrl: './attendees.html',
   styleUrl: './attendees.css'
@@ -57,7 +59,7 @@ export class Attendees {
   dialog = inject(MatDialog);
   breakpointObserver = inject(BreakpointObserver);
 
-  allColumns = ['profile', 'fullName', 'age', 'status', 'memberStatus', 'churchHierarchy', 'primaryLeader', 'churchProcess', 'network', 'actions'];
+  allColumns = ['profile', 'fullName', 'age', 'status', 'churchHierarchy', 'primaryLeader', 'churchProcess', 'network', 'actions'];
   displayedColumns: string[] = this.allColumns;
   attendeesDataSource = new MatTableDataSource<any>([]);
   attendees = {
@@ -82,8 +84,8 @@ export class Attendees {
         this.displayedColumns = [
           'profile', 
           'fullName', 
-          'memberStatus',
           'primaryLeader',
+          'churchHierarchy',
           'actions'
         ];
       } else {
@@ -205,5 +207,30 @@ export class Attendees {
     this.currentPage = event.pageIndex + 1;
     this.pageLimit = event.pageSize;
     this.loadAttendees(this.currentPage, this.pageLimit, this.currentSearchTerm)
+  }
+
+  getStatusBadge(status?: string) {
+    if (!status) return null;
+
+    if (
+      status?.includes('FIRST_TIMER') || 
+      status?.includes('SECOND_TIMER') || 
+      status?.includes('THIRD_TIMER') || 
+      status?.includes('FOURTH_TIMER')
+    ) {
+      return {
+        label: 'VIP',
+        class: 'bg-yellow-200 border border-yellow-500'
+      };
+    } 
+    
+    if (status === 'BACK_TO_LIFE') {
+      return {
+        label: 'returned',
+        class: 'bg-green-200 border border-green-500'
+      };
+    }
+
+    return null;
   }
 }

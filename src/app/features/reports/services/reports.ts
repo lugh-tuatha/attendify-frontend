@@ -1,7 +1,7 @@
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { ApiResponse } from '../../models/api-response.interface';
+import { ApiResponse } from '../../../core/models/api-response.interface';
 import { AttendanceSummaryModel } from '../models/attendance-summary.model';
 import { Observable } from 'rxjs';
 import { AttendanceByHierarchyModel } from '../models/attendance-by-hierarchy.model';

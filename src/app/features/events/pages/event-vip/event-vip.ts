@@ -1,5 +1,5 @@
-import { VipAttendanceModel } from '@/app/core/attendance/models/vip-attendance.model';
-import { AttendanceService } from '@/app/core/attendance/services/attendance';
+import { VipAttendanceModel } from '@/app/features/attendance/models/vip-attendance.model';
+import { AttendanceService } from '@/app/features/attendance/services/attendance';
 import { Location } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';

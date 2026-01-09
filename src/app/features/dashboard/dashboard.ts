@@ -9,12 +9,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { environment } from '@/environments/environment';
-import { DashboardService } from '@/app/core/dashboard/services/dashboard';
+import { DashboardService } from '@/app/features/dashboard/services/dashboard';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { getLastTwoMonthDate } from '@/app/shared/utils/date';
-import { LeadersAttendeesTrends } from '@/app/data/leaders-attendees-trends';
+import { LeadersAttendeesTrends } from '@/app/core/mocks/leaders-attendees-trends';
 import { LucideAngularModule, TrendingUp, Users } from 'lucide-angular';
-import { ServiceComparison } from '@/app/data/service-comparison';
+import { ServiceComparison } from '@/app/core/mocks/service-comparison';
 
 @Component({
   selector: 'app-dashboard',

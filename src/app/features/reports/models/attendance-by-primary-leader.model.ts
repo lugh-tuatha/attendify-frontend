@@ -1,5 +1,5 @@
-import { ChurchProcessEnum } from "../../enums/church-process.enum";
-import { MemberStatusEnum } from "../../enums/member-status.enum";
+import { ChurchProcessEnum } from "../../../core/enums/church-process.enum";
+import { MemberStatusEnum } from "../../../core/enums/member-status.enum";
 import { SummaryCategoryModel } from "./attendance-summary.model";
 
 export interface DiscipleModel {

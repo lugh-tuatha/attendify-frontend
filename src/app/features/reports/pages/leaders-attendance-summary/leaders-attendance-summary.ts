@@ -12,10 +12,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 
-import { ReportsService } from '@/app/core/reports/services/reports';
+import { ReportsService } from '@/app/features/reports/services/reports';
 import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ReportSkeleton } from "@/app/shared/components/report-skeleton/report-skeleton";
-import { AttendanceByHierarchyModel } from '@/app/core/reports/models/attendance-by-hierarchy.model';
+import { AttendanceByHierarchyModel } from '@/app/features/reports/models/attendance-by-hierarchy.model';
 import { ErrorCard } from "@/app/shared/components/error-card/error-card";
 import { Event, EVENTS } from '@/app/core/constants/events';
 

@@ -3,13 +3,13 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 
 import { environment } from '@/environments/environment';
-import { AttendanceModel } from '@/app/core/attendance/models/attendance.model';
+import { AttendanceModel } from '@/app/features/attendance/models/attendance.model';
 import { PaginatedApiResponse } from '@/app/core/models/paginated-api-response.interface';
 import { ApiResponse } from '@/app/core/models/api-response.interface';
-import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.dto';
-import { CheckInByFaceDto } from '@/app/core/attendance/dto/check-in-by-face.dto';
+import { CheckInAttendeeDto } from '@/app/features/attendance/dto/check-in-attendee.dto';
+import { CheckInByFaceDto } from '@/app/features/attendance/dto/check-in-by-face.dto';
 import { VipAttendanceModel } from '../models/vip-attendance.model';
-import { ApiResponseWithMeta } from '../../models/api-response-with-meta';
+import { ApiResponseWithMeta } from '../../../core/models/api-response-with-meta';
 
 @Injectable({
   providedIn: 'root'

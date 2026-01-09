@@ -21,7 +21,7 @@
 
     @if (attendees.loading) {
       <div class="flex flex-col items-center gap-4 backdrop-blur-md text-text-300 my-4 rounded-lg">
-        <img src="assets/gifs/neon-cat.gif" alt="Neon Cat" class="h-40 rounded-md shadow-lg shadow-monochromatic-dark">
+        <img src="assets/gifs/neon-cat.gif" alt="Neon Cat" class="h-40 rounded-md shadow-lg shadow-monochromatic-dark" />
         <p class="font-semibold">Hacking NASA for data . . .</p>
       </div>
     }
@@ -51,6 +51,17 @@
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white whitespace-nowrap">Full Name</th>
             <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 font-bold border-t border-text-300 whitespace-nowrap capitalize">
               {{element.firstName}} {{element.lastName}} 
+
+              @let badge = getStatusBadge(element.memberStatus);
+
+              @if (getStatusBadge(element.memberStatus)) {
+                <span 
+                  [class]="badge?.class"
+                  class="poppins ml-2 px-2 py-0.5 rounded text-xs font-light"
+                >
+                  {{ badge?.label }}
+                </span>
+              }
             </td>
           </ng-container>
   
@@ -65,13 +76,6 @@
             <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Status</th>
             <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300"> 
               {{element.status || '-'}} 
-            </td>
-          </ng-container>
-  
-          <ng-container cdkColumnDef="memberStatus">
-            <th cdk-header-cell *cdkHeaderCellDef class="bg-[#067BC3] text-left py-3 text-white">Member Status</th>
-            <td cdk-cell *cdkCellDef="let element" class="bg-monochromatic-light text-left py-3 text-text-900 border-t border-text-300">
-              {{element.memberStatus || '-'}} 
             </td>
           </ng-container>
   

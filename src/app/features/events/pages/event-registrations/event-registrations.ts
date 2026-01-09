@@ -7,10 +7,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { RegisterAttendeeDto } from '../../../../core/events/dto/register-attendee.dto';
+import { RegisterAttendeeDto } from '@/app/features/events/dto/register-attendee.dto';
 import { Button } from '@/app/shared/ui/button/button'; 
-import { EventsService } from '@/app/core/events/services/events';
-import { EventModel } from '../../../../core/events/models/event.model';
+import { EventsService } from '@/app/features/events/services/events';
+import { EventModel } from '@/app/features/events/models/event.model';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({

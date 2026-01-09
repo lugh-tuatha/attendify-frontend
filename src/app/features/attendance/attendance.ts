@@ -1,7 +1,7 @@
 import { EventCard } from '@/app/shared/components/event-card/event-card';
 import { Component, inject } from '@angular/core';
-import { EventsService } from '@/app/core/events/services/events';
-import { EventModel } from '@/app/core/events/models/event.model';
+import { EventsService } from '@/app/features/events/services/events';
+import { EventModel } from '@/app/features/events/models/event.model';
 import { EventCardSkeleton } from "@/app/shared/components/event-card-skeleton/event-card-skeleton";
 
 @Component({
@@ -10,6 +10,7 @@ import { EventCardSkeleton } from "@/app/shared/components/event-card-skeleton/e
   templateUrl: './attendance.html',
   styleUrl: './attendance.css'
 })
+
 export class Attendance {
   private eventsService = inject(EventsService);
 

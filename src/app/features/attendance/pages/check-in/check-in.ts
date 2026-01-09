@@ -11,11 +11,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { CornerDownLeft, LucideAngularModule, SearchCheck } from 'lucide-angular';
 import { WebcamImage, WebcamModule } from 'ngx-webcam';
 
-import { AttendanceService } from '@/app/core/attendance/services/attendance';
-import { AttendeesService } from '@/app/core/attendees/services/attendees';
-import { EventsService } from '@/app/core/events/services/events';
-import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.dto';
-import { EventModel } from '@/app/core/events/models/event.model';
+import { AttendanceService } from '@/app/features/attendance/services/attendance';
+import { AttendeesService } from '@/app/features/attendees/services/attendees';
+import { EventsService } from '@/app/features/events/services/events';
+import { CheckInAttendeeDto } from '@/app/features/attendance/dto/check-in-attendee.dto';
+import { EventModel } from '@/app/features/events/models/event.model';
 import { ErrorHandlerService } from '@/app/core/services/error-handler';
 import { environment } from '@/environments/environment';
 import { MatInputModule } from '@angular/material/input';

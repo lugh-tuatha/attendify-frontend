@@ -14,12 +14,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { LucideAngularModule, CornerDownLeft, SearchCheck } from 'lucide-angular';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
-import { EventModel } from '@/app/core/events/models/event.model';
-import { AttendanceModel } from '@/app/core/attendance/models/attendance.model';
-import { EventRegistrationModel } from '@/app/core/events/models/event-registration.model';
-import { CheckInAttendeeDto } from '@/app/core/attendance/dto/check-in-attendee.dto';
-import { EventsService } from '@/app/core/events/services/events';
-import { AttendanceService } from '@/app/core/attendance/services/attendance';
+import { EventModel } from '@/app/features/events/models/event.model';
+import { AttendanceModel } from '@/app/features/attendance/models/attendance.model';
+import { EventRegistrationModel } from '@/app/features/events/models/event-registration.model';
+import { CheckInAttendeeDto } from '@/app/features/attendance/dto/check-in-attendee.dto';
+import { EventsService } from '@/app/features/events/services/events';
+import { AttendanceService } from '@/app/features/attendance/services/attendance';
 import { BsodLoading } from '@/app/shared/components/bsod-loading/bsod-loading';
 import { ErrorCard } from "@/app/shared/components/error-card/error-card";
 

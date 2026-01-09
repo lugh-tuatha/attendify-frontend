@@ -7,8 +7,8 @@ Attendify is an all-in-one platform designed to help organizations manage attend
 ## Repositories
 Linked services that work together to power Attendify.
 
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=lugh-tuatha&repo=attendify-backend)](https://github.com/lugh-tuatha/attendify-backend)
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=lugh-tuatha&repo=attendify-face-recognition)](https://github.com/lugh-tuatha/attendify-face-recognition)
+[![Readme Card](https://github-readme-stats-eight-theta.vercel.app/api/pin/?username=lugh-tuatha&repo=attendify-backend)](https://github.com/lugh-tuatha/attendify-backend)
+[![Readme Card](https://github-readme-stats-eight-theta.vercel.app/api/pin/?username=lugh-tuatha&repo=attendify-face-recognition)](https://github.com/lugh-tuatha/attendify-face-recognition)
 
 ## Tech Stack
 ![Angular.js](https://img.shields.io/badge/angular.js-%23E23237.svg?style=for-the-badge&logo=angularjs&logoColor=white) <br />

@@ -12,9 +12,9 @@ import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { Users, LucideAngularModule } from 'lucide-angular';
 
-import { SummaryCategoryModel } from '@/app/core/reports/models/attendance-summary.model';
+import { SummaryCategoryModel } from '@/app/features/reports/models/attendance-summary.model';
 import { ReportSkeleton } from "@/app/shared/components/report-skeleton/report-skeleton";
-import { ReportsService } from '@/app/core/reports/services/reports';
+import { ReportsService } from '@/app/features/reports/services/reports';
 import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ErrorCard } from "@/app/shared/components/error-card/error-card";
 import { Event, EVENTS } from '@/app/core/constants/events';

@@ -1,5 +1,5 @@
-import { AttendeeModel } from '@/app/core/attendees/models/attendee.model';
-import { AttendeesService } from '@/app/core/attendees/services/attendees';
+import { AttendeeModel } from '@/app/features/attendees/models/attendee.model';
+import { AttendeesService } from '@/app/features/attendees/services/attendees';
 import { ChurchHierarchyEnum } from '@/app/core/enums/church-hierarchy.enum';
 import { ChurchProcessEnum } from '@/app/core/enums/church-process.enum';
 import { MemberStatusEnum } from '@/app/core/enums/member-status.enum';

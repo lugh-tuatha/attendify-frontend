@@ -12,10 +12,10 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 
-import { ReportsService } from '@/app/core/reports/services/reports';
+import { ReportsService } from '@/app/features/reports/services/reports';
 import { DEFAULT_DATE_FORMAT } from '@/app/shared/utils/date-format';
 import { ReportSkeleton } from "@/app/shared/components/report-skeleton/report-skeleton";
-import { DiscipleModel, SummaryModel } from '@/app/core/reports/models/attendance-by-primary-leader.model';
+import { DiscipleModel, SummaryModel } from '@/app/features/reports/models/attendance-by-primary-leader.model';
 import { ErrorCard } from "@/app/shared/components/error-card/error-card";
 import { LucideAngularModule, Users } from 'lucide-angular';
 import { Event, EVENTS } from '@/app/core/constants/events';
