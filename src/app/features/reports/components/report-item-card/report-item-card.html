@@ -1,0 +1,35 @@
+<a 
+  [attr.href]="isAvailable ? href : null"
+  [class.pointer-events-none]="!isAvailable"
+>
+  <div 
+    [ngClass]="{
+      'transition-all hover:shadow-lg hover:border-monochromatic-base cursor-pointer': isAvailable,
+      'opacity-60': !isAvailable
+    }"
+   class="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
+  >
+    <div class="flex justify-between items-start">
+      <div [ngClass]="iconBgClass" class="p-2 w-fit rounded-md">
+        <lucide-angular [img]="icon" class="w-6 h-6"></lucide-angular>
+      </div>
+      @if (isAvailable) {
+        <span class="px-3 py-2 bg-emerald-100 text-emerald-700 text-xs rounded-md">
+          Available
+        </span>
+      } @else {
+        <span class="px-3 py-2 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">
+          Coming Soon
+        </span>
+      }
+    </div>
+  
+    <h3 class="text-text-900 text-xl font-medium leading-relaxed mt-4">{{ title }}</h3>
+    <p class="text-text-300 text-lg leading-relaxed">{{ description }}</p>
+  
+    <div class="flex items-center gap-2 text-monochromatic-dark text-sm font-medium mt-4">
+      <lucide-angular [img]="FileText" class="w-5 h-5"></lucide-angular>
+      <span>View Report</span>
+    </div>
+  </div>
+</a>

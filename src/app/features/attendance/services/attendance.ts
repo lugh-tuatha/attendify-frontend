@@ -16,7 +16,7 @@ import { ApiResponseWithMeta } from '../../../core/models/api-response-with-meta
 })
 export class AttendanceService {
   private http = inject(HttpClient);
-  private baseUrl = environment.apiBaseUrl;
+  readonly baseUrl = environment.apiBaseUrl;
 
   private cache = new Map<string, PaginatedApiResponse<AttendanceModel>>();
 

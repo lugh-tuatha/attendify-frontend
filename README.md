@@ -1,7 +1,15 @@
 # Attendify 2.0 - Attendance Simplified
 Attendify is an all-in-one platform designed to help organizations manage attendees with analytics, all with modern UX, & face recognition.
 
-### ⭐ Check us out on Trustpilot
+![Angular.js](https://img.shields.io/badge/angular.js-%23E23237.svg?style=for-the-badge&logo=angularjs&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+
+## ⭐ Check us out on Trustpilot
+> Yes, somehow we do have a Trustpilot.
+
 [![Trustpilot](https://img.shields.io/badge/Trustpilot-00B67A?logo=trustpilot&logoColor=fff)](https://www.trustpilot.com/review/attendify.website)
 
 ## Repositories
@@ -9,13 +17,6 @@ Linked services that work together to power Attendify.
 
 [![Readme Card](https://github-readme-stats-eight-theta.vercel.app/api/pin/?username=lugh-tuatha&repo=attendify-backend)](https://github.com/lugh-tuatha/attendify-backend)
 [![Readme Card](https://github-readme-stats-eight-theta.vercel.app/api/pin/?username=lugh-tuatha&repo=attendify-face-recognition)](https://github.com/lugh-tuatha/attendify-face-recognition)
-
-## Tech Stack
-![Angular.js](https://img.shields.io/badge/angular.js-%23E23237.svg?style=for-the-badge&logo=angularjs&logoColor=white) <br />
-![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) <br />
-![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white) <br />
-![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white) <br />
-![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) <br />
 
 ## Attendify is currently used by
 [Life Transform Harvest Ministry International](https://www.facebook.com/lthmrectomanila) — since 2024 to Present

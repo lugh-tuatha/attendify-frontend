@@ -49,8 +49,8 @@ export class EventVip {
 
   loadVipAttendees() {
     if (!this.slug) return;
-    this.isVipAttendeesLoading = true,
-    this.isVipAttendeesEmpty = false,
+    this.isVipAttendeesLoading = true;
+    this.isVipAttendeesEmpty = false;
 
     this.attendanceService.getVipAttendanceBySlug(this.slug).subscribe({
       next: (response) => {

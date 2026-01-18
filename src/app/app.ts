@@ -5,7 +5,6 @@ import { MainLayout } from './layout/main-layout/main-layout';
   selector: 'app-root',
   imports: [MainLayout],
   templateUrl: './app.html',
-  styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('attendify-frontend');

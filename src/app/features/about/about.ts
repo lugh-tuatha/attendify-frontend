@@ -12,10 +12,10 @@ import moment from 'moment';
     LucideAngularModule,
     MatButtonModule,
     RouterLink
-],
+  ],
   templateUrl: './about.html',
-  styleUrl: './about.css'
 })
+
 export class About {
   readonly UserPlus = UserPlus;
   readonly FileText = FileText;

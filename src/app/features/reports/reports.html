@@ -1,34 +1,37 @@
 <main class="main-container">
   <h1 class="font-bold text-2xl mt-4">LTHMI Recto Manila - <span class="text-monochromatic-dark">Reports</span></h1>
 
-  <section class="mt-4">
-    <div class="shadow-default border-2 border-monochromatic-base px-6 pt-4 pb-6 rounded-md bg-white">
-      <h2 class="text-lg font-semibold">Attendance Overview</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="mt-1 space-y-1">
-          <div 
-            routerLink="/reports/attendance-summary/member-status" 
-            class="py-3 flex items-center justify-between border-b border-text-300 cursor-pointer"
-          >
-            <span>Attendance Summary by Member Status</span>
-            <lucide-angular class="w-5 h-5" [img]="Star"></lucide-angular>
-          </div>
-          <div 
-            routerLink="/reports/attendance-summary/church-process" 
-            class="py-3 flex items-center justify-between border-b border-text-300 cursor-pointer"
-          >
-            <span>Attendance Summary of Pepsol Students</span>
-            <lucide-angular class="w-5 h-5" [img]="Star"></lucide-angular>
-          </div>
-          <div 
-            routerLink="/reports/attendance-summary/leaders" 
-            class="py-3 flex items-center justify-between border-b border-text-300 cursor-pointer"
-          >
-            <span>Leader Attendance Summary</span>
-            <lucide-angular class="w-5 h-5" [img]="Star"></lucide-angular>
-          </div>
-        </div>
-      </div>
-    </div>
+  <section class="grid md:grid-cols-3 mt-4 gap-6">
+    <app-report-item-card
+      [icon]="UserCheck" 
+      [iconBgClass]="'bg-amber-200 text-amber-700'" 
+      [title]="'Attendance Summary by Member Status'"
+      [description]="'View total attendance broken down by member status'" 
+      [href]="'reports/attendance-summary/member-status'"
+    ></app-report-item-card>
+
+    <app-report-item-card
+      [icon]="GraduationCap" 
+      [iconBgClass]="'bg-purple-200 text-purple-700'" 
+      [title]="'Attendance Summary of Pepsol Students'"
+      [description]="'Track pepsol student attendance across all discipleship program stages'" 
+      [href]="'reports/attendance-summary/church-process'"
+    ></app-report-item-card>
+
+    <app-report-item-card
+      [icon]="Shield" 
+      [iconBgClass]="'bg-cyan-200 text-cyan-700'" 
+      [title]="'Primary Leader Attendance Summary'"
+      [description]="'Track primary leaders arrival time with precise arrival timestamps'" 
+      [href]="'reports/attendance-summary/leaders'"
+    ></app-report-item-card>
+
+    <app-report-item-card
+      [icon]="Calendar" 
+      [iconBgClass]="'bg-pink-200 text-pink-700'" 
+      [title]="'Special Events Attendance'"
+      [description]="'Track attendance for special events'" 
+      [isAvailable]="false"
+    ></app-report-item-card>
   </section>
 </main>

@@ -32,9 +32,8 @@ import { FormsModule } from '@angular/forms';
     MatPaginator,
     MatInputModule,
     FormsModule,
-],
+  ],
   templateUrl: './check-in.html',
-  styleUrl: './check-in.css'
 })
 export class CheckIn {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

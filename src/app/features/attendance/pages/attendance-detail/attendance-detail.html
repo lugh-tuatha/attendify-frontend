@@ -50,7 +50,7 @@
     @if (attendance.empty && !attendance.loading && !attendance.errorMessage) {
       <app-error-card
         [statusCode]="204"
-        title="Content Not Foud"
+        title="Content Not Found"
         message="No attendance records found for this date."
         imageUrl="/assets/http.cat/204.jpeg"
       ></app-error-card>
@@ -89,7 +89,7 @@
 
           <ng-container cdkColumnDef="arival">
             <th cdk-header-cell *cdkHeaderCellDef class="w-36 bg-[#067BC3] text-end pr-6 py-3 text-white">Arrival</th>
-            <td cdk-cell *cdkCellDef="let element" class="w-36 bg-monochromatic-light py-3 text-text-900 border-t border-text-300 ">
+            <td cdk-cell *cdkCellDef="let element" class="w-36 bg-monochromatic-light py-3 text-text-900 border-t border-text-300">
               <div class="flex items-center justify-end gap-4 mr-6">
                 {{element.timeIn | date: 'shortTime'}} 
                 <div 

@@ -6,11 +6,11 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { environment } from '@/environments/environment';
 import { DashboardService } from '@/app/features/dashboard/services/dashboard';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { getLastTwoMonthDate } from '@/app/shared/utils/date';
 import { LeadersAttendeesTrends } from '@/app/core/mocks/leaders-attendees-trends';
 import { LucideAngularModule, TrendingUp, Users } from 'lucide-angular';

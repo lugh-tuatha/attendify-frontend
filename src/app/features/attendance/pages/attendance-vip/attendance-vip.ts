@@ -24,7 +24,7 @@ import { VipItem } from "@/app/shared/components/vip-item/vip-item";
 export class AttendanceVip {
   readonly CornerDownLeft = CornerDownLeft;
 
-  private route = inject(ActivatedRoute);
+  readonly route = inject(ActivatedRoute);
   private location = inject(Location);
   private attendanceService = inject(AttendanceService);
 

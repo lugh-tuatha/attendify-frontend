@@ -22,9 +22,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-],
+  ],
   templateUrl: './edit-attendee-dialog.html',
-  styleUrl: './edit-attendee-dialog.css'
 })
 export class EditAttendeeDialog {
   data = inject(MAT_DIALOG_DATA);
@@ -40,7 +39,7 @@ export class EditAttendeeDialog {
   primaryLeadersList: AttendeeModel[] = [];
 
   private attendeesService = inject(AttendeesService);
-  private fb = inject(FormBuilder);
+  readonly fb = inject(FormBuilder);
 
   attendeeForm!: FormGroup;
   isAttendeeLoading = false;

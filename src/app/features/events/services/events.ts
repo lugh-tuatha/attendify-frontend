@@ -13,8 +13,8 @@ import { environment } from '@/environments/environment';
 })
 
 export class EventsService {
-  private http = inject(HttpClient);
-  private baseUrl = environment.apiBaseUrl;
+  readonly http = inject(HttpClient);
+  readonly baseUrl = environment.apiBaseUrl;
 
   getEvents(): Observable<ApiResponse<EventModel[]>> {
     return this.http.get<ApiResponse<EventModel[]>>(`${this.baseUrl}/events`);
