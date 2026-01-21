@@ -1,8 +1,10 @@
 <main class="main-container">
-  <h1 class="mt-4 text-xl">Welcome Back, Admin!</h1>
-  <h1 class="font-bold text-2xl mt-2">LTHMI Recto Manila - <span class="text-monochromatic-dark">Dashboard</span></h1>
+  <div class="bg-gradient-to-r from-[#4A90E2] to-[#6BAEE5] rounded-xl p-8 text-white shadow-lg mt-8">
+    <h2 class="font-medium mb-2 text-lg !text-white/90">Welcome Back, Admin!</h2>
+    <h1 class="text-3xl font-bold !text-white">LTHMI Recto Manila - Dashboard</h1>
+  </div>
 
-  <mat-form-field class="mt-4" appearance="outline">
+  <mat-form-field class="mt-8 !text-white !border-white" appearance="outline">
     <mat-label>Enter a date range</mat-label>
     <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
       <input matStartDate formControlName="start" placeholder="Start date">

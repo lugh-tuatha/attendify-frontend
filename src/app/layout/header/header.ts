@@ -1,20 +1,23 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Button } from '@/app/shared/ui/button/button'; 
+
 import { ClerkService, ClerkUserButtonComponent } from '@jsrob/ngx-clerk';
 import { CalendarFold, CalendarSync, FileText, Info, LayoutDashboard, LucideAngularModule, Menu, Users } from 'lucide-angular';
+
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-header',
   imports: [
     RouterLink, 
-    Button,
     ClerkUserButtonComponent,
-    LucideAngularModule
+    LucideAngularModule,
+    MatButton
   ],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
+
 export class Header {
   readonly Menu = Menu;
   readonly Info = Info;
